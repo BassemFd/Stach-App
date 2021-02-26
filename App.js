@@ -6,12 +6,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import TemporaryPage from './Screens/TemporaryPage'
+
 import HomeScreen from './Screens/HomeScreen';
 import ListScreen from './Screens/ListScreen';
 import MapScreen from './Screens/MapScreen';
 import ShopScreen from './Screens/ShopScreen';
 import SignUpScreen from './Screens/SignUpScreen';
 import SignInScreen from './Screens/SignInScreen';
+import AppointmentScreen from './Screens/AppointmentScreen';
+import DetailsScreen from './Screens/DetailsScreen';
+import ProfileScreen from './Screens/ProfileScreen';
+import ContactScreen from './Screens/ContactScreen';
+
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -81,11 +90,15 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator >
-        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+        <Stack.Screen name="TemporaryPage" component={TemporaryPage} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ButtonTabShop" component={ButtonTabShop} /> 
         <Stack.Screen name="Shop" component={ShopScreen} /> 
         <Stack.Screen name="ButtonTabSign" component={ButtonTabSign} />
+        <Stack.Screen name="Appointment" component={AppointmentScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Contact" component={ContactScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
