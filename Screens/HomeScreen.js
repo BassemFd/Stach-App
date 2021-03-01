@@ -11,14 +11,18 @@ import { SafeAreaView } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+import ModalPicker from 'react-native-modal-picker'
 
 
 
 export default function HomeScreen(props) {
 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
 
   const [isDateSelected, setIsDateSelected] = useState(false);
   const [isTimeSelected, setIsTimeSelected] = useState(false);
@@ -43,26 +47,29 @@ export default function HomeScreen(props) {
   const onChange = async (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    if (mode == 'date') {
-      setIsDateSelected(true)
-    } else if (mode == 'time') {
-      setIsTimeSelected(true)
-    }
+    
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
 
-  const showDatepicker = () => {
-    showMode('date');
-    
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
   };
 
-  const showTimepicker = () => {
-    showMode('time');
+  const handleConfirm = (choice) => {
+    console.warn("A date has been picked: ", choice);
+
+    if (mode == 'date') {
+      setDate(choice)
+      setIsDateSelected(true)
+    } else if (mode == 'time') {
+      setDate(choice)
+      setIsTimeSelected(true)
+    }
+    hideDatePicker();
   };
 
   var colorButtonSalon;
@@ -180,7 +187,7 @@ export default function HomeScreen(props) {
     </View>
 
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUAND ?</Text>
-    <TouchableOpacity onPress={showDatepicker}>
+    <TouchableOpacity onPress={async()=>{await setMode('date'); showDatePicker()}}>
     <Input
             inputStyle={{marginLeft: 10}}
             placeholder="N'IMPORTE QUELLE DATE"
@@ -189,7 +196,7 @@ export default function HomeScreen(props) {
                 name='calendar'
                 size={24}
                 color="#4E342E"
-                onPress={showDatepicker}
+                onPress={async()=>{await setMode('date'); showDatePicker()}}
                 />
             }
             value={displayDate}
@@ -206,7 +213,7 @@ export default function HomeScreen(props) {
       onPress={() => setIsDateSelected(!isDateSelected)}
     />
     
-    <TouchableOpacity onPress={showTimepicker}>
+    <TouchableOpacity onPress={async()=>{await setMode('time'); showDatePicker()}}>
     <Input
             inputStyle={{marginLeft: 10}}
             placeholder="N'IMPORTE QUELLE HEURE"
@@ -215,7 +222,7 @@ export default function HomeScreen(props) {
                 name='clock-o'
                 size={24}
                 color="#4E342E"
-                onPress={showTimepicker}
+                onPress={async()=>{await setMode('time'); showDatePicker()}}
                 />
             }
             value={displayTime}
@@ -231,18 +238,13 @@ export default function HomeScreen(props) {
       onPress={() => setIsTimeSelected(!isTimeSelected)}
     />
 
-    {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-          style={{width: 320, backgroundColor: "white"}}
-        />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode={mode}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
 
-      )}
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUOI ?</Text>
     <Picker
         selectedValue={service}
