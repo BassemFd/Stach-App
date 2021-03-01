@@ -1,36 +1,82 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import { globalStyles }from '../styles/Global';
-import { Card, Button, Icon, TextInput } from 'react-native-elements';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { Card, Icon, TextInput } from 'react-native-elements';
+import { FontAwesome} from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
+import PrimaryButton from '../shared/Button'
 
 
 
-export default function Shop() {
+function Shop() {
 
   const [selectedCoiffeur, setSelectedCoiffeur] = useState("choixCoiffeur");
   const [selectedPrestation, setSelectedPrestation] = useState("choixPrestation");
   const [selectedOptions, setSelectedOptions] = useState("choixOptions");
 
-// const hairdresser = {
 
-// }
+ const hairdresser = {
+  name: "hairDresser Name",
+  image: require("../assets/HairShop-1.jpg"),
+  description: "Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser",
+  address: "67 rue dulong, 75017, Paris"
 
+  }
 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  
+ 
+
+  useEffect(() => {
+    (async () => {
+      // let { status } = await Location.requestPermissionsAsync();
+      // if (status !== 'granted') {
+      //   setErrorMsg('Permission to access location was denied');
+      //   return;
+      // }
+
+      let locationGeo = await Location.geocodeAsync(hairdresser.address);
+    setLocation(locationGeo)
+    
+  
+      console.log("LOCATION", locationGeo)
+    })();
+  }, []);
+ console.log("LCOATINO SETTER", location)
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
+  function handleReturnButton(){
+    console.log("return")
+  }
+
+ function handleChoixDuCoiffeur(){
+  console.log("handled")
+  }
 
   return (
     <View style={styles.card}>
+      <ScrollView>
+      
       <View >
         <Card >
 
-        <Card.Image source={require('../assets/HairShop-1.jpg')}> 
+        <Card.Image source={hairdresser.image}> 
         </Card.Image>
-        <Card.Title style={globalStyles.titleText}>HairDresser Name</Card.Title>
+        <Card.Title style={globalStyles.titleText}>{hairdresser.name}</Card.Title>
 
         <Text style={{marginBottom: 10}}>
-          Description and history and more details about the hairdresser 
+          {hairdresser.description}
+
         </Text>
         <Card.Divider/>
 
@@ -38,13 +84,10 @@ export default function Shop() {
 
           <View>
 
-            <Text >
-              67 rue Dulong
+            <Text style={{marginBottom: 10}}>
+            {hairdresser.address}
             </Text>
 
-            <Text style={{marginBottom: 10}}>
-              75017, Paris
-            </Text>
           
             <View style={styles.icons}>
             <FontAwesome style={{marginRight: 5}} name="euro" size={24} color="black" />
@@ -53,7 +96,7 @@ export default function Shop() {
             </View>
                   
             <View style={styles.icons2}>
-            <FontAwesome5 style={{marginRight: 5}} name="dog" size={24} color="black" />
+            <FontAwesome style={{marginRight: 5}} name="paw" size={24} color="black" />
             <FontAwesome style={{marginRight: 5}} name="coffee" size={24} color="black" />
             <FontAwesome style={{marginRight: 5}} name="wheelchair-alt" size={24} color="black" />
             <FontAwesome style={{marginRight: 5}} name="glass" size={24} color="black" />
@@ -74,14 +117,22 @@ export default function Shop() {
           </View>
 
             <View style={styles.mapPosition}>
+            {location ?
             <MapView mapType={'standard'} showsTraffic ={false} style={styles.map}
               initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitude: location[0].latitude,
+                longitude: location[0].longitude,
+                latitudeDelta: 0.005757,
+                longitudeDelta: 0.007866,
               }}
-            />
+            >
+               
+             <Marker
+                coordinate={{latitude: location[0].latitude, longitude: location[0].longitude}}
+              />
+           
+            </MapView>
+             : null }
             </View>
             
         </View>
@@ -129,7 +180,16 @@ export default function Shop() {
       <Card.Divider></Card.Divider>
       
       </Card>
+    
+
     </View>
+    <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 20}}>
+      <PrimaryButton title="Choisir ce Coiffeur" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuCoiffeur()}/>  
+      <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() =>handleReturnButton()}/>
+
+      </View>
+    
+    </ScrollView>
     </View>
   );
 }
@@ -169,3 +229,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFE082',
   }
 });
+
+
+export default Shop;
