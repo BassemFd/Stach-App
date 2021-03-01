@@ -89,7 +89,7 @@ function ButtonTabShop() {
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator >
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="TemporaryPage" component={TemporaryPage} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ButtonTabShop" component={ButtonTabShop} /> 
