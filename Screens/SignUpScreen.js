@@ -11,8 +11,10 @@ import {
 import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
+import { IP_ADDRESS } from '@env';
 
 export default function SignUp() {
+  console.log(IP_ADDRESS);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={globalStyles.container}>
