@@ -1,21 +1,14 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, ScrollView} from 'react-native';
-import {Button, Input, Card, CheckBox  } from 'react-native-elements';
+import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Picker} from '@react-native-picker/picker';
 import { globalStyles } from '../styles/Global';
-
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
 import { SafeAreaView } from 'react-native';
-
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
-import ModalPicker from 'react-native-modal-picker'
-
-
+import * as Location from 'expo-location';
 
 export default function HomeScreen(props) {
 
@@ -31,94 +24,105 @@ export default function HomeScreen(props) {
   const [address, setAddress] = useState(null)
   const [service, setService] = useState('toutes les prestations')
 
-  const ref = useRef();
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
+  const [position, setPosition] = useState({latitude : 48.858370, longitude : 2.294481});
+  const [visible, setVisible] = useState(false);
 
-  console.log("service", service);
-  console.log("type", selectType);
-  console.log("date", date);
-  console.log("address", address);
+  const ref = useRef();
 
   useEffect(() => {
-  
+    ref.current?.setAddressText('SAISISR UNE ADRESSE');
   }, []);
 
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
+    //Checking console.log to see what are user's inputs
+    console.log("service", service);
+    console.log("type", selectType);
+    console.log("date", date);
+    console.log("address", address);
+    console.log("position",position)
 
-  const onChange = async (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    
-    setDate(currentDate);
-  };
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (choice) => {
-    console.warn("A date has been picked: ", choice);
-
-    if (mode == 'date') {
-      setDate(choice)
-      setIsDateSelected(true)
-    } else if (mode == 'time') {
-      setDate(choice)
-      setIsTimeSelected(true)
+    //Handling colors of top buttons
+    var colorButtonSalon;
+    var colorButtonDomicile;
+  
+    if (selectType == 'salon') {
+      colorButtonSalon = {
+        backgroundColor : "#FFCD41"
+      }
+    }  else {
+      colorButtonSalon = {
+        backgroundColor : "#FFECB2"
+      }
     }
-    hideDatePicker();
-  };
-
-  var colorButtonSalon;
-  var colorButtonDomicile;
-
-  if (selectType == 'salon') {
-    colorButtonSalon = {
-      backgroundColor : "#FFCD41"
+  
+    if (selectType == 'chez toi') {
+      colorButtonDomicile = {
+        backgroundColor : "#FFCD41"
+      }
+    }  else {
+      colorButtonDomicile = {
+        backgroundColor : "#FFECB2"
+      }
     }
-  }  else {
-    colorButtonSalon = {
-      backgroundColor : "#FFECB2"
+
+    // Date and Time functions
+    const showDatePicker = () => {
+      setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+      setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (choice) => {
+      if (mode == 'date') {
+        setDate(choice)
+        setIsDateSelected(true)
+      } else if (mode == 'time') {
+        setDate(choice)
+        setIsTimeSelected(true)
+      }
+      hideDatePicker();
+    };
+
+    var displayDate;
+    var displayTime;
+
+    if (isDateSelected) {
+      displayDate = date.getDate() + "/" + (date.getMonth() + 1) +"/"+ date.getFullYear();
+    } else {
+      displayDate = "TOUTES LES DATES"
     }
-  }
 
-  if (selectType == 'chez toi') {
-    colorButtonDomicile = {
-      backgroundColor : "#FFCD41"
+    if (isTimeSelected) {
+      displayTime = "" + date.getHours() +":"+ date.getMinutes();
+    } else {
+      displayTime = "TOUTES LES HEURES"
     }
-  }  else {
-    colorButtonDomicile = {
-      backgroundColor : "#FFECB2"
+
+    // Location function
+    async function locateMe(){
+      { setVisible(true)
+        var { status } = await Location.requestPermissionsAsync();
+        if (status === 'granted'){
+      
+         let points = await Location.getCurrentPositionAsync()
+         setPosition({latitude : points.coords.latitude, longitude : points.coords.longitude})
+          ;}
+          setAddress('Votre position')
+          ref.current?.setAddressText('Votre position');
+          setVisible(false)
     }
-  }
 
-  var displayDate;
-  var displayTime;
+    }
 
-  if (isDateSelected) {
-    displayDate = date.getDate() + "/" + (date.getMonth() + 1) +"/"+ date.getFullYear();
-  } else {
-    displayDate = "TOUTES LES DATES"
-  }
 
-  if (isTimeSelected) {
-    displayTime = "" + date.getHours() +":"+ date.getMinutes();
-  } else {
-    displayTime = "TOUTES LES HEURES"
-  }
-
-  const homePlace = { description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
-  const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }};
 
 
   return (
-
-
-    <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
-<ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
+  <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
+  <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
+    
     <Text style={globalStyles.brand}>'Stach</Text>
     
     <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'50%', marginTop:10}}>
@@ -140,16 +144,17 @@ export default function HomeScreen(props) {
 
     <View style={{flex:6, backgroundColor: "#FFE082", width:'90%', marginTop:10}}>
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>OU ?</Text>
-    <View style={{flex:1, flexDirection:"row", alignItems:'center'}}>
-    <View>
-
+    <View style={{flex:1, flexDirection:"row", alignItems:'center', alignContent:'center'}}>
     <GooglePlacesAutocomplete
+      ref={ref}
       enableHighAccuracyLocation={true}
       minLength={2}
       autoFocus={false}
       fetchDetails={true}
-      placeholder='SAISISR UNE ADRESSE'
-      onPress={(data, details = null) => {
+      placeholder="SAISIR UNE ADRESSE"
+      onPress={async (data, details = null) => {
+        let newPosition = await Location.geocodeAsync(details.formatted_address)
+        setPosition({latitude : newPosition[0].latitude, longitude : newPosition[0].longitude})
         setAddress(details.formatted_address)   
       }}
       
@@ -167,7 +172,6 @@ export default function HomeScreen(props) {
       textInputProps={{
         InputComp: Input,
         leftIcon: { type: 'font-awesome', name: 'search' },
-        rightIcon:{ type: 'font-awesome', name: 'map-marker' },
         errorStyle: { color: 'red' },
 
       }}
@@ -183,7 +187,16 @@ export default function HomeScreen(props) {
       GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
       debounce={300}
     />
+
+    <Icon name='map-marker' size={36} color="#4E342E" onPress={locateMe}/>
+
+    <Overlay isVisible={visible} >
+      <View style={{flex:0.1, alignItems:'center'}}>
+    <Text>Localisation en cours...</Text>
+    <Icon name='globe' size={36} color="#4E342E"/>
     </View>
+    </Overlay>
+
     </View>
 
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUAND ?</Text>
@@ -256,7 +269,6 @@ export default function HomeScreen(props) {
         <Picker.Item label="COUPE HOMME" value="coupe homme" />
         <Picker.Item label="COLORATION" value="coloration" />
       </Picker>
-    
 
       <Button
 
@@ -269,8 +281,6 @@ export default function HomeScreen(props) {
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>EXPERIENCES</Text>
     </View>
 
-    
-
     <View style={{flex:1, alignItems:'center', backgroundColor: "#FFE082"}}>
     <ScrollView
     horizontal={true}
@@ -280,7 +290,6 @@ export default function HomeScreen(props) {
     decelerationRate="fast"
     pagingEnabled
     snapToInterval={360}
-     
     >
     
     <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
