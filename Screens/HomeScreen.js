@@ -30,7 +30,7 @@ export default function HomeScreen(props) {
   const ref = useRef();
 
   useEffect(() => {
-    ref.current?.setAddressText('SAISISR UNE ADRESSE');
+    ref.current?.setAddressText('');
   }, []);
 
   const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
@@ -113,11 +113,7 @@ export default function HomeScreen(props) {
           ref.current?.setAddressText('Votre position');
           setVisible(false)
     }
-
     }
-
-
-
 
   return (
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
