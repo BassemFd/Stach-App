@@ -20,7 +20,7 @@ export default function List() {
   var coiffeurs = [
     {
     shopName: 'Coup Tif',
-    shopImages: [require('../assets/coiffeur1.jpeg'), require('../assets/coiffeur2.jpeg')],
+    shopImages: [require('../assets/coiffeur1.jpeg')],
     shopAddress: '72 Boulevard Pereire, 75017, Paris',
     shopPhone: '0100000000',
     shopMail: 'couptif@gmail.com',
@@ -54,81 +54,10 @@ export default function List() {
       priceFork: 2,
       rating: 2,
       },
-      {
-        shopName: 'Coiff',
-        shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
-        shopAddress: '23 rue Legendre, 75017, Paris',
-        shopPhone: '0200000000',
-        shopMail: 'coiff@gmail.com',
-        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-        shopFeatures: ['coffee', 'leaf', 'paw'],
-        comments: [],
-        shopEmployees: ['Philippe', 'Emma'],
-        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-        packages: ['à deux'],
-        schedule: [],
-        atHome: true,
-        appointments: [],
-        priceFork: 2,
-        rating: 2,
-        },
-    {
-      shopName: 'Coiff',
-      shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
-      shopAddress: '23 rue Legendre, 75017, Paris',
-      shopPhone: '0200000000',
-      shopMail: 'coiff@gmail.com',
-      shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-      shopFeatures: ['coffee', 'leaf', 'paw'],
-      comments: [],
-      shopEmployees: ['Philippe', 'Emma'],
-      offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-      packages: ['à deux'],
-      schedule: [],
-      atHome: true,
-      appointments: [],
-      priceFork: 2,
-      rating: 2,
-      },
-      {
-        shopName: 'Coiff',
-        shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
-        shopAddress: '23 rue Legendre, 75017, Paris',
-        shopPhone: '0200000000',
-        shopMail: 'coiff@gmail.com',
-        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-        shopFeatures: ['coffee', 'leaf', 'paw'],
-        comments: [],
-        shopEmployees: ['Philippe', 'Emma'],
-        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-        packages: ['à deux'],
-        schedule: [],
-        atHome: true,
-        appointments: [],
-        priceFork: 2,
-        rating: 2,
-        },
-        {
-          shopName: 'Coiff',
-          shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
-          shopAddress: '23 rue Legendre, 75017, Paris',
-          shopPhone: '0200000000',
-          shopMail: 'coiff@gmail.com',
-          shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-          shopFeatures: ['coffee', 'leaf', 'paw'],
-          comments: [],
-          shopEmployees: ['Philippe', 'Emma'],
-          offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-          packages: ['à deux'],
-          schedule: [],
-          atHome: true,
-          appointments: [],
-          priceFork: 2,
-          rating: 2,
-          },
   ]  
 
 
+  console.log(coiffeurs[0].shopImages)
 
   return (
     <View style={globalStyles.container}>
@@ -164,7 +93,7 @@ export default function List() {
               starsTab.push(<FontAwesome style={{marginRight: 5}} name="star" size={24} color={color} />)
             }
 
-      
+            console.log('image', element.shopImages[0])
 
             return (
               <View key= {i} style={styles.card}>
@@ -181,7 +110,9 @@ export default function List() {
                   <View style={styles.picto}>{starsTab}</View>
                 </View>
                 <View style={styles.div2}>
-                  <Image source={element.shopImages[0]} style={styles.image}></Image>
+                  <Image 
+                  source={element.shopImages[0]}
+                  style={styles.image}></Image>
                 </View>    
               </View> 
             )
