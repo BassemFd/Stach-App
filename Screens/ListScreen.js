@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card'
 import Button from '../shared/Button';
@@ -10,7 +10,54 @@ import { AntDesign } from '@expo/vector-icons';
 
 
 
+
 export default function List() {
+
+  // const [priceTab, setpriceTab] = useState([]);
+  const [featuresTab, setFeaturesTab] = useState([]);
+
+
+  var coiffeurs = [
+    {
+    shopName: 'Coup Tif',
+    shopImages: [require('../assets/coiffeur1.jpeg'), require('../assets/coiffeur2.jpeg')],
+    shopAddress: '72 Boulevard Pereire, 75017, Paris',
+    shopPhone: '0100000000',
+    shopMail: 'couptif@gmail.com',
+    shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+    shopFeatures: ['wheelchair-alt', 'glass', 'gamepad'],
+    comments: [],
+    shopEmployees: ['Fred', 'Dany'],
+    offers: ['coupe homme', 'coupe femme'], 
+    packages: ['playstation'],
+    schedule: [],
+    atHome: false,
+    appointments: [],
+    priceFork: 1,
+    rating: 5,
+    },
+    {
+      shopName: 'Coiff',
+      shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
+      shopAddress: '23 rue Legendre, 75017, Paris',
+      shopPhone: '0200000000',
+      shopMail: 'coiff@gmail.com',
+      shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+      shopFeatures: ['coffee', 'leaf', 'paw'],
+      comments: [],
+      shopEmployees: ['Philippe', 'Emma'],
+      offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+      packages: ['à deux'],
+      schedule: [],
+      atHome: true,
+      appointments: [],
+      priceFork: 2,
+      rating: 7,
+      }
+  ]  
+
+
+
   return (
     <View style={globalStyles.container}>
       <ScrollView>
@@ -19,24 +66,46 @@ export default function List() {
           <Button title="Filtrer" backgroundColor="#FFCD41" ></Button>
           <Button title="Trier" backgroundColor="#FFCD41"></Button>
         </View>
-        <View style={styles.card}>
 
-          <View style={styles.text}>
-            <View style={styles.div1}>
-              <Text>NOM COIFFEUR</Text>
-              <FontAwesome name="heart-o" size={15} color="black" />
-            </View>
-            <Text style={styles.pad}>Adresse</Text>
-            <MaterialIcons name="euro" size={15} color="black" style={styles.pad} />
-            <FontAwesome name="coffee" size={15} color="black" style={styles.pad}/>
-            <AntDesign name="staro" size={15} color="black" style={styles.pad} />
+        {coiffeurs.length > 0 ?
+          coiffeurs.map((element, i) => {
+            var priceTab = [];
+            for (let y=0; y<3; y++) {
+              var color = 'white'
+              if (y<element.priceFork) {
+                color='black'
+              }
+              priceTab.push(<FontAwesome name="euro" size={15} color={color} style={styles.pad} />)
+            }
+            
+            var pictoTab = [];
+            for (let z=0; z<element.shopFeatures.length; z++) {
+              pictoTab.push(<FontAwesome name={element.shopFeatures[z]} size={15} color="black" style={styles.pad}/>)
+            }
+      
 
-          </View>
-          <View style={styles.div2}>
-            <Image source={require('../assets/picture-2.jpg')} style={styles.image}></Image>
-          </View>    
-
-        </View> 
+            return (
+              <View key= {i} style={styles.card}>
+                <View style={styles.text}>
+                  <View style={styles.div1}>
+                    <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
+                    <FontAwesome name="heart-o" size={15} color="black" />
+                  </View>
+                  <Text style={styles.pad}>{element.shopAddress}</Text>
+                  <View style={styles.picto}>
+                    {priceTab}
+                  </View>
+                  <View style={styles.picto}>{pictoTab}</View>
+                  
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color="gold" />
+                </View>
+                <View style={styles.div2}>
+                  <Image source={element.shopImages[0]} style={styles.image}></Image>
+                </View>    
+              </View> 
+            )
+          })
+        : null }
 
       </ScrollView>
     </View>
@@ -57,8 +126,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     backgroundColor: 'white' 
   },
-  pad: {padding: 4},
+  pad: {padding: 2},
   text: {width: '60%', padding: 10},
-  image: {height: 140, width: 140}
+  image: {height: 140, width: 140},
+  picto: {display: 'flex', flexDirection: 'row'},
 
 });
