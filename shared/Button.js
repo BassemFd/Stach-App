@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
+
 const PrimaryButton = ({ title, onPress, color, backgroundColor, width }) => {
   // let backgroundColor = '#4280AB';
   // let test = { ...styles.button, backgroundColor };

@@ -7,7 +7,7 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: '#FFE082',
   },
   titleText: {
-    fontFamily: 'nunito-bold',
+    // fontFamily: 'nunito-bold',
     fontSize: 18,
     color: '#333',
   },
