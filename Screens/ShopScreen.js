@@ -18,13 +18,19 @@ function Shop() {
 
 
  const hairdresser = {
-  name: "hairDresser Name",
+  name: "La coupe à Juliette",
   image: require("../assets/HairShop-1.jpg"),
   description: "Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser",
-  address: "67 rue dulong, 75017, Paris"
+  address: "67 rue dulong, 75017, Paris",
+  priceFork: 2,
+  starRating: 3.7,
+  shopFeatures: ['coffee', 'leaf', 'paw', 'wheelchair-alt','gamepad', 'glass'],
 
   }
 
+  
+
+           
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -63,6 +69,33 @@ function Shop() {
   console.log("handled")
   }
 
+  var priceTab = [];
+   
+  for (let y=0; y<3; y++) {
+    var euroColor = 'grey'
+    if (y<hairdresser.priceFork) {
+      euroColor='black'
+    }
+    priceTab.push(
+    <FontAwesome key={y} style={{marginRight: 5}} name="euro" size={24} color={euroColor} />)
+  }
+
+  var starTab = [];
+
+  var flooredStarRating = Math.round(hairdresser.starRating)
+  for (let i = 0; i<5; i++){
+   var starColor = "black"
+   if(i < flooredStarRating){
+     starColor = "gold"
+   }
+   starTab.push( <FontAwesome style={{marginRight: 5}} key={i} name="star" size={24} color={starColor} />)
+  }
+
+  var pictoTab = [];
+  for (let z=0; z<hairdresser.shopFeatures.length; z++) {
+    pictoTab.push(<FontAwesome name={hairdresser.shopFeatures[z]} size={24} color="black" style={{marginRight: 5}}/>)
+  }
+
   return (
     <View style={styles.card}>
       <ScrollView>
@@ -76,12 +109,11 @@ function Shop() {
 
         <Text style={{marginBottom: 10}}>
           {hairdresser.description}
-
         </Text>
+
         <Card.Divider/>
 
         <View style={styles.containerMap}>
-
           <View>
 
             <Text style={{marginBottom: 10}}>
@@ -90,26 +122,17 @@ function Shop() {
 
           
             <View style={styles.icons}>
-            <FontAwesome style={{marginRight: 5}} name="euro" size={24} color="black" />
-            <FontAwesome style={{marginRight: 5}} name="euro" size={24} color="grey" />
-            <FontAwesome style={{marginRight: 5}} name="euro" size={24} color="grey" />
+            {priceTab}
             </View>
                   
             <View style={styles.icons2}>
-            <FontAwesome style={{marginRight: 5}} name="paw" size={24} color="black" />
-            <FontAwesome style={{marginRight: 5}} name="coffee" size={24} color="black" />
-            <FontAwesome style={{marginRight: 5}} name="wheelchair-alt" size={24} color="black" />
-            <FontAwesome style={{marginRight: 5}} name="glass" size={24} color="black" />
-            <FontAwesome style={{marginRight: 5}} name="gamepad" size={24} color="black" />
+              {pictoTab}
             </View>
 
             <View style={styles.icons2}>
-            <FontAwesome style={{marginRight: 5}} name="star" size={24} color="gold" />
-            <FontAwesome style={{marginRight: 5}} name="star" size={24} color="gold" />
-            <FontAwesome style={{marginRight: 5}} name="star" size={24} color="gold" />
-            <FontAwesome style={{marginRight: 5}} name="star" size={24} color="black" />
-            <FontAwesome style={{marginRight: 5}} name="star" size={24} color="black" />
-            <Text>(4.5)</Text>
+            {starTab}
+          
+            <Text>({hairdresser.starRating})</Text>
             </View>
 
             
@@ -200,14 +223,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
-    paddingBottom: 20,
+   
   },
   icons2: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
-    paddingBottom: 20,
+    
   },
   containerMap: {
     flexDirection: 'row',
