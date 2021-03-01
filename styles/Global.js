@@ -6,6 +6,16 @@ export const globalStyles = StyleSheet.create({
     padding: 30,
     backgroundColor: '#FFE082',
   },
+  brand: {
+    textAlign: 'center',
+    fontFamily: 'caveat-regular',
+    fontSize: 44,
+  },
+  hr: {
+    borderBottomColor: '#333',
+    borderBottomWidth: 1,
+    marginVertical: 10,
+  },
   titleText: {
     fontFamily: 'nunito-bold',
     fontSize: 18,
@@ -15,12 +25,30 @@ export const globalStyles = StyleSheet.create({
     marginVertical: 8,
     lineHeight: 20,
   },
+  textCredentialsInput: {
+    marginTop: 15,
+  },
+  socialNetwork: {
+    marginVertical: 5,
+    fontSize: 18,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    backgroundColor: '#fff',
+  },
+  socialNetworkContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
+    backgroundColor: '#fff',
+    marginVertical: 5,
   },
   errorText: {
     color: 'crimson',
@@ -30,13 +58,3 @@ export const globalStyles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export const images = {
-  ratings: {
-    // 1: require('../assets/rating-1.png'),
-    // 2: require('../assets/rating-2.png'),
-    // 3: require('../assets/rating-3.png'),
-    // 4: require('../assets/rating-4.png'),
-    // 5: require('../assets/rating-5.png'),
-  },
-};
