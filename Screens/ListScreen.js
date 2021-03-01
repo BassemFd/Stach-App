@@ -20,7 +20,7 @@ export default function List() {
   var coiffeurs = [
     {
     shopName: 'Coup Tif',
-    shopImages: [require('../assets/coiffeur1.jpeg')],
+    shopImages: ['https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260', 'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
     shopAddress: '72 Boulevard Pereire, 75017, Paris',
     shopPhone: '0100000000',
     shopMail: 'couptif@gmail.com',
@@ -38,7 +38,7 @@ export default function List() {
     },
     {
       shopName: 'Coiff',
-      shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
+      shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
       shopAddress: '23 rue Legendre, 75017, Paris',
       shopPhone: '0200000000',
       shopMail: 'coiff@gmail.com',
@@ -111,7 +111,7 @@ export default function List() {
                 </View>
                 <View style={styles.div2}>
                   <Image 
-                  source={element.shopImages[0]}
+                  source={{uri: element.shopImages[0]}}
                   style={styles.image}></Image>
                 </View>    
               </View> 

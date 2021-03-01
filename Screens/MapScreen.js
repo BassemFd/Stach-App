@@ -56,7 +56,8 @@ export default function Map() {
   const [shopDetails, setShopDetails] = useState({});
   const [euros, setEuros] = useState([])
   const [features, setFeatures] = useState([]);
-  const [rating, setRating] = useState([])
+  const [rating, setRating] = useState([]);
+  const [url, setUrl] = useState('')
   
   useEffect(() => {
     async function getLocation() {
@@ -111,12 +112,14 @@ export default function Map() {
       }
       setRating(starsTab)
 
-      console.log(element);
-      console.log(element.shopImages[0])
-     
+
+    // console.log('element', element)
+    var image = element.shopImages[0]
+    console.log('image', image)
+    setUrl(image);  
   }
 
- 
+
   
 
 
@@ -165,7 +168,7 @@ export default function Map() {
                   </View>
                 </View>
                 <View style={styles.div2}>
-                  <Image source={{uri: 'https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'}} style={styles.image}></Image>
+                  <Image source={{uri: url}} style={styles.image}></Image>
                 </View>    
               </View> 
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
