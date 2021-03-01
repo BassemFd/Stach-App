@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import { globalStyles }from '../styles/Global';
 import { Card, Icon, TextInput } from 'react-native-elements';
@@ -6,12 +6,15 @@ import { FontAwesome} from '@expo/vector-icons';
 import {Picker} from '@react-native-picker/picker';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import PrimaryButton from '../shared/Button'
+import PrimaryButton from '../shared/Button';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
 
 
 
 function Shop() {
-
+  const isCarousel = useRef(null)
+  const [index, setIndex] = useState(0)
   const [selectedCoiffeur, setSelectedCoiffeur] = useState("choixCoiffeur");
   const [selectedPrestation, setSelectedPrestation] = useState("choixPrestation");
   const [selectedOptions, setSelectedOptions] = useState("choixOptions");
@@ -19,7 +22,17 @@ function Shop() {
 
  const hairdresser = {
   name: "La coupe à Juliette",
-  image: require("../assets/HairShop-1.jpg"),
+  data: [
+    {
+    imgUrl: require("../assets/HairShop-1.jpg")
+}, 
+{
+  imgUrl: require("../assets/HairShop-2.jpg")
+},
+{
+  imgUrl: require("../assets/HairShop-3.jpg")
+}
+  ],
   description: "Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser",
   address: "67 rue dulong, 75017, Paris",
   priceFork: 2,
@@ -29,7 +42,18 @@ function Shop() {
   }
 
   
-
+  // const data = [
+  //   {
+  //     imgUrl: "https://picsum.photos/id/11/200/300"
+  //   },
+  //   {
+  //     imgUrl: "https://picsum.photos/id/10/200/300"
+  //   },
+  //   {
+      
+  //     imgUrl: "https://picsum.photos/id/12/200/300"
+  //   }
+  // ]
            
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -93,8 +117,13 @@ function Shop() {
 
   var pictoTab = [];
   for (let z=0; z<hairdresser.shopFeatures.length; z++) {
-    pictoTab.push(<FontAwesome name={hairdresser.shopFeatures[z]} size={24} color="black" style={{marginRight: 5}}/>)
+    pictoTab.push(<FontAwesome key={z} name={hairdresser.shopFeatures[z]} size={24} color="black" style={{marginRight: 5}}/>)
   }
+
+
+
+
+
 
   return (
     <View style={styles.card}>
@@ -103,8 +132,33 @@ function Shop() {
       <View >
         <Card >
 
-        <Card.Image source={hairdresser.image}> 
-        </Card.Image>
+        <Carousel
+        layout="stack"
+        layoutCardOffset={9}
+        ref={isCarousel}
+        data={hairdresser.data}
+        renderItem={CarouselCardItem}
+        sliderWidth={SLIDER_WIDTH}
+        itemWidth={ITEM_WIDTH}
+        inactiveSlideShift={0}
+        onSnapToItem={(index) => setIndex(index)}
+        useScrollView={true}
+      />
+              <Pagination
+                dotsLength={hairdresser.data.length}
+                activeDotIndex={index}
+                carouselRef={isCarousel}
+                dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  marginHorizontal: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.92)'
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+                tappableDots={true}
+            />
         <Card.Title style={globalStyles.titleText}>{hairdresser.name}</Card.Title>
 
         <Text style={{marginBottom: 10}}>
