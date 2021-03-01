@@ -34,7 +34,7 @@ export default function List() {
     atHome: false,
     appointments: [],
     priceFork: 1,
-    rating: 5,
+    rating: 4,
     },
     {
       shopName: 'Coiff',
@@ -52,8 +52,80 @@ export default function List() {
       atHome: true,
       appointments: [],
       priceFork: 2,
-      rating: 7,
-      }
+      rating: 2,
+      },
+      {
+        shopName: 'Coiff',
+        shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
+        shopAddress: '23 rue Legendre, 75017, Paris',
+        shopPhone: '0200000000',
+        shopMail: 'coiff@gmail.com',
+        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+        shopFeatures: ['coffee', 'leaf', 'paw'],
+        comments: [],
+        shopEmployees: ['Philippe', 'Emma'],
+        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+        packages: ['à deux'],
+        schedule: [],
+        atHome: true,
+        appointments: [],
+        priceFork: 2,
+        rating: 2,
+        },
+    {
+      shopName: 'Coiff',
+      shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
+      shopAddress: '23 rue Legendre, 75017, Paris',
+      shopPhone: '0200000000',
+      shopMail: 'coiff@gmail.com',
+      shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+      shopFeatures: ['coffee', 'leaf', 'paw'],
+      comments: [],
+      shopEmployees: ['Philippe', 'Emma'],
+      offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+      packages: ['à deux'],
+      schedule: [],
+      atHome: true,
+      appointments: [],
+      priceFork: 2,
+      rating: 2,
+      },
+      {
+        shopName: 'Coiff',
+        shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
+        shopAddress: '23 rue Legendre, 75017, Paris',
+        shopPhone: '0200000000',
+        shopMail: 'coiff@gmail.com',
+        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+        shopFeatures: ['coffee', 'leaf', 'paw'],
+        comments: [],
+        shopEmployees: ['Philippe', 'Emma'],
+        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+        packages: ['à deux'],
+        schedule: [],
+        atHome: true,
+        appointments: [],
+        priceFork: 2,
+        rating: 2,
+        },
+        {
+          shopName: 'Coiff',
+          shopImages: [require('../assets/coiffeur3.jpeg'), require('../assets/coiffeur4.jpeg')],
+          shopAddress: '23 rue Legendre, 75017, Paris',
+          shopPhone: '0200000000',
+          shopMail: 'coiff@gmail.com',
+          shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+          shopFeatures: ['coffee', 'leaf', 'paw'],
+          comments: [],
+          shopEmployees: ['Philippe', 'Emma'],
+          offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+          packages: ['à deux'],
+          schedule: [],
+          atHome: true,
+          appointments: [],
+          priceFork: 2,
+          rating: 2,
+          },
   ]  
 
 
@@ -82,6 +154,16 @@ export default function List() {
             for (let z=0; z<element.shopFeatures.length; z++) {
               pictoTab.push(<FontAwesome name={element.shopFeatures[z]} size={15} color="black" style={styles.pad}/>)
             }
+
+            var starsTab = [];
+            for (let j=0; j<5; j++) {
+              var color = 'black';
+              if (j<element.rating) {
+                color = 'gold'
+              }
+              starsTab.push(<FontAwesome style={{marginRight: 5}} name="star" size={24} color={color} />)
+            }
+
       
 
             return (
@@ -97,7 +179,7 @@ export default function List() {
                   </View>
                   <View style={styles.picto}>{pictoTab}</View>
                   
-                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color="gold" />
+                  <View style={styles.picto}>{starsTab}</View>
                 </View>
                 <View style={styles.div2}>
                   <Image source={element.shopImages[0]} style={styles.image}></Image>
@@ -124,11 +206,12 @@ const styles = StyleSheet.create({
   card: { 
     display: 'flex', 
     flexDirection: 'row', 
-    backgroundColor: 'white' 
+    backgroundColor: 'white',
+    marginBottom: 5,
   },
   pad: {padding: 2},
   text: {width: '60%', padding: 10},
-  image: {height: 140, width: 140},
+  image: {height: 145, width: 140},
   picto: {display: 'flex', flexDirection: 'row'},
 
 });
