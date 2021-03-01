@@ -132,7 +132,7 @@ export default function List() {
 
   return (
     <View style={globalStyles.container}>
-      <ScrollView>
+      
         
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 30, paddingBottom: 10}}>
           <Button title="Filtrer" backgroundColor="#FFCD41" ></Button>
@@ -178,7 +178,6 @@ export default function List() {
                     {priceTab}
                   </View>
                   <View style={styles.picto}>{pictoTab}</View>
-                  
                   <View style={styles.picto}>{starsTab}</View>
                 </View>
                 <View style={styles.div2}>
@@ -189,7 +188,6 @@ export default function List() {
           })
         : null }
 
-      </ScrollView>
     </View>
   );
 }
