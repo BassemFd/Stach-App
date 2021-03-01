@@ -14,8 +14,11 @@ export default function List() {
   return (
     <View style={globalStyles.container}>
       <ScrollView>
-        <Text>List</Text>
-
+        
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 30, paddingBottom: 10}}>
+          <Button title="Filtrer" backgroundColor="#FFCD41" ></Button>
+          <Button title="Trier" backgroundColor="#FFCD41"></Button>
+        </View>
         <View style={styles.card}>
 
           <View style={styles.text}>

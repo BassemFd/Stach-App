@@ -19,6 +19,8 @@ import DetailsScreen from './Screens/DetailsScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import ContactScreen from './Screens/ContactScreen';
 
+import { FontAwesome } from '@expo/vector-icons'; 
+
 
 
 
@@ -29,26 +31,23 @@ const Drawer = createDrawerNavigator();
 function ButtonTabShop() {
   return(
     <Tab.Navigator
-    //   screenOptions={({ route }) => ({
-    //     tabBarIcon: ({ color }) => {
-    //       let iconName;
-    //       if (route.name === 'Chat') {
-    //         iconName = 'chat';
-    //       } else if (route.name === 'Map') {
-    //         iconName = 'map';
-    //       } else {
-    //         iconName = 'list';
-    //       }
-    //     return <Entypo name={iconName} size={25} color={color} />;
-    //   },
-    // })}
-    // tabBarOptions={{
-    //   activeTintColor: '#0984e3',
-    //   inactiveTintColor: '#dfe6e9',
-    //   style: {
-    //     backgroundColor: '#130f40',
-    //   }
-    // }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color }) => {
+          let iconName;
+          if (route.name === 'List') {
+            iconName = 'list-ul';
+          } else if (route.name === 'Map') {
+            iconName = 'map-o';
+          } 
+        return <FontAwesome name={iconName} size={25} color={color} />;
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: '#4280AB',
+      inactiveTintColor: '#333333',
+      activeBackgroundColor: '#FFE082',
+      inactiveBackgroundColor: '#FFECB2',
+    }}
     >
 		
       <Tab.Screen name="List" component={ListScreen} />
