@@ -10,7 +10,7 @@ const Modaltest = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
 const prestation = [
-  "TOUTES LES PRESTATIONS", "COUPE FEMME", "COUPE HOMME", "COLORATION"
+  "TOUTES LES PRESTATIONS", "COUPE HOMME", "COUPE FEMME", "COUPE HOMME + BARBE", "COUPE HOMME COLORATION", "COUPE FEMME COLORATION", "COUPE FEMME AFRO", "COUPE HOMME AFRO", "COUPE FEMME BALAYAGE", "COUPE FEMME PERMANENTE"
 ]
 
 const serviceTab = prestation.map((choix, i)=>{

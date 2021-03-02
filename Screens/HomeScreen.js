@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {Text, View, ScrollView, Image} from 'react-native';
 import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { globalStyles } from '../styles/Global';
@@ -30,6 +30,9 @@ function HomeScreen(props) {
   const [visible, setVisible] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
+  const ref = useRef();
   
   // Adjusting slider to window screen
   const windowWidth = Dimensions.get('window').width;
@@ -41,13 +44,9 @@ function HomeScreen(props) {
 
   // console.log(windowHeight, windowWidth)
 
-  const ref = useRef();
-
   useEffect(() => {
     ref.current?.setAddressText('');
   }, []);
-
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
 
     //Checking console.log to see what are user's inputs
     console.log("service", props.selectedService);
@@ -55,9 +54,25 @@ function HomeScreen(props) {
     console.log("date", date);
     console.log("address", address);
     console.log("position",position)
-    
-
     console.log("reducers: ", props.search)
+
+    //Overlay states to display
+    const [dataOverlay, setDataOverlay] = useState({})
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false)
+
+    const toggleOverlay = (experience) => {
+      setDataOverlay(experience);
+      setIsOverlayVisible(!isOverlayVisible);
+    };
+
+    //Experience data
+
+    const dataExperience = [
+      {image_url: require('../assets/picture1.jpg'), title : "MOMENT A DEUX", description : "Un moment unique en couple, redécouvrez vous tout en découvrant une nouvelle coupe"},
+      {image_url: require('../assets/picture2.jpg'), title : "APERO COIF", description : "Pas le temps d'aller chez le coiffeur avant votrer soirée, pas besoin de choisir, commencez une before avec vos amis tout en vous faisant coiffer"},
+      {image_url: require('../assets/picture3.jpg'), title : "PLAY HARD CUT HARD", description : "Jouez à vos jeux préférés et devenez le champion du salon de coiffure"},
+      {image_url: require('../assets/picture4.jpg'), title : "BIEN ETRE", description : "Si vous êtes un peu stressé à l'idée d'avoir une nouvelle coupe, alors détendez vous et profitez d'un massage"}
+    ]
 
     //Handling colors of top buttons
     var colorButtonSalon;
@@ -167,8 +182,13 @@ function HomeScreen(props) {
       props.selectedService != "TOUTES LES PRESTATIONS" ? serviceToReducer = props.selectedService : null;
 
       let experienceToReducer = null;
+      if (dataOverlay.title != undefined) {
+        experienceToReducer = dataOverlay.title
+        serviceToReducer = null;
+      }    
 
       props.onSubmitSearch(selectType, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
+      props.navigation.navigate('ButtonTabShop');
       }
     }
 
@@ -249,7 +269,7 @@ function HomeScreen(props) {
     
     <Overlay isVisible={visible} >
       <View style={{flex:0.1, alignItems:'center'}}>
-    <Text>Localisation en cours...</Text>
+    <Text style={{marginBottom:12}}>Localisation en cours...</Text>
     <Icon name='globe' size={36} color="#4E342E"/>
     </View>
     </Overlay>
@@ -341,34 +361,33 @@ function HomeScreen(props) {
     pagingEnabled
     snapToInterval={windowWidth - snapToIntervalValue}
     >
-    
-    <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture1.jpg')}/>
+{dataExperience.map((experience,i)=>
+    (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
+      <Card.Image style={{width : "100%"}} source={experience.image_url} onPress={() => toggleOverlay(experience)}/>
       <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>MOMENT A DEUX</Text>
-    </Card>
+      <Text style={{marginBottom: 10, textAlign:"center"}}>{experience.title}</Text>
+    </Card>)
+)} 
+      <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"70%"}}>
+      <Card containerStyle={{ padding : 0, width : "90%", height:"95%"}}>
+      <Card.Image style={{width : "100%", marginTop:50}} source={dataOverlay.image_url}/>
+      <Card.Divider/>
+      <Card.Title style={{marginBottom: 50, textAlign:"center"}}>{dataOverlay.title}</Card.Title>
+      <Text style={{marginBottom: 50, textAlign:"center"}}>{dataOverlay.description}</Text>
+      <Button
 
-    <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture2.jpg')}/>
-      <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>APERO COIF</Text>
-    </Card>
+      title="VIVRE CETTE EXPERIENCE"
+      type="solid"
+      onPress={() => validationButton()}
+      buttonStyle = {{backgroundColor : "#4280AB", marginTop:50}}
+      />
 
-    <Card containerStyle={{ padding : 0,width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture3.jpg')}/>
-      <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>PLAY HARD CUT HARD</Text>
-    </Card>
-
-    <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture4.jpg')}/>
-      <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>BIEN ETRE</Text>
-    </Card>
-    
+      </Card>
+      </Overlay>
     </ScrollView>
     </View>
   </ScrollView>
+  
   </SafeAreaView>    
   );
 }
