@@ -26,7 +26,7 @@ export default function HomeScreen(props) {
   const [address, setAddress] = useState(null)
   const [service, setService] = useState('toutes les prestations')
 
-  const [position, setPosition] = useState({latitude : 48.858370, longitude : 2.294481});
+  const [position, setPosition] = useState({latitude : null, longitude : null});
   const [visible, setVisible] = useState(false);
   
   // Adjusting slider to window screen
@@ -53,6 +53,7 @@ export default function HomeScreen(props) {
     console.log("date", date);
     console.log("address", address);
     console.log("position",position)
+    console.log("inputAddress", ref.current.getAddressText())
 
     //Handling colors of top buttons
     var colorButtonSalon;
@@ -102,8 +103,8 @@ export default function HomeScreen(props) {
     var displayTime;
 
     if (isDateSelected) {
-      var zeroDay;
-      var zeroMonth;
+      var zeroDay = "";
+      var zeroMonth = "";
       date.getDate() <10 ? zeroDay="0" : null;
       date.getMonth() <10 ? zeroMonth="0" : null; 
       displayDate = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
@@ -112,8 +113,8 @@ export default function HomeScreen(props) {
     }
 
     if (isTimeSelected) {
-      var zeroHour;
-      var zeroMinute;
+      var zeroHour = "";
+      var zeroMinute = "";
       date.getHours() <10 ? zeroHour="0" : null;
       date.getMinutes() <10 ? zeroMinute="0" : null;
       displayTime = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes();
@@ -140,7 +141,7 @@ export default function HomeScreen(props) {
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
   <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
     
-    <Text style={globalStyles.brand}>'Stach</Text>
+    <Text style={[globalStyles.brand, {marginTop:50}]}>'Stach</Text>
     
     <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'70%', marginTop:10}}>
     <Button
@@ -171,6 +172,7 @@ export default function HomeScreen(props) {
       placeholder="SAISIR UNE ADRESSE"
       onPress={async (data, details = null) => {
         let newPosition = await Location.geocodeAsync(details.formatted_address)
+        
         setPosition({latitude : newPosition[0].latitude, longitude : newPosition[0].longitude})
         setAddress(details.formatted_address)   
       }}
@@ -204,9 +206,9 @@ export default function HomeScreen(props) {
       GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
       debounce={300}
     />
-
+    <View style={{marginBottom:30}}>
     <Icon name='map-marker' size={36} color="#4E342E" onPress={locateMe}/>
-
+    </View>
     <Overlay isVisible={visible} >
       <View style={{flex:0.1, alignItems:'center'}}>
     <Text>Localisation en cours...</Text>

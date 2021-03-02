@@ -51,7 +51,7 @@ const serviceTab = prestation.map((choix, i)=>{
         flex:1, 
         flexDirection:'row', 
         alignItems:'center',
-        borderBottomColor: 'grey',
+        borderBottomColor: '#4280AB',
         borderBottomWidth: 1,
         marginBottom: 30,}}
         textStyle={{textDecorationLine: 'underline'}}
