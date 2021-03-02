@@ -18,19 +18,16 @@ export default function SignIn() {
   const [signInPassword, setSignInPassword] = useState('');
 
   const handleSubmitSignin = async () => {
-    console.log(IP_ADDRESS_HOME, signInEmail, signInPassword);
+    console.log(`${IP_ADDRESS}/users/signIn`);
     // try {
-    // const data = fetch(`${IP_ADDRESS_HOME}/users/signIn`, {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email: signInEmail,
-    //     password: signInPassword,
-    //   }),
-    // })
+    const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: signInEmail,
+        password: signInPassword,
+      }),
+    });
     //   .then((response) => response.json())
     //   .then((responseJson) => {
     //     console.log(responseJson);
@@ -39,6 +36,9 @@ export default function SignIn() {
     //   .catch((error) => {
     //     console.error(error);
     //   });
+    const body = await data.json();
+    console.log('Test');
+    console.log(body, 'body');
 
     // console.log(JSON.parse(data), 'ss');
     // } catch (error) {

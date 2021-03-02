@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { FontAwesome } from '@expo/vector-icons';
 
 import TemporaryPage from '../Screens/TemporaryPage';
 
@@ -22,29 +23,56 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
+function ButtonTabSign() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color }) => {
+          let iconName;
+
+          if (route.name == 'SignIn') {
+            iconName = 'user';
+          } else if (route.name == 'SignUp') {
+            iconName = 'user-plus';
+          }
+
+          return <FontAwesome name={iconName} size={25} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#4280AB',
+        inactiveTintColor: '#333',
+        style: {
+          backgroundColor: '#FFCD41',
+        },
+      }}
+    >
+      <Tab.Screen name='SignIn' component={SignInScreen} />
+      <Tab.Screen name='SignUp' component={SignUpScreen} />
+    </Tab.Navigator>
+  );
+}
+
 function ButtonTabShop() {
   return (
     <Tab.Navigator
-    //   screenOptions={({ route }) => ({
-    //     tabBarIcon: ({ color }) => {
-    //       let iconName;
-    //       if (route.name === 'Chat') {
-    //         iconName = 'chat';
-    //       } else if (route.name === 'Map') {
-    //         iconName = 'map';
-    //       } else {
-    //         iconName = 'list';
-    //       }
-    //     return <Entypo name={iconName} size={25} color={color} />;
-    //   },
-    // })}
-    // tabBarOptions={{
-    //   activeTintColor: '#0984e3',
-    //   inactiveTintColor: '#dfe6e9',
-    //   style: {
-    //     backgroundColor: '#130f40',
-    //   }
-    // }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color }) => {
+          let iconName;
+          if (route.name === 'List') {
+            iconName = 'list-ul';
+          } else if (route.name === 'Map') {
+            iconName = 'map-o';
+          }
+          return <FontAwesome name={iconName} size={25} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#4280AB',
+        inactiveTintColor: '#333333',
+        activeBackgroundColor: '#FFE082',
+        inactiveBackgroundColor: '#FFECB2',
+      }}
     >
       <Tab.Screen name='List' component={ListScreen} />
       <Tab.Screen name='Map' component={MapScreen} />
@@ -52,40 +80,10 @@ function ButtonTabShop() {
   );
 }
 
-function ButtonTabSign() {
-  return (
-    <Tab.Navigator
-    //   screenOptions={({ route }) => ({
-    //     tabBarIcon: ({ color }) => {
-    //       let iconName;
-    //       if (route.name === 'Chat') {
-    //         iconName = 'chat';
-    //       } else if (route.name === 'Map') {
-    //         iconName = 'map';
-    //       } else {
-    //         iconName = 'list';
-    //       }
-    //     return <Entypo name={iconName} size={25} color={color} />;
-    //   },
-    // })}
-    // tabBarOptions={{
-    //   activeTintColor: '#0984e3',
-    //   inactiveTintColor: '#dfe6e9',
-    //   style: {
-    //     backgroundColor: '#130f40',
-    //   }
-    // }}
-    >
-      <Tab.Screen name='SignUp' component={SignUpScreen} />
-      <Tab.Screen name='SignIn' component={SignInScreen} />
-    </Tab.Navigator>
-  );
-}
-
 function NavigatorStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='TemporaryPage' component={TemporaryPage} />
         <Stack.Screen name='Home' component={HomeScreen} />
         <Stack.Screen name='ButtonTabShop' component={ButtonTabShop} />
