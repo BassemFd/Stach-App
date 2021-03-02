@@ -23,11 +23,13 @@ import {Provider} from 'react-redux'
 import {createStore, combineReducers} from 'redux'
 
 import shopDetails from '../reducers/OfferDetails.reducer'
+import search from '../reducers/Search.reducer'
+import selectedService from '../reducers/ModalSelectedService.reducer'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-const store = createStore(combineReducers( {shopDetails}))
+const store = createStore(combineReducers( {shopDetails, search, selectedService}))
 
 function ButtonTabSign() {
   return (

@@ -31,7 +31,7 @@ function Shop(props) {
   for (let i= 0; i<props.shopDetails.shopImages.length; i++) {
     data.push({imgUrl: {uri: props.shopDetails.shopImages[i]}})
   }
-  console.log(data)
+  
 
 
  const hairdresser = {

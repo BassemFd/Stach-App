@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, ScrollView} from 'react-native';
+import {Text, View, ScrollView, Image} from 'react-native';
 import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { globalStyles } from '../styles/Global';
@@ -9,10 +9,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
 import { Dimensions } from 'react-native';
+import {connect} from 'react-redux';
 	
 import ModalService from '../shared/ModalService';
 
-export default function HomeScreen(props) {
+function HomeScreen(props) {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -24,10 +25,14 @@ export default function HomeScreen(props) {
 
   const [selectType, setSelectType] = useState('salon')
   const [address, setAddress] = useState(null)
-  const [service, setService] = useState('toutes les prestations')
 
-  const [position, setPosition] = useState({latitude : 48.858370, longitude : 2.294481});
+  const [position, setPosition] = useState({latitude : null, longitude : null});
   const [visible, setVisible] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
+  const ref = useRef();
   
   // Adjusting slider to window screen
   const windowWidth = Dimensions.get('window').width;
@@ -39,20 +44,35 @@ export default function HomeScreen(props) {
 
   // console.log(windowHeight, windowWidth)
 
-  const ref = useRef();
-
   useEffect(() => {
     ref.current?.setAddressText('');
   }, []);
 
-  const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
-
     //Checking console.log to see what are user's inputs
-    console.log("service", service);
+    console.log("service", props.selectedService);
     console.log("type", selectType);
     console.log("date", date);
     console.log("address", address);
     console.log("position",position)
+    console.log("reducers: ", props.search)
+
+    //Overlay states to display
+    const [dataOverlay, setDataOverlay] = useState({})
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false)
+
+    const toggleOverlay = (experience) => {
+      setDataOverlay(experience);
+      setIsOverlayVisible(!isOverlayVisible);
+    };
+
+    //Experience data
+
+    const dataExperience = [
+      {image_url: require('../assets/picture1.jpg'), title : "MOMENT A DEUX", description : "Un moment unique en couple, redécouvrez vous tout en découvrant une nouvelle coupe"},
+      {image_url: require('../assets/picture2.jpg'), title : "APERO COIF", description : "Pas le temps d'aller chez le coiffeur avant votrer soirée, pas besoin de choisir, commencez une before avec vos amis tout en vous faisant coiffer"},
+      {image_url: require('../assets/picture3.jpg'), title : "PLAY HARD CUT HARD", description : "Jouez à vos jeux préférés et devenez le champion du salon de coiffure"},
+      {image_url: require('../assets/picture4.jpg'), title : "BIEN ETRE", description : "Si vous êtes un peu stressé à l'idée d'avoir une nouvelle coupe, alors détendez vous et profitez d'un massage"}
+    ]
 
     //Handling colors of top buttons
     var colorButtonSalon;
@@ -102,8 +122,8 @@ export default function HomeScreen(props) {
     var displayTime;
 
     if (isDateSelected) {
-      var zeroDay;
-      var zeroMonth;
+      var zeroDay = "";
+      var zeroMonth = "";
       date.getDate() <10 ? zeroDay="0" : null;
       date.getMonth() <10 ? zeroMonth="0" : null; 
       displayDate = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
@@ -112,8 +132,8 @@ export default function HomeScreen(props) {
     }
 
     if (isTimeSelected) {
-      var zeroHour;
-      var zeroMinute;
+      var zeroHour = "";
+      var zeroMinute = "";
       date.getHours() <10 ? zeroHour="0" : null;
       date.getMinutes() <10 ? zeroMinute="0" : null;
       displayTime = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes();
@@ -136,11 +156,48 @@ export default function HomeScreen(props) {
     }
     }
 
+    // Validation button -> sending info to reducer
+
+    function validationButton(){
+      
+      if (ref.current.getAddressText() != "" && ref.current.getAddressText() != address) {
+        setErrorMessage("Veuillez resaisir votre addresse")
+      } else {
+      
+      let dateToReducer = null;
+      var zeroDay = "";
+      var zeroMonth = "";
+      date.getDate() <10 ? zeroDay="0" : null;
+      date.getMonth() <10 ? zeroMonth="0" : null; 
+      isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
+
+      let timeToReducer = null;
+      var zeroHour = "";
+      var zeroMinute = "";
+      date.getHours() <10 ? zeroHour="0" : null;
+      date.getMinutes() <10 ? zeroMinute="0" : null;
+      isTimeSelected ? timeToReducer = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes() : null;
+
+      let serviceToReducer = null;
+      props.selectedService != "TOUTES LES PRESTATIONS" ? serviceToReducer = props.selectedService : null;
+
+      let experienceToReducer = null;
+      if (dataOverlay.title != undefined) {
+        experienceToReducer = dataOverlay.title
+        serviceToReducer = null;
+      }    
+
+      props.onSubmitSearch(selectType, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
+      props.navigation.navigate('ButtonTabShop');
+      }
+    }
+
+    // console.log("inputAddress", ref.current.getAddressText())
   return (
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
   <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
     
-    <Text style={globalStyles.brand}>'Stach</Text>
+    <Text style={[globalStyles.brand, {marginTop:50}]}>'Stach</Text>
     
     <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'70%', marginTop:10}}>
     <Button
@@ -170,9 +227,13 @@ export default function HomeScreen(props) {
       fetchDetails={true}
       placeholder="SAISIR UNE ADRESSE"
       onPress={async (data, details = null) => {
+        setErrorMessage("")
         let newPosition = await Location.geocodeAsync(details.formatted_address)
+        
         setPosition({latitude : newPosition[0].latitude, longitude : newPosition[0].longitude})
-        setAddress(details.formatted_address)   
+        // console.log("Google Details", (details.address_components[0].long_name + " " + details.address_components[1].long_name + ", " + details.address_components[2].long_name + ", " + details.address_components[5].long_name))
+        // setAddress(details.formatted_address) 
+        setAddress((details.address_components[0].long_name + " " + details.address_components[1].long_name + ", " + details.address_components[2].long_name + ", " + details.address_components[5].long_name))   
       }}
       
       onFail={(error) => console.error(error)}
@@ -201,21 +262,22 @@ export default function HomeScreen(props) {
       listViewDisplayed="false"
       styles={{textInput:{backgroundColor: 'transparent', fontSize: 19,}}}
       autoFillOnNotFound={true}
-      GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
+      // GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
       debounce={300}
     />
-
+    <View style={{marginBottom:30}}>
     <Icon name='map-marker' size={36} color="#4E342E" onPress={locateMe}/>
-
+    </View>
+    
     <Overlay isVisible={visible} >
       <View style={{flex:0.1, alignItems:'center'}}>
-    <Text>Localisation en cours...</Text>
+    <Text style={{marginBottom:12}}>Localisation en cours...</Text>
     <Icon name='globe' size={36} color="#4E342E"/>
     </View>
     </Overlay>
 
     </View>
-
+    <Text style={{color:"red"}}>{errorMessage}</Text>
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUAND ?</Text>
     <TouchableOpacity onPress={async()=>{await setMode('date'); showDatePicker()}}>
     <Input
@@ -301,34 +363,50 @@ export default function HomeScreen(props) {
     pagingEnabled
     snapToInterval={windowWidth - snapToIntervalValue}
     >
-    
-    <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture1.jpg')}/>
+{dataExperience.map((experience,i)=>
+    (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
+      <Card.Image style={{width : "100%"}} source={experience.image_url} onPress={() => toggleOverlay(experience)}/>
       <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>MOMENT A DEUX</Text>
-    </Card>
+      <Text style={{marginBottom: 10, textAlign:"center"}}>{experience.title}</Text>
+    </Card>)
+)} 
+      <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"70%"}}>
+      <Card containerStyle={{ padding : 0, width : "90%", height:"95%"}}>
+      <Card.Image style={{width : "100%", marginTop:50}} source={dataOverlay.image_url}/>
+      <Card.Divider/>
+      <Card.Title style={{marginBottom: 50, textAlign:"center"}}>{dataOverlay.title}</Card.Title>
+      <Text style={{marginBottom: 50, textAlign:"center"}}>{dataOverlay.description}</Text>
+      <Button
 
-    <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture2.jpg')}/>
-      <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>APERO COIF</Text>
-    </Card>
+      title="VIVRE CETTE EXPERIENCE"
+      type="solid"
+      onPress={() => validationButton()}
+      buttonStyle = {{backgroundColor : "#4280AB", marginTop:50}}
+      />
 
-    <Card containerStyle={{ padding : 0,width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture3.jpg')}/>
-      <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>PLAY HARD CUT HARD</Text>
-    </Card>
-
-    <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
-      <Card.Image style={{width : "100%"}} source={require('../assets/picture4.jpg')}/>
-      <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>BIEN ETRE</Text>
-    </Card>
-    
+      </Card>
+      </Overlay>
     </ScrollView>
     </View>
   </ScrollView>
+  
   </SafeAreaView>    
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitSearch: function(salonOrHome, date, hour, address, latitude, longitude, service, experience) { 
+      dispatch({type: 'createSearch', salonOrHome : salonOrHome, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, service : service, experience : experience}) 
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return {search: state.search, selectedService: state.selectedService};
+}
+
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(HomeScreen);
