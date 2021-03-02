@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card'
-import Button from '../shared/Button';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import ButtonYaya from '../shared/Button';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
 import * as Location from 'expo-location';
 
 import { FontAwesome } from '@expo/vector-icons';
@@ -14,8 +14,6 @@ import {connect} from 'react-redux';
 
 function List(props) {
 
-  // const [priceTab, setpriceTab] = useState([]);
-  const [featuresTab, setFeaturesTab] = useState([]);
   const [shopsList, setShopsList] = useState([])
 
 
@@ -36,7 +34,7 @@ function List(props) {
     atHome: false,
     appointments: [],
     priceFork: 1,
-    rating: 4,
+    rating: 4.2,
     },
     {
       shopName: 'Coiff',
@@ -54,8 +52,80 @@ function List(props) {
       atHome: true,
       appointments: [],
       priceFork: 2,
-      rating: 2,
+      rating: 2.1,
       },
+      {
+        shopName: 'Yaya',
+        shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+        shopAddress: '23 rue Legendre, 75017, Paris',
+        shopPhone: '0200000000',
+        shopMail: 'coiff@gmail.com',
+        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+        shopFeatures: ['coffee', 'leaf', 'paw'],
+        comments: [],
+        shopEmployees: ['Philippe', 'Emma'],
+        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+        packages: ['à deux'],
+        schedule: [],
+        atHome: true,
+        appointments: [],
+        priceFork: 3,
+        rating: 2.8,
+        },
+        {
+          shopName: 'Raf',
+          shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+          shopAddress: '23 rue Legendre, 75017, Paris',
+          shopPhone: '0200000000',
+          shopMail: 'coiff@gmail.com',
+          shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+          shopFeatures: ['coffee', 'leaf', 'paw'],
+          comments: [],
+          shopEmployees: ['Philippe', 'Emma'],
+          offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+          packages: ['à deux'],
+          schedule: [],
+          atHome: true,
+          appointments: [],
+          priceFork: 1,
+          rating: 1.7,
+          },
+          {
+            shopName: 'Bassem',
+            shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+            shopAddress: '23 rue Legendre, 75017, Paris',
+            shopPhone: '0200000000',
+            shopMail: 'coiff@gmail.com',
+            shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+            shopFeatures: ['coffee', 'leaf', 'paw'],
+            comments: [],
+            shopEmployees: ['Philippe', 'Emma'],
+            offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+            packages: ['à deux'],
+            schedule: [],
+            atHome: true,
+            appointments: [],
+            priceFork: 2,
+            rating: 3.8,
+            },
+            {
+              shopName: 'Hello',
+              shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+              shopAddress: '23 rue Legendre, 75017, Paris',
+              shopPhone: '0200000000',
+              shopMail: 'coiff@gmail.com',
+              shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+              shopFeatures: ['coffee', 'leaf', 'paw'],
+              comments: [],
+              shopEmployees: ['Philippe', 'Emma'],
+              offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+              packages: ['à deux'],
+              schedule: [],
+              atHome: true,
+              appointments: [],
+              priceFork: 3,
+              rating: 2.6,
+              },
   ]  
 
   useEffect(() => {
@@ -81,19 +151,36 @@ function List(props) {
 
 
   function navigation(shopDetails) {
-    console.log(shopDetails)
     props.navigation.navigate('Shop');
-    //props.saveChoosenOffer(shopDetails);
+    props.saveChosenOffer(shopDetails);
+  }
+
+  function sortByPrice() {
+    var shopListCopy = [...shopsList];
+    var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork > b.priceFork))
+    setShopsList(sortByPrice);
+  }
+
+  function sortByNote() {
+    var shopListCopy = [...shopsList]
+    var sortByNote = shopListCopy.sort((a, b) => (a.rating < b.rating))
+    setShopsList(sortByNote)
   }
 
   return (
+    
     <View style={globalStyles.container}>
       
         
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 30, paddingBottom: 10}}>
-          <Button title="Filtrer" backgroundColor="#FFCD41" ></Button>
-          <Button title="Trier" backgroundColor="#FFCD41"></Button>
+          <ButtonYaya title="Filtrer" backgroundColor="#FFCD41" ></ButtonYaya>
         </View>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10, paddingBottom: 10}}>
+          <Button title='Trier par prix' color='#4280AB' onPress={() => sortByPrice()}></Button>
+          <Button title='Trier par note' color='#4280AB' onPress={() => sortByNote()}></Button>
+        </View>
+        <ScrollView>
+        
 
         {shopsList.length > 0 ?
           shopsList.map((element, i) => {
@@ -122,8 +209,9 @@ function List(props) {
 
             
             return (
+
               <TouchableOpacity onPress={()=>navigation(element)}>
-                <View key={i} style={styles.card} >
+                <View key={i} style={styles.card} onPress={()=>navigation(element)}>
                   <View style={styles.text}>
                     <View style={styles.div1}>
                       <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
@@ -143,11 +231,13 @@ function List(props) {
                   </View>    
                 </View> 
               </TouchableOpacity>
+
             )
           })
         : null }
-
+    </ScrollView>
     </View>
+    
   );
 }
 
@@ -175,7 +265,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch){
   return {
-    saveChoosenOffer: function(shopDetails){
+    saveChosenOffer: function(shopDetails){
       dispatch({
         type: 'selectOffer',
         shopDetails: shopDetails,

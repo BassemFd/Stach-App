@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import { globalStyles }from '../styles/Global';
-import { Card} from 'react-native-elements';
+import { Card, ListItem} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -12,6 +12,8 @@ import ModalOption from '../shared/modalOption';
 import ModalPrestation from '../shared/modalPrestation';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
+import {connect} from 'react-redux';
+
 
 // import PickerCascader  from 'react-native-picker-cascader';
 
@@ -21,59 +23,55 @@ function Shop(props) {
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
-  const [selectedPrestation, setSelectedPrestation] = useState("choixPrestation");
-  const [selectedOptions, setSelectedOptions] = useState("choixOptions");
-  
+  // const [selectedPrestation, setSelectedPrestation] = useState("choixPrestation");
+  // const [selectedOptions, setSelectedOptions] = useState("choixOptions");
+  console.log(props.shopDetails)
+
+  var data = [];
+  for (let i= 0; i<props.shopDetails.shopImages.length; i++) {
+    data.push({imgUrl: {uri: props.shopDetails.shopImages[i]}})
+  }
+  console.log(data)
 
 
  const hairdresser = {
-  name: "La coupe à Juliette",
-  data: [
-    {
-    imgUrl: require("../assets/HairShop-1.jpg")
-}, 
-{
-  imgUrl: require("../assets/HairShop-2.jpg")
-},
-{
-  imgUrl: require("../assets/HairShop-3.jpg")
-}
-  ],
-  description: "Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser Description and history and more details about the hairdresser",
-  address: "67 rue dulong, 75017, Paris",
-  priceFork: 2,
-  starRating: 3.7,
-  shopFeatures: ['coffee', 'leaf', 'paw', 'wheelchair-alt','gamepad', 'glass'],
+  name: props.shopDetails.shopName,
+  data: data,
+  description: props.shopDetails.shopDescription,
+  address: props.shopDetails.shopAddress,
+  priceFork: props.shopDetails.priceFork,
+  starRating: props.shopDetails.rating,
+  shopFeatures: props.shopDetails.shopFeatures,
 
   }
 
   
   
            
-  const [location, setLocation] = useState(null);
+  // const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [visible, setVisible] = useState(false);
   
  
 
-  useEffect(() => {
-    (async () => {
+  // useEffect(() => {
+  //   (async () => {
      
-      let locationGeo = await Location.geocodeAsync(hairdresser.address);
-    setLocation(locationGeo)
+  //     let locationGeo = await Location.geocodeAsync(hairdresser.address);
+  //   setLocation(locationGeo)
     
   
-      // console.log("LOCATION", locationGeo)
-    })();
-  }, []);
+  //     // console.log("LOCATION", locationGeo)
+  //   })();
+  // }, []);
 //  console.log("LCOATINO SETTER", location)
 
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
+  // let text = 'Waiting..';
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // } else if (location) {
+  //   text = JSON.stringify(location);
+  // }
 
   function handleReturnButton(){
     console.log("return");
@@ -118,15 +116,36 @@ function Shop(props) {
     setVisible(!visible);
   };
 
+const handleAvis = () => {
+  console.log("avis")
+}
 
+const listComment = [
+  {pseudo: "Juliette", message: "J'adore ce salon"},
+  {pseudo: "Yaya", message: "J'adore ce salon"},
+  {pseudo: "Raph", message: "J'adore ce salon"},
+  {pseudo: "Bassem", message: "J'adore ce salon"},
+
+]
+
+var listCommentItem = listComment.map((l, i) => {return (
+  <ListItem  key={i} bottomDivider>
+    <ListItem.Content >
+      <ListItem.Title>{l.pseudo}</ListItem.Title>
+      <ListItem.Subtitle>{l.message}</ListItem.Subtitle>
+    </ListItem.Content>
+  </ListItem>
+)})
 
   return (
+    
     <View style={styles.card}>
+      <Text style={[globalStyles.brand, {marginTop: 10}]}>'Stach</Text>
       <ScrollView>
       
       <View >
-        <Card >
-
+        <Card  >
+        <View style={{ alignItems: "center"}}>
         <Carousel
         layout="stack"
         layoutCardOffset={9}
@@ -138,7 +157,9 @@ function Shop(props) {
         inactiveSlideShift={0}
         onSnapToItem={(index) => setIndex(index)}
         useScrollView={true}
+        
       />
+      </View>
               <Pagination
                 dotsLength={hairdresser.data.length}
                 activeDotIndex={index}
@@ -154,7 +175,7 @@ function Shop(props) {
                 inactiveDotScale={0.6}
                 tappableDots={true}
             />
-        <Card.Title style={globalStyles.titleText}>{hairdresser.name}</Card.Title>
+        <Text style={{fontSize: 24, fontFamily: "graduate-regular", textAlign: 'center', marginBottom: 10}}>{hairdresser.name}</Text>
 
         <Text style={{marginBottom: 10}}>
           {hairdresser.description}
@@ -183,28 +204,33 @@ function Shop(props) {
           
             <Text>({hairdresser.starRating})</Text>
             </View>
+            <View style={styles.avis}>
+           
+          
+            <TouchableOpacity style={styles.avis}  onPress={()=>handleAvis()}><Text style={styles.avisText}>Voir tout les Avis</Text></TouchableOpacity>
+            </View>
 
             
 
           </View>
 
             <View style={styles.mapPosition}>
-            {location ?
+            {/* {location ? */}
             <MapView mapType={'standard'} showsTraffic ={false} style={styles.map}
               initialRegion={{
-                latitude: location[0].latitude,
-                longitude: location[0].longitude,
+                latitude: props.shopDetails.latitude,
+                longitude: props.shopDetails.longitude,
                 latitudeDelta: 0.005757,
                 longitudeDelta: 0.007866,
               }}
             >
                
              <Marker
-                coordinate={{latitude: location[0].latitude, longitude: location[0].longitude}}
+                coordinate={{latitude: props.shopDetails.latitude, longitude: props.shopDetails.longitude}}
               />
            
             </MapView>
-             : null }
+             {/* : null } */}
             </View>
             
         </View>
@@ -228,6 +254,14 @@ function Shop(props) {
       <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
       </View>
     
+      <View style={{flex: 1, alignItems: "center", backgroundColor: "#FFCD41"}}>
+        <Text style={{fontSize: 24, fontFamily: "graduate-regular"}}>Tout les avis du Salon</Text>
+        
+      </View>
+      {listCommentItem}
+
+
+
     </ScrollView>
     </View>
   );
@@ -267,8 +301,32 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     backgroundColor: '#FFE082',
+   
+  },
+  avis: {
+   
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: "center",
+    backgroundColor: "#FFCD41",
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 1,
+    width: 120
+  },
+  avisText: {
+    fontWeight: "bold"
   }
 });
 
 
-export default Shop;
+
+
+function mapStateToProps(state) {
+  return {shopDetails: state.shopDetails }
+ }
+  
+ export default connect(
+  mapStateToProps,
+  null
+ )(Shop);
