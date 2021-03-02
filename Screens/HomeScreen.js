@@ -2,13 +2,15 @@ import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Picker} from '@react-native-picker/picker';
 import { globalStyles } from '../styles/Global';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SafeAreaView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
+import { Dimensions } from 'react-native';
+	
+import ModalService from '../shared/ModalService';
 
 export default function HomeScreen(props) {
 
@@ -26,6 +28,15 @@ export default function HomeScreen(props) {
 
   const [position, setPosition] = useState({latitude : 48.858370, longitude : 2.294481});
   const [visible, setVisible] = useState(false);
+  
+  // Adjusting slider to window screen
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+
+  let snapToIntervalValue = 50;
+  windowWidth < 380 ? snapToIntervalValue = 0 : null;
+
+  // console.log(windowHeight, windowWidth)
 
   const ref = useRef();
 
@@ -34,6 +45,7 @@ export default function HomeScreen(props) {
   }, []);
 
   const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
+
     //Checking console.log to see what are user's inputs
     console.log("service", service);
     console.log("type", selectType);
@@ -89,23 +101,31 @@ export default function HomeScreen(props) {
     var displayTime;
 
     if (isDateSelected) {
-      displayDate = date.getDate() + "/" + (date.getMonth() + 1) +"/"+ date.getFullYear();
+      var zeroDay;
+      var zeroMonth;
+      date.getDate() <10 ? zeroDay="0" : null;
+      date.getMonth() <10 ? zeroMonth="0" : null; 
+      displayDate = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
     } else {
       displayDate = "TOUTES LES DATES"
     }
 
     if (isTimeSelected) {
-      displayTime = "" + date.getHours() +":"+ date.getMinutes();
+      var zeroHour;
+      var zeroMinute;
+      date.getHours() <10 ? zeroHour="0" : null;
+      date.getMinutes() <10 ? zeroMinute="0" : null;
+      displayTime = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes();
     } else {
       displayTime = "TOUTES LES HEURES"
     }
 
     // Location function
     async function locateMe(){
-      { setVisible(true)
-        var { status } = await Location.requestPermissionsAsync();
+      { var { status } = await Location.requestPermissionsAsync();
+        
         if (status === 'granted'){
-      
+         setVisible(true)
          let points = await Location.getCurrentPositionAsync()
          setPosition({latitude : points.coords.latitude, longitude : points.coords.longitude})
           ;}
@@ -121,7 +141,7 @@ export default function HomeScreen(props) {
     
     <Text style={globalStyles.brand}>'Stach</Text>
     
-    <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'50%', marginTop:10}}>
+    <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'70%', marginTop:10}}>
     <Button
             containerStyle={{width : "45%"}}
             title="SALON"
@@ -254,25 +274,18 @@ export default function HomeScreen(props) {
         onCancel={hideDatePicker}
       />
 
-    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUOI ?</Text>
-    <Picker
-        selectedValue={service}
-        style={{ height: 50, width: "100%"}}
-        onValueChange={(itemValue, itemIndex) => setService(itemValue)}
-      > 
-        <Picker.Item label="TOUTES LES PRESTATIONS" value="toutes les prestations" />
-        <Picker.Item label="COUPE FEMME" value="coupe femme" />
-        <Picker.Item label="COUPE HOMME" value="coupe homme" />
-        <Picker.Item label="COLORATION" value="coloration" />
-      </Picker>
+    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUOI ?
+    </Text>
+    
+    <ModalService/>
 
-      <Button
+    <Button
 
-      title="VALIDER"
-      type="solid"
-      onPress={() => validationButton()}
-      buttonStyle = {{backgroundColor : "#4280AB"}}
-      />
+    title="VALIDER"
+    type="solid"
+    onPress={() => validationButton()}
+    buttonStyle = {{backgroundColor : "#4280AB"}}
+    />
 
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>EXPERIENCES</Text>
     </View>
@@ -285,7 +298,7 @@ export default function HomeScreen(props) {
     scrollEventThrottle={200}
     decelerationRate="fast"
     pagingEnabled
-    snapToInterval={360}
+    snapToInterval={windowWidth - 50}
     >
     
     <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
