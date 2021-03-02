@@ -8,6 +8,7 @@ import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 var coiffeurs = [
   {
@@ -57,7 +58,8 @@ function Map(props) {
   const [euros, setEuros] = useState([])
   const [features, setFeatures] = useState([]);
   const [rating, setRating] = useState([]);
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState('');
+ 
   
   useEffect(() => {
     async function getLocation() {
@@ -72,7 +74,7 @@ function Map(props) {
         var shopsTab = [];
         for (let i=0; i<coiffeurs.length; i++) {
           let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
-          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages};
+          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
           shopsTab.push(shop);
         }
         setShopsList(shopsTab);
@@ -123,11 +125,11 @@ function Map(props) {
   }
 
 
+
   return (
     <View style={styles.container}>
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingTop: 30, paddingBottom: 10}}>
           <Button title="Filtrer" backgroundColor="#FFCD41" ></Button>
-          <Button title="Trier" backgroundColor="#FFCD41"></Button>
         </View>
         <MapView style={styles.map}
         initialRegion={{
@@ -150,32 +152,32 @@ function Map(props) {
           
           </MapView>
           <Overlay isVisible={visible} >
-          <View  style={styles.card}>
-                <View style={styles.text}>
-                  <View style={styles.div1}>
-                    <Text style={{fontWeight: 'bold'}}>{shopDetails.shopName}</Text>
-                    <FontAwesome name="heart-o" size={15} color="black" />
+            <View  style={styles.card}>
+                  <View style={styles.text}>
+                    <View style={styles.div1}>
+                      <Text style={{fontWeight: 'bold'}}>{shopDetails.shopName}</Text>
+                      <FontAwesome name="heart-o" size={15} color="black" />
+                    </View>
+                    <Text style={styles.pad}>{shopDetails.shopAddress}</Text>
+                    <View style={styles.picto}>
+                      {euros}
+                    </View>
+                    <View style={styles.picto}>
+                      {features}
+                    </View>
+                    <View style={styles.picto}>
+                    {rating}
+                    </View>
                   </View>
-                  <Text style={styles.pad}>{shopDetails.shopAddress}</Text>
-                  <View style={styles.picto}>
-                    {euros}
-                  </View>
-                  <View style={styles.picto}>
-                    {features}
-                  </View>
-                  <View style={styles.picto}>
-                  {rating}
-                  </View>
+                  <View style={styles.div2}>
+                    <Image source={{uri: url}} style={styles.image}></Image>
+                  </View>    
+                </View> 
+                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
+                  <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB' onPress={()=> navigation(shopDetails)}/>
+                  <Button title='Retour' color='white' backgroundColor='#AB4242' onPress={() => setVisible(false)}/>
                 </View>
-                <View style={styles.div2}>
-                  <Image source={{uri: url}} style={styles.image}></Image>
-                </View>    
-              </View> 
-              <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB' onPress={()=> navigation(shopDetails)}/>
-                <Button title='Retour' color='white' backgroundColor='#AB4242' onPress={() => setVisible(false)}/>
-              </View>
-        </Overlay>
+          </Overlay>
     </View>
   );
 }
@@ -204,6 +206,7 @@ const styles = StyleSheet.create({
   text: {width: '60%', padding: 10},
   image: {height: 145, width: 140},
   picto: {display: 'flex', flexDirection: 'row'},
+  
 });
 
 function mapDispatchToProps(dispatch){
@@ -221,3 +224,29 @@ export default connect(
   null,
   mapDispatchToProps
   )(Map);
+
+
+// overlay filtres : 
+// <View>
+//               <Text>Filtrer par : </Text>
+//               <Button title='€' color='black'/>
+//               <Text>Prix</Text>
+//                 <View style={styles.picto}>
+//                   <Button title='€' color='black'/>
+//                   <Button title='€€' color='black'/>
+//                   <Button title='€€€' color='black'/>
+//                 </View>
+
+//               <Text>Services</Text>
+//                 <View style={styles.picto}>
+//                   <TouchableOpacity><FontAwesome name='coffee' size={25} color="black" style={styles.pad}/></TouchableOpacity>
+//                   <TouchableOpacity><FontAwesome name='wheelchair-alt' size={25} color="black" style={styles.pad}/></TouchableOpacity>
+//                   <TouchableOpacity><FontAwesome name='glass' size={25} color="black" style={styles.pad}/></TouchableOpacity>
+//                   <TouchableOpacity><FontAwesome name='gamepad' size={25} color="black" style={styles.pad}/></TouchableOpacity>
+//                   <TouchableOpacity><FontAwesome name='leaf' size={25} color="black" style={styles.pad}/></TouchableOpacity>
+//                   <TouchableOpacity><FontAwesome name='paw' size={25} color="black" style={styles.pad}/></TouchableOpacity>
+//                 </View>
+
+//               <Text>Avis</Text>
+
+//             </View>

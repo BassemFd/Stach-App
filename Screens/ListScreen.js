@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card'
 import Button from '../shared/Button';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import * as Location from 'expo-location';
 
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -15,6 +16,7 @@ function List(props) {
 
   // const [priceTab, setpriceTab] = useState([]);
   const [featuresTab, setFeaturesTab] = useState([]);
+  const [shopsList, setShopsList] = useState([])
 
 
   var coiffeurs = [
@@ -56,6 +58,27 @@ function List(props) {
       },
   ]  
 
+  useEffect(() => {
+    async function getLocation() {
+        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        // if (status === 'granted') {
+        //   Location.watchPositionAsync({ distanceInterval: 2 },
+        //     (location) => {
+        //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
+        //     }
+        //   );
+        // }
+        var shopsTab = [];
+        for (let i=0; i<coiffeurs.length; i++) {
+          let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
+          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
+          shopsTab.push(shop);
+        }
+        setShopsList(shopsTab);
+      }
+      getLocation();
+  }, []);
+
 
   function navigation(shopDetails) {
     console.log(shopDetails)
@@ -72,8 +95,8 @@ function List(props) {
           <Button title="Trier" backgroundColor="#FFCD41"></Button>
         </View>
 
-        {coiffeurs.length > 0 ?
-          coiffeurs.map((element, i) => {
+        {shopsList.length > 0 ?
+          shopsList.map((element, i) => {
             var priceTab = [];
             for (let y=0; y<3; y++) {
               var color = 'white'
@@ -98,7 +121,6 @@ function List(props) {
             }
 
             
-
             return (
               <TouchableOpacity onPress={()=>navigation(element)}>
                 <View key={i} style={styles.card} >
