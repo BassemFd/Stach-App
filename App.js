@@ -1,3 +1,9 @@
+//Uncheck if you want hide the warning logs
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Warning: ...']);
+// LogBox.ignoreAllLogs();
+
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';

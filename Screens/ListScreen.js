@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card'
-import Button from '../shared/Button';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import ButtonYaya from '../shared/Button';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
+import * as Location from 'expo-location';
 
-import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+
+import {connect} from 'react-redux';
 
 
 
 
-export default function List() {
+function List(props) {
 
-  // const [priceTab, setpriceTab] = useState([]);
-  const [featuresTab, setFeaturesTab] = useState([]);
+  const [shopsList, setShopsList] = useState([])
 
 
   var coiffeurs = [
@@ -34,7 +34,7 @@ export default function List() {
     atHome: false,
     appointments: [],
     priceFork: 1,
-    rating: 4,
+    rating: 4.2,
     },
     {
       shopName: 'Coiff',
@@ -52,24 +52,138 @@ export default function List() {
       atHome: true,
       appointments: [],
       priceFork: 2,
-      rating: 2,
+      rating: 2.1,
       },
+      {
+        shopName: 'Yaya',
+        shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+        shopAddress: '23 rue Legendre, 75017, Paris',
+        shopPhone: '0200000000',
+        shopMail: 'coiff@gmail.com',
+        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+        shopFeatures: ['coffee', 'leaf', 'paw'],
+        comments: [],
+        shopEmployees: ['Philippe', 'Emma'],
+        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+        packages: ['à deux'],
+        schedule: [],
+        atHome: true,
+        appointments: [],
+        priceFork: 3,
+        rating: 2.8,
+        },
+        {
+          shopName: 'Raf',
+          shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+          shopAddress: '23 rue Legendre, 75017, Paris',
+          shopPhone: '0200000000',
+          shopMail: 'coiff@gmail.com',
+          shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+          shopFeatures: ['coffee', 'leaf', 'paw'],
+          comments: [],
+          shopEmployees: ['Philippe', 'Emma'],
+          offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+          packages: ['à deux'],
+          schedule: [],
+          atHome: true,
+          appointments: [],
+          priceFork: 1,
+          rating: 1.7,
+          },
+          {
+            shopName: 'Bassem',
+            shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+            shopAddress: '23 rue Legendre, 75017, Paris',
+            shopPhone: '0200000000',
+            shopMail: 'coiff@gmail.com',
+            shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+            shopFeatures: ['coffee', 'leaf', 'paw'],
+            comments: [],
+            shopEmployees: ['Philippe', 'Emma'],
+            offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+            packages: ['à deux'],
+            schedule: [],
+            atHome: true,
+            appointments: [],
+            priceFork: 2,
+            rating: 3.8,
+            },
+            {
+              shopName: 'Hello',
+              shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+              shopAddress: '23 rue Legendre, 75017, Paris',
+              shopPhone: '0200000000',
+              shopMail: 'coiff@gmail.com',
+              shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+              shopFeatures: ['coffee', 'leaf', 'paw'],
+              comments: [],
+              shopEmployees: ['Philippe', 'Emma'],
+              offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
+              packages: ['à deux'],
+              schedule: [],
+              atHome: true,
+              appointments: [],
+              priceFork: 3,
+              rating: 2.6,
+              },
   ]  
 
+  useEffect(() => {
+    async function getLocation() {
+        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        // if (status === 'granted') {
+        //   Location.watchPositionAsync({ distanceInterval: 2 },
+        //     (location) => {
+        //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
+        //     }
+        //   );
+        // }
+        var shopsTab = [];
+        for (let i=0; i<coiffeurs.length; i++) {
+          let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
+          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
+          shopsTab.push(shop);
+        }
+        setShopsList(shopsTab);
+      }
+      getLocation();
+  }, []);
 
-  console.log(coiffeurs[0].shopImages)
+
+  function navigation(shopDetails) {
+    props.navigation.navigate('Shop');
+    props.saveChosenOffer(shopDetails);
+  }
+
+  function sortByPrice() {
+    var shopListCopy = [...shopsList];
+    var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork > b.priceFork))
+    setShopsList(sortByPrice);
+  }
+
+  function sortByNote() {
+    var shopListCopy = [...shopsList]
+    var sortByNote = shopListCopy.sort((a, b) => (a.rating < b.rating))
+    setShopsList(sortByNote)
+  }
 
   return (
+    
     <View style={globalStyles.container}>
       
         
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 30, paddingBottom: 10}}>
-          <Button title="Filtrer" backgroundColor="#FFCD41" ></Button>
-          <Button title="Trier" backgroundColor="#FFCD41"></Button>
+          <ButtonYaya title="Filtrer" backgroundColor="#FFCD41" ></ButtonYaya>
         </View>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10, paddingBottom: 10}}>
+          <Button title='Trier par prix' color='#4280AB' onPress={() => sortByPrice()}></Button>
+          <Button title='Trier par note' color='#4280AB' onPress={() => sortByNote()}></Button>
+        </View>
+        <ScrollView>
+        
 
-        {coiffeurs.length > 0 ?
-          coiffeurs.map((element, i) => {
+        {shopsList.length > 0 ?
+          shopsList.map((element, i) => {
             var priceTab = [];
             for (let y=0; y<3; y++) {
               var color = 'white'
@@ -93,33 +207,37 @@ export default function List() {
               starsTab.push(<FontAwesome key={j} style={{marginRight: 5}} name="star" size={24} color={color} />)
             }
 
-            console.log('image', element.shopImages[0])
-
+            
             return (
-              <View key={i} style={styles.card}>
-                <View style={styles.text}>
-                  <View style={styles.div1}>
-                    <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
-                    <FontAwesome name="heart-o" size={15} color="black" />
+
+              <TouchableOpacity onPress={()=>navigation(element)}>
+                <View key={i} style={styles.card} onPress={()=>navigation(element)}>
+                  <View style={styles.text}>
+                    <View style={styles.div1}>
+                      <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
+                      <FontAwesome name="heart-o" size={15} color="black" />
+                    </View>
+                    <Text style={styles.pad}>{element.shopAddress}</Text>
+                    <View style={styles.picto}>
+                      {priceTab}
+                    </View>
+                    <View style={styles.picto}>{pictoTab}</View>
+                    <View style={styles.picto}>{starsTab}</View>
                   </View>
-                  <Text style={styles.pad}>{element.shopAddress}</Text>
-                  <View style={styles.picto}>
-                    {priceTab}
-                  </View>
-                  <View style={styles.picto}>{pictoTab}</View>
-                  <View style={styles.picto}>{starsTab}</View>
-                </View>
-                <View style={styles.div2}>
-                  <Image 
-                  source={{uri: element.shopImages[0]}}
-                  style={styles.image}></Image>
-                </View>    
-              </View> 
+                  <View style={styles.div2}>
+                    <Image 
+                    source={{uri: element.shopImages[0]}}
+                    style={styles.image}></Image>
+                  </View>    
+                </View> 
+              </TouchableOpacity>
+
             )
           })
         : null }
-
+    </ScrollView>
     </View>
+    
   );
 }
 
@@ -144,3 +262,19 @@ const styles = StyleSheet.create({
   picto: {display: 'flex', flexDirection: 'row'},
 
 });
+
+function mapDispatchToProps(dispatch){
+  return {
+    saveChosenOffer: function(shopDetails){
+      dispatch({
+        type: 'selectOffer',
+        shopDetails: shopDetails,
+      })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+  )(List);

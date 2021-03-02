@@ -19,9 +19,15 @@ import DetailsScreen from '../Screens/DetailsScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ContactScreen from '../Screens/ContactScreen';
 
+import {Provider} from 'react-redux'
+import {createStore, combineReducers} from 'redux'
+
+import shopDetails from '../reducers/OfferDetails.reducer'
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+const store = createStore(combineReducers( {shopDetails}))
 
 function ButtonTabSign() {
   return (
@@ -82,20 +88,24 @@ function ButtonTabShop() {
 
 function NavigatorStack() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='TemporaryPage' component={TemporaryPage} />
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='ButtonTabShop' component={ButtonTabShop} />
-        <Stack.Screen name='Shop' component={ShopScreen} />
-        <Stack.Screen name='ButtonTabSign' component={ButtonTabSign} />
-        <Stack.Screen name='Appointment' component={AppointmentScreen} />
-        <Stack.Screen name='Details' component={DetailsScreen} />
-        <Stack.Screen name='Profile' component={ProfileScreen} />
-        <Stack.Screen name='Contact' component={ContactScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name='TemporaryPage' component={TemporaryPage} />
+          <Stack.Screen name='Home' component={HomeScreen} />
+          <Stack.Screen name='ButtonTabShop' component={ButtonTabShop} />
+          <Stack.Screen name='Shop' component={ShopScreen} />
+          <Stack.Screen name='ButtonTabSign' component={ButtonTabSign} />
+          <Stack.Screen name='Appointment' component={AppointmentScreen} />
+          <Stack.Screen name='Details' component={DetailsScreen} />
+          <Stack.Screen name='Profile' component={ProfileScreen} />
+          <Stack.Screen name='Contact' component={ContactScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
 export default NavigatorStack;
+
+
