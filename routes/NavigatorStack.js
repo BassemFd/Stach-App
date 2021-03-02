@@ -18,7 +18,7 @@ import AppointmentScreen from '../Screens/AppointmentScreen';
 import DetailsScreen from '../Screens/DetailsScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ContactScreen from '../Screens/ContactScreen';
-import Filtres from '../Screens/Filtres';
+import Filtres from '../Screens/FiltresScreen';
 
 import {Provider} from 'react-redux'
 import {createStore, combineReducers} from 'redux'
