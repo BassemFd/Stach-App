@@ -1,23 +1,29 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView} from 'react-native';
 import { globalStyles }from '../styles/Global';
-import { Card, Icon, TextInput } from 'react-native-elements';
+import { Card} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
-import {Picker} from '@react-native-picker/picker';
+
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import PrimaryButton from '../shared/Button';
+import ModalCoiffeur from '../shared/modal';
+import ModalOption from '../shared/modalOption';
+import ModalPrestation from '../shared/modalPrestation';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
 
+// import PickerCascader  from 'react-native-picker-cascader';
 
 
-function Shop() {
+
+function Shop(props) {
+
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
-  const [selectedCoiffeur, setSelectedCoiffeur] = useState("choixCoiffeur");
   const [selectedPrestation, setSelectedPrestation] = useState("choixPrestation");
   const [selectedOptions, setSelectedOptions] = useState("choixOptions");
+  
 
 
  const hairdresser = {
@@ -42,41 +48,25 @@ function Shop() {
   }
 
   
-  // const data = [
-  //   {
-  //     imgUrl: "https://picsum.photos/id/11/200/300"
-  //   },
-  //   {
-  //     imgUrl: "https://picsum.photos/id/10/200/300"
-  //   },
-  //   {
-      
-  //     imgUrl: "https://picsum.photos/id/12/200/300"
-  //   }
-  // ]
+  
            
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  const [visible, setVisible] = useState(false);
   
  
 
   useEffect(() => {
     (async () => {
-      // let { status } = await Location.requestPermissionsAsync();
-      // if (status !== 'granted') {
-      //   setErrorMsg('Permission to access location was denied');
-      //   return;
-      // }
-
+     
       let locationGeo = await Location.geocodeAsync(hairdresser.address);
     setLocation(locationGeo)
     
   
-      console.log("LOCATION", locationGeo)
+      // console.log("LOCATION", locationGeo)
     })();
   }, []);
- console.log("LCOATINO SETTER", location)
+//  console.log("LCOATINO SETTER", location)
 
   let text = 'Waiting..';
   if (errorMsg) {
@@ -86,42 +76,47 @@ function Shop() {
   }
 
   function handleReturnButton(){
-    console.log("return")
+    console.log("return");
+    props.navigation.goBack()
   }
 
  function handleChoixDuCoiffeur(){
   console.log("handled")
+
+  props.navigation.navigate('ButtonTabSign')
   }
 
-  var priceTab = [];
-   
-  for (let y=0; y<3; y++) {
-    var euroColor = 'grey'
-    if (y<hairdresser.priceFork) {
-      euroColor='black'
+    var priceTab = [];
+    
+    for (let y=0; y<3; y++) {
+      var euroColor = 'grey'
+      if (y<hairdresser.priceFork) {
+        euroColor='black'
+      }
+      priceTab.push(
+      <FontAwesome key={y} style={{marginRight: 5}} name="euro" size={24} color={euroColor} />)
     }
-    priceTab.push(
-    <FontAwesome key={y} style={{marginRight: 5}} name="euro" size={24} color={euroColor} />)
-  }
 
-  var starTab = [];
+    var starTab = [];
 
-  var flooredStarRating = Math.round(hairdresser.starRating)
-  for (let i = 0; i<5; i++){
-   var starColor = "black"
-   if(i < flooredStarRating){
-     starColor = "gold"
-   }
-   starTab.push( <FontAwesome style={{marginRight: 5}} key={i} name="star" size={24} color={starColor} />)
-  }
+    var flooredStarRating = Math.round(hairdresser.starRating)
+    for (let i = 0; i<5; i++){
+    var starColor = "black"
+    if(i < flooredStarRating){
+      starColor = "gold"
+    }
+    starTab.push( <FontAwesome style={{marginRight: 5}} key={i} name="star" size={24} color={starColor} />)
+    }
 
-  var pictoTab = [];
-  for (let z=0; z<hairdresser.shopFeatures.length; z++) {
-    pictoTab.push(<FontAwesome key={z} name={hairdresser.shopFeatures[z]} size={24} color="black" style={{marginRight: 5}}/>)
-  }
+    var pictoTab = [];
+    for (let z=0; z<hairdresser.shopFeatures.length; z++) {
+      pictoTab.push(<FontAwesome key={z} name={hairdresser.shopFeatures[z]} size={24} color="black" style={{marginRight: 5}}/>)
+    }
 
 
-
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
 
 
@@ -215,55 +210,22 @@ function Shop() {
         </View>
 
         <Card.Divider></Card.Divider>
-       
-        <Picker
-        selectedValue={selectedCoiffeur}
-        style={{ height: 30, width: 300 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedCoiffeur(itemValue)}
-      >
-        <Picker.Item label="Choix du coiffeur" value="choixCoiffeur" />
-        <Picker.Item label="Charlotte" value="charlotte" />
-        <Picker.Item label="Yaya" value="yaya" />
-        <Picker.Item label="Raph" value="raph" />
-
-      </Picker>
         
-      <Card.Divider></Card.Divider>
-      <Picker
-        selectedValue={selectedPrestation}
-        style={{ height: 30, width: 300 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedPrestation(itemValue)}
-      >
-        <Picker.Item label="Choix de la Prestation" value="choixPrestation" />
-        <Picker.Item label="Brushin" value="brush" />
-        <Picker.Item label="Coloration" value="color" />
-        <Picker.Item label="Lissage" value="liss" />
+      <View style={{flex: 1, flexDirection: "row"}}>
+       <ModalCoiffeur></ModalCoiffeur>
+       <ModalPrestation></ModalPrestation>
+       <ModalOption></ModalOption>
+     
 
-      </Picker>
-        
-      <Card.Divider></Card.Divider>
-      <Picker
-        selectedValue={selectedOptions}
-        style={{ height: 30, width: 300 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedOptions(itemValue)}
-      >
-        <Picker.Item label="Autres Options" value="choixOptions" />
-        <Picker.Item label="PlayStation" value="ps" />
-        <Picker.Item label="Coffee" value="coffee" />
-        <Picker.Item label="Cocktail" value="cocktail" />
-
-      </Picker>
-        
-      <Card.Divider></Card.Divider>
+       </View>
       
       </Card>
     
 
     </View>
     <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 20}}>
-      <PrimaryButton title="Choisir ce Coiffeur" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuCoiffeur()}/>  
-      <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() =>handleReturnButton()}/>
-
+      <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuCoiffeur()}/>  
+      <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
       </View>
     
     </ScrollView>
@@ -272,6 +234,7 @@ function Shop() {
 }
 
 const styles = StyleSheet.create({
+
   icons: {
     flex: 1,
     flexDirection: 'row',
