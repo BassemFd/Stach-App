@@ -231,7 +231,9 @@ function HomeScreen(props) {
         let newPosition = await Location.geocodeAsync(details.formatted_address)
         
         setPosition({latitude : newPosition[0].latitude, longitude : newPosition[0].longitude})
-        setAddress(details.formatted_address)   
+        // console.log("Google Details", (details.address_components[0].long_name + " " + details.address_components[1].long_name + ", " + details.address_components[2].long_name + ", " + details.address_components[5].long_name))
+        // setAddress(details.formatted_address) 
+        setAddress((details.address_components[0].long_name + " " + details.address_components[1].long_name + ", " + details.address_components[2].long_name + ", " + details.address_components[5].long_name))   
       }}
       
       onFail={(error) => console.error(error)}
@@ -260,7 +262,7 @@ function HomeScreen(props) {
       listViewDisplayed="false"
       styles={{textInput:{backgroundColor: 'transparent', fontSize: 19,}}}
       autoFillOnNotFound={true}
-      GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
+      // GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
       debounce={300}
     />
     <View style={{marginBottom:30}}>
