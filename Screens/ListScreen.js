@@ -83,7 +83,7 @@ function List(props) {
   function navigation(shopDetails) {
     console.log(shopDetails)
     props.navigation.navigate('Shop');
-    //props.saveChoosenOffer(shopDetails);
+    props.saveChoosenOffer(shopDetails);
   }
 
   return (
