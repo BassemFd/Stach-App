@@ -173,7 +173,7 @@ function List(props) {
       
         
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 30, paddingBottom: 10}}>
-          <ButtonYaya title="Filtrer" backgroundColor="#FFCD41" ></ButtonYaya>
+          <ButtonYaya title="Filtrer" backgroundColor="#FFCD41" onPress={() => props.navigation.navigate('Filtres')}></ButtonYaya>
         </View>
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10, paddingBottom: 10}}>
           <Button title='Trier par prix' color='#4280AB' onPress={() => sortByPrice()}></Button>

@@ -15,6 +15,7 @@ export default function TemporaryPage(props) {
         <Button title="Details" onPress={() => props.navigation.navigate('Details')}/>
         <Button title="Profile" onPress={() => props.navigation.navigate('Profile')}/>
         <Button title="Contact" onPress={() => props.navigation.navigate('Contact')}/>
+        <Button title="Filtres" onPress={() => props.navigation.navigate('Filtres')}/>
     </View>
   );
 }

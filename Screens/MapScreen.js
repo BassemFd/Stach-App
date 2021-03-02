@@ -161,7 +161,7 @@ function Map(props) {
           paddingBottom: 10,
         }}
       >
-        <Button title='Filtrer' backgroundColor='#FFCD41'></Button>
+        <Button title='Filtrer' backgroundColor='#FFCD41' onPress={() => props.navigation.navigate('Filtres')}></Button>
         
       </View>
       <MapView
