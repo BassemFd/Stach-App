@@ -5,7 +5,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 
 export const SLIDER_WIDTH = Dimensions.get('window').width
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH) * 0.8
 
 const CarouselCardItem = ({ item, index }) => {
   return (
@@ -21,7 +21,7 @@ const CarouselCardItem = ({ item, index }) => {
 const styles = StyleSheet.create({
  
   image: {
-    width: 300,
+    width: ITEM_WIDTH,
     height: 300,
   },
 })

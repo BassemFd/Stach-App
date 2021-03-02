@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import { globalStyles }from '../styles/Global';
-import { Card} from 'react-native-elements';
+import { Card, ListItem} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -12,6 +12,7 @@ import ModalOption from '../shared/modalOption';
 import ModalPrestation from '../shared/modalPrestation';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
+
 
 // import PickerCascader  from 'react-native-picker-cascader';
 
@@ -118,15 +119,36 @@ function Shop(props) {
     setVisible(!visible);
   };
 
+const handleAvis = () => {
+  console.log("avis")
+}
 
+const listComment = [
+  {pseudo: "Juliette", message: "J'adore ce salon"},
+  {pseudo: "Yaya", message: "J'adore ce salon"},
+  {pseudo: "Raph", message: "J'adore ce salon"},
+  {pseudo: "Bassem", message: "J'adore ce salon"},
+
+]
+
+var listCommentItem = listComment.map((l, i) => {return (
+  <ListItem  key={i} bottomDivider>
+    <ListItem.Content >
+      <ListItem.Title>{l.pseudo}</ListItem.Title>
+      <ListItem.Subtitle>{l.message}</ListItem.Subtitle>
+    </ListItem.Content>
+  </ListItem>
+)})
 
   return (
+    
     <View style={styles.card}>
+      <Text style={[globalStyles.brand, {marginTop: 10}]}>'Stach</Text>
       <ScrollView>
       
       <View >
-        <Card >
-
+        <Card  >
+        <View style={{ alignItems: "center"}}>
         <Carousel
         layout="stack"
         layoutCardOffset={9}
@@ -138,7 +160,9 @@ function Shop(props) {
         inactiveSlideShift={0}
         onSnapToItem={(index) => setIndex(index)}
         useScrollView={true}
+        
       />
+      </View>
               <Pagination
                 dotsLength={hairdresser.data.length}
                 activeDotIndex={index}
@@ -154,7 +178,7 @@ function Shop(props) {
                 inactiveDotScale={0.6}
                 tappableDots={true}
             />
-        <Card.Title style={globalStyles.titleText}>{hairdresser.name}</Card.Title>
+        <Text style={{fontSize: 24, fontFamily: "graduate-regular", textAlign: 'center', marginBottom: 10}}>{hairdresser.name}</Text>
 
         <Text style={{marginBottom: 10}}>
           {hairdresser.description}
@@ -182,6 +206,11 @@ function Shop(props) {
             {starTab}
           
             <Text>({hairdresser.starRating})</Text>
+            </View>
+            <View style={styles.avis}>
+           
+          
+            <TouchableOpacity style={styles.avis}  onPress={()=>handleAvis()}><Text style={styles.avisText}>Voir tout les Avis</Text></TouchableOpacity>
             </View>
 
             
@@ -228,6 +257,14 @@ function Shop(props) {
       <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
       </View>
     
+      <View style={{flex: 1, alignItems: "center", backgroundColor: "#FFCD41"}}>
+        <Text style={{fontSize: 24, fontFamily: "graduate-regular"}}>Tout les avis du Salon</Text>
+        
+      </View>
+      {listCommentItem}
+
+
+
     </ScrollView>
     </View>
   );
@@ -267,6 +304,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     backgroundColor: '#FFE082',
+   
+  },
+  avis: {
+   
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: "center",
+    backgroundColor: "#FFCD41",
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 1,
+    width: 120
+  },
+  avisText: {
+    fontWeight: "bold"
   }
 });
 
