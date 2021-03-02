@@ -7,7 +7,7 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons'; 
+import {connect} from 'react-redux';
 
 var coiffeurs = [
   {
@@ -48,7 +48,7 @@ var coiffeurs = [
     },
   ]
 
-export default function Map(props) {
+function Map(props) {
 
 
   const [shopsList, setShopsList] = useState([]);
@@ -112,16 +112,14 @@ export default function Map(props) {
       }
       setRating(starsTab)
 
-
-    // console.log('element', element)
     var image = element.shopImages[0]
-    console.log('image', image)
     setUrl(image);  
   }
 
-  function naviagtion() {
+  function navigation(shopDetails) {
     props.navigation.navigate('Shop');
     setVisible(false);
+    props.saveChoosenOffer(shopDetails);
   }
 
 
@@ -174,7 +172,7 @@ export default function Map(props) {
                 </View>    
               </View> 
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB' onPress={()=> naviagtion()}/>
+                <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB' onPress={()=> navigation(shopDetails)}/>
                 <Button title='Retour' color='white' backgroundColor='#AB4242' onPress={() => setVisible(false)}/>
               </View>
         </Overlay>
@@ -207,3 +205,19 @@ const styles = StyleSheet.create({
   image: {height: 145, width: 140},
   picto: {display: 'flex', flexDirection: 'row'},
 });
+
+function mapDispatchToProps(dispatch){
+  return {
+    saveChoosenOffer: function(shopDetails){
+      dispatch({
+        type: 'selectOffer',
+        shopDetails: shopDetails,
+      })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+  )(Map);

@@ -2,16 +2,16 @@ import React, {useState} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card'
 import Button from '../shared/Button';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 
-import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+
+import {connect} from 'react-redux';
 
 
 
 
-export default function List() {
+function List(props) {
 
   // const [priceTab, setpriceTab] = useState([]);
   const [featuresTab, setFeaturesTab] = useState([]);
@@ -57,7 +57,11 @@ export default function List() {
   ]  
 
 
-  console.log(coiffeurs[0].shopImages)
+  function navigation(shopDetails) {
+    console.log(shopDetails)
+    props.navigation.navigate('Shop');
+    //props.saveChoosenOffer(shopDetails);
+  }
 
   return (
     <View style={globalStyles.container}>
@@ -96,25 +100,27 @@ export default function List() {
             
 
             return (
-              <View key={i} style={styles.card}>
-                <View style={styles.text}>
-                  <View style={styles.div1}>
-                    <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
-                    <FontAwesome name="heart-o" size={15} color="black" />
+              <TouchableOpacity onPress={()=>navigation(element)}>
+                <View key={i} style={styles.card} >
+                  <View style={styles.text}>
+                    <View style={styles.div1}>
+                      <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
+                      <FontAwesome name="heart-o" size={15} color="black" />
+                    </View>
+                    <Text style={styles.pad}>{element.shopAddress}</Text>
+                    <View style={styles.picto}>
+                      {priceTab}
+                    </View>
+                    <View style={styles.picto}>{pictoTab}</View>
+                    <View style={styles.picto}>{starsTab}</View>
                   </View>
-                  <Text style={styles.pad}>{element.shopAddress}</Text>
-                  <View style={styles.picto}>
-                    {priceTab}
-                  </View>
-                  <View style={styles.picto}>{pictoTab}</View>
-                  <View style={styles.picto}>{starsTab}</View>
-                </View>
-                <View style={styles.div2}>
-                  <Image 
-                  source={{uri: element.shopImages[0]}}
-                  style={styles.image}></Image>
-                </View>    
-              </View> 
+                  <View style={styles.div2}>
+                    <Image 
+                    source={{uri: element.shopImages[0]}}
+                    style={styles.image}></Image>
+                  </View>    
+                </View> 
+              </TouchableOpacity>
             )
           })
         : null }
@@ -144,3 +150,19 @@ const styles = StyleSheet.create({
   picto: {display: 'flex', flexDirection: 'row'},
 
 });
+
+function mapDispatchToProps(dispatch){
+  return {
+    saveChoosenOffer: function(shopDetails){
+      dispatch({
+        type: 'selectOffer',
+        shopDetails: shopDetails,
+      })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+  )(List);
