@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {connect} from 'react-redux';
 
 
 
-const Modaltest = () => {
+const Modaltest = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCoiffeur, setSelectedCoiffeur] = useState("Choix du Coiffeur");
 
 const coiffeur = [
     "Charlotte", "Raph", "Yaya", "Bassem"
 ]
-
-const coiffeurTab = coiffeur.map((choix, i)=>{
+console.log(props.shopDetails)
+const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i)=>{
     return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedCoiffeur(choix); setModalVisible(!modalVisible)}}>
     <Text style={styles.textStyle}>{choix}</Text>
 </Pressable>)
@@ -110,4 +111,13 @@ const styles = StyleSheet.create({
   
 });
 
-export default Modaltest;
+
+
+function mapStateToProps(state) {
+  return {shopDetails: state.shopDetails }
+ }
+  
+ export default connect(
+  mapStateToProps,
+  null
+ )(Modaltest);

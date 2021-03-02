@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {connect} from 'react-redux';
 
 
 
-const ModalPrestation = () => {
+const ModalPrestation = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPrestation, setSelectedPrestation] = useState("Choisir une Prestation");
 
@@ -11,7 +12,7 @@ const ModalPrestation = () => {
     "Coupe Homme + Barbe", "Coloration Femme", "Brushing", "Coupe Homme + Shampoing"
 ]
 
-const prestationTab = prestation.map((choix, i)=>{
+const prestationTab = props.shopDetails.offers.map((choix, i)=>{
     return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedPrestation(choix); setModalVisible(!modalVisible)}}>
     <Text style={styles.textStyle}>{choix}</Text>
 </Pressable>)
@@ -110,4 +111,12 @@ const styles = StyleSheet.create({
   
 });
 
-export default ModalPrestation;
+
+function mapStateToProps(state) {
+  return {shopDetails: state.shopDetails }
+ }
+  
+ export default connect(
+  mapStateToProps,
+  null
+ )(ModalPrestation);
