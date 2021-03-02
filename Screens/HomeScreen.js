@@ -33,8 +33,9 @@ export default function HomeScreen(props) {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
+  // Value to change according to different type of screen display problems
   let snapToIntervalValue = 50;
-  windowWidth < 380 ? snapToIntervalValue = 0 : null;
+  windowWidth < 380 ? snapToIntervalValue = 50 : null;
 
   // console.log(windowHeight, windowWidth)
 
@@ -298,7 +299,7 @@ export default function HomeScreen(props) {
     scrollEventThrottle={200}
     decelerationRate="fast"
     pagingEnabled
-    snapToInterval={windowWidth - 50}
+    snapToInterval={windowWidth - snapToIntervalValue}
     >
     
     <Card containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
