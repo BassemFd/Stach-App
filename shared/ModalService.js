@@ -1,20 +1,20 @@
+import { useLinkProps } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { color } from "react-native-reanimated";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import {connect} from 'react-redux';
 
-
-const Modaltest = () => {
+const Modaltest = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedService, setSelectedService] = useState("TOUTES LES PRESTATIONS");
 
 const prestation = [
   "TOUTES LES PRESTATIONS", "COUPE FEMME", "COUPE HOMME", "COLORATION"
 ]
 
 const serviceTab = prestation.map((choix, i)=>{
-    return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonW]} onPress={()=> {setSelectedService(choix); setModalVisible(!modalVisible)}}>
+    return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonW]} onPress={()=> {props.onSubmitSelection(choix); setModalVisible(!modalVisible)}}>
     <Text style={styles.textStyle}>{choix}</Text>
 </Pressable>)
 })
@@ -38,7 +38,7 @@ const serviceTab = prestation.map((choix, i)=>{
             
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => {setModalVisible(!modalVisible); setSelectedService("TOUTES LES PRESTATIONS")}}
+              onPress={() => {setModalVisible(!modalVisible); props.onSubmitSelection("TOUTES LES PRESTATIONS")}}
             >
               <Text style={styles.textStyle}>FERMER</Text>
             </Pressable>
@@ -60,7 +60,7 @@ const serviceTab = prestation.map((choix, i)=>{
         <View style={{marginRight:10, marginBottom: 10}}>
         <Icon name='angle-double-down' size={36} color="#4E342E" onPress={() => setModalVisible(true)}/>
         </View>
-        <Text style={{color : "black", fontSize:18, marginBottom: 10}}>{selectedService}</Text>
+        <Text style={{color : "black", fontSize:18, marginBottom: 10}}>{props.selectedService}</Text>
       </Pressable>
     </View>
   );
@@ -119,4 +119,19 @@ const styles = StyleSheet.create({
   
 });
 
-export default Modaltest;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitSelection: function(selection) { 
+      dispatch({type: 'chooseService', selection : selection}) 
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return {selectedService: state.selectedService};
+}
+
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(Modaltest);

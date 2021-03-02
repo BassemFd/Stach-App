@@ -9,10 +9,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
 import { Dimensions } from 'react-native';
+import {connect} from 'react-redux';
 	
 import ModalService from '../shared/ModalService';
 
-export default function HomeScreen(props) {
+function HomeScreen(props) {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -24,10 +25,11 @@ export default function HomeScreen(props) {
 
   const [selectType, setSelectType] = useState('salon')
   const [address, setAddress] = useState(null)
-  const [service, setService] = useState('toutes les prestations')
 
   const [position, setPosition] = useState({latitude : null, longitude : null});
   const [visible, setVisible] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
   
   // Adjusting slider to window screen
   const windowWidth = Dimensions.get('window').width;
@@ -48,12 +50,14 @@ export default function HomeScreen(props) {
   const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
 
     //Checking console.log to see what are user's inputs
-    console.log("service", service);
+    console.log("service", props.selectedService);
     console.log("type", selectType);
     console.log("date", date);
     console.log("address", address);
     console.log("position",position)
-    console.log("inputAddress", ref.current.getAddressText())
+    
+
+    console.log("reducers: ", props.search)
 
     //Handling colors of top buttons
     var colorButtonSalon;
@@ -137,6 +141,38 @@ export default function HomeScreen(props) {
     }
     }
 
+    // Validation button -> sending info to reducer
+
+    function validationButton(){
+      
+      if (ref.current.getAddressText() != "" && ref.current.getAddressText() != address) {
+        setErrorMessage("Veuillez resaisir votre addresse")
+      } else {
+      
+      let dateToReducer = null;
+      var zeroDay = "";
+      var zeroMonth = "";
+      date.getDate() <10 ? zeroDay="0" : null;
+      date.getMonth() <10 ? zeroMonth="0" : null; 
+      isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
+
+      let timeToReducer = null;
+      var zeroHour = "";
+      var zeroMinute = "";
+      date.getHours() <10 ? zeroHour="0" : null;
+      date.getMinutes() <10 ? zeroMinute="0" : null;
+      isTimeSelected ? timeToReducer = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes() : null;
+
+      let serviceToReducer = null;
+      props.selectedService != "TOUTES LES PRESTATIONS" ? serviceToReducer = props.selectedService : null;
+
+      let experienceToReducer = null;
+
+      props.onSubmitSearch(selectType, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
+      }
+    }
+
+    // console.log("inputAddress", ref.current.getAddressText())
   return (
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
   <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
@@ -171,6 +207,7 @@ export default function HomeScreen(props) {
       fetchDetails={true}
       placeholder="SAISIR UNE ADRESSE"
       onPress={async (data, details = null) => {
+        setErrorMessage("")
         let newPosition = await Location.geocodeAsync(details.formatted_address)
         
         setPosition({latitude : newPosition[0].latitude, longitude : newPosition[0].longitude})
@@ -209,6 +246,7 @@ export default function HomeScreen(props) {
     <View style={{marginBottom:30}}>
     <Icon name='map-marker' size={36} color="#4E342E" onPress={locateMe}/>
     </View>
+    
     <Overlay isVisible={visible} >
       <View style={{flex:0.1, alignItems:'center'}}>
     <Text>Localisation en cours...</Text>
@@ -217,7 +255,7 @@ export default function HomeScreen(props) {
     </Overlay>
 
     </View>
-
+    <Text style={{color:"red"}}>{errorMessage}</Text>
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUAND ?</Text>
     <TouchableOpacity onPress={async()=>{await setMode('date'); showDatePicker()}}>
     <Input
@@ -334,3 +372,20 @@ export default function HomeScreen(props) {
   </SafeAreaView>    
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitSearch: function(salonOrHome, date, hour, address, latitude, longitude, service, experience) { 
+      dispatch({type: 'createSearch', salonOrHome : salonOrHome, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, service : service, experience : experience}) 
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return {search: state.search, selectedService: state.selectedService};
+}
+
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(HomeScreen);
