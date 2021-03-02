@@ -18,8 +18,8 @@ export default function SignIn() {
   const [signInPassword, setSignInPassword] = useState('');
 
   const handleSubmitSignin = async () => {
-    console.log(`${IP_ADDRESS}/users/signIn`);
-    // try {
+    console.log(signInEmail + ' @,', signInPassword + ' **');
+
     const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,17 +28,9 @@ export default function SignIn() {
         password: signInPassword,
       }),
     });
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     console.log(responseJson);
-    //     return responseJson;
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+
     const body = await data.json();
-    console.log('Test');
-    console.log(body, 'body');
+    console.log(body.error, 'body');
 
     // console.log(JSON.parse(data), 'ss');
     // } catch (error) {
@@ -51,6 +43,11 @@ export default function SignIn() {
     // } else {
     //   setErrorsSignin(body.error);
     // }
+  };
+
+  const handleBlur = (e) => {
+    setSignInEmail(e.target.value);
+    setSignInPassword(e.target.value);
   };
 
   return (
@@ -86,6 +83,7 @@ export default function SignIn() {
             style={globalStyles.input}
             placeholder='Email'
             onChangeText={(value) => setSignInEmail(value)}
+            onBlur={() => handleBlur()}
           />
           {/* <Text style={globalStyles.errorText}>Error</Text> */}
           <TextInput
