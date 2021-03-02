@@ -93,7 +93,7 @@ export default function List() {
               starsTab.push(<FontAwesome key={j} style={{marginRight: 5}} name="star" size={24} color={color} />)
             }
 
-            console.log('image', element.shopImages[0])
+            
 
             return (
               <View key={i} style={styles.card}>
