@@ -68,9 +68,6 @@ export default function SignIn() {
     // }
   };
 
-  console.log(emailError, 'res');
-  console.log(passwordError, 'er');
-
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={globalStyles.container}>

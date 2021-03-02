@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
@@ -14,10 +16,52 @@ import CustomButton from '../shared/Button';
 import { IP_ADDRESS } from '@env';
 
 export default function SignUp() {
-  console.log(IP_ADDRESS);
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPhoneNumber, setSignUpPhoneNumber] = useState('');
+  const [signUpFirstName, setSignUpFirstName] = useState('');
+  const [signUpLastName, setSignUpLastName] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+
+  const [passwordError, setPasswordError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [firstNameError, setFirstNameError] = useState(null);
+  const [lastNameError, setLastNameError] = useState(null);
+  const [phoneNumberError, setPhoneNumberError] = useState(null);
+  const [inputError, setInputError] = useState(null);
+
+  const handleSubmitSignin = async () => {
+    const data = await fetch(`${IP_ADDRESS}/users/signUp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName: signUpFirstName,
+        lastName: signUpLastName,
+        phoneNumber: signUpPhoneNumber,
+        email: signUpEmail,
+        password: signUpPassword,
+      }),
+    });
+
+    const body = await data.json();
+
+    if (!body.result) {
+      setEmailError(body.emaiExist);
+      setPasswordError(body.invalidPassword);
+    }
+
+    if (body.error) {
+      setInputError("Un des champs n'est pas valide");
+    } else {
+      setInputError(null);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={globalStyles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={globalStyles.container}
+      >
         <Text style={globalStyles.brand}>'Stach</Text>
         <View style={globalStyles.hr}></View>
         <View style={globalStyles.socialNetwork}>
@@ -44,33 +88,49 @@ export default function SignUp() {
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
           </View>
-          <TextInput style={globalStyles.input} placeholder='Prénom' />
-          {/* <Text style={globalStyles.errorText}>Error</Text> */}
-          <TextInput style={globalStyles.input} placeholder='Nom' />
-          <Text style={globalStyles.errorText}>Error</Text>
+          <TextInput
+            style={globalStyles.input}
+            placeholder='Prénom'
+            onChangeText={(value) => setSignUpFirstName(value)}
+          />
+          <TextInput
+            style={globalStyles.input}
+            placeholder='Nom'
+            onChangeText={(value) => setSignUpLastName(value)}
+          />
           <TextInput
             style={globalStyles.input}
             secureTextEntry={true}
             placeholder='Password'
+            onChangeText={(value) => setSignUpPassword(value)}
           />
-          {/* <Text style={globalStyles.errorText}>Error</Text> */}
           <TextInput
             style={globalStyles.input}
             keyboardType='numeric'
             placeholder='Téléphone'
+            onChangeText={(value) => setSignUpPhoneNumber(value)}
           />
-          {/* <Text style={globalStyles.errorText}>Error</Text> */}
-          <TextInput style={globalStyles.input} placeholder='Email' />
-          {/* <Text style={globalStyles.errorText}>Error</Text> */}
+          <TextInput
+            style={globalStyles.input}
+            placeholder='Email'
+            onChangeText={(value) => setSignUpEmail(value)}
+          />
+          {emailError !== null && (
+            <Text style={globalStyles.errorText}>{emailError}</Text>
+          )}
+          {inputError !== null && (
+            <Text style={globalStyles.errorText}>{inputError}</Text>
+          )}
           <View style={styles.mtButton}>
             <CustomButton
               title='Valider'
               color='#fff'
               backgroundColor='#4280AB'
+              onPress={() => handleSubmitSignin()}
             />
           </View>
         </ScrollView>
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
