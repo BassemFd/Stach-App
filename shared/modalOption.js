@@ -8,9 +8,9 @@ const ModalOption = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Expérience ++");
 
-const experience = [
-    "PlayStation", "Café avec les copains", "Coupe & Cocktail", "Détente, massage, spa"
-]
+// const experience = [
+//     "PlayStation", "Café avec les copains", "Coupe & Cocktail", "Détente, massage, spa"
+// ]
 
 const experienceTab = props.shopDetails.packages.map((choix, i)=>{
     return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedOption(choix); setModalVisible(!modalVisible)}}>

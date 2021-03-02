@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import { globalStyles }from '../styles/Global';
-import { Card, ListItem} from 'react-native-elements';
+import { Card, ListItem, Badge} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
 import PrimaryButton from '../shared/Button';
 import ModalCoiffeur from '../shared/modal';
 import ModalOption from '../shared/modalOption';
@@ -20,6 +19,10 @@ import {connect} from 'react-redux';
 
 
 function Shop(props) {
+
+
+ 
+
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
@@ -137,6 +140,32 @@ var listCommentItem = listComment.map((l, i) => {return (
   </ListItem>
 )})
 
+
+const hours =  [{mon: {open: 570, close: 1080 }}]
+  console.log(hours[0].mon.close)
+
+const convertMinsToTime = (mins) => {
+  let hours = Math.floor(mins / 60);
+  let minutes = mins % 60;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  return `${hours}:${minutes}`;
+}
+console.log("CONVERTER", convertMinsToTime(1000))
+
+let hoursTab;
+let hoursArr = [];
+  for(let i = 570; i <= 1080; i+=30){
+  
+    
+ 
+    hoursArr.push(i)
+    console.log("H", hoursArr);
+    hoursTab = hoursArr.map((number, i)=>{
+      return <TouchableOpacity key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(number)}</Text></TouchableOpacity>
+    })
+  }
+
+
   return (
     
     <View style={styles.card}>
@@ -245,6 +274,15 @@ var listCommentItem = listComment.map((l, i) => {return (
 
        </View>
       
+      </Card>
+      <Card >
+        <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
+        <TouchableOpacity style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>9:00</Text></TouchableOpacity>
+        {hoursTab}
+       
+      
+       
+        </View>
       </Card>
     
 
