@@ -33,6 +33,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
     "react-native-google-places-autocomplete": "^2.1.3",
     "react-native-modal-datetime-picker": "^9.2.0",
     "react-native-modal-picker": "0.0.16",

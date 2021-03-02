@@ -1,20 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card'
 import Button from '../shared/Button';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import * as Location from 'expo-location';
 
-import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+
+import {connect} from 'react-redux';
 
 
 
 
-export default function List() {
+function List(props) {
 
   // const [priceTab, setpriceTab] = useState([]);
   const [featuresTab, setFeaturesTab] = useState([]);
+  const [shopsList, setShopsList] = useState([])
 
 
   var coiffeurs = [
@@ -56,8 +58,33 @@ export default function List() {
       },
   ]  
 
+  useEffect(() => {
+    async function getLocation() {
+        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        // if (status === 'granted') {
+        //   Location.watchPositionAsync({ distanceInterval: 2 },
+        //     (location) => {
+        //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
+        //     }
+        //   );
+        // }
+        var shopsTab = [];
+        for (let i=0; i<coiffeurs.length; i++) {
+          let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
+          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
+          shopsTab.push(shop);
+        }
+        setShopsList(shopsTab);
+      }
+      getLocation();
+  }, []);
 
-  console.log(coiffeurs[0].shopImages)
+
+  function navigation(shopDetails) {
+    console.log(shopDetails)
+    props.navigation.navigate('Shop');
+    //props.saveChoosenOffer(shopDetails);
+  }
 
   return (
     <View style={globalStyles.container}>
@@ -68,8 +95,8 @@ export default function List() {
           <Button title="Trier" backgroundColor="#FFCD41"></Button>
         </View>
 
-        {coiffeurs.length > 0 ?
-          coiffeurs.map((element, i) => {
+        {shopsList.length > 0 ?
+          shopsList.map((element, i) => {
             var priceTab = [];
             for (let y=0; y<3; y++) {
               var color = 'white'
@@ -93,28 +120,29 @@ export default function List() {
               starsTab.push(<FontAwesome key={j} style={{marginRight: 5}} name="star" size={24} color={color} />)
             }
 
-            console.log('image', element.shopImages[0])
-
+            
             return (
-              <View key={i} style={styles.card}>
-                <View style={styles.text}>
-                  <View style={styles.div1}>
-                    <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
-                    <FontAwesome name="heart-o" size={15} color="black" />
+              <TouchableOpacity onPress={()=>navigation(element)}>
+                <View key={i} style={styles.card} >
+                  <View style={styles.text}>
+                    <View style={styles.div1}>
+                      <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
+                      <FontAwesome name="heart-o" size={15} color="black" />
+                    </View>
+                    <Text style={styles.pad}>{element.shopAddress}</Text>
+                    <View style={styles.picto}>
+                      {priceTab}
+                    </View>
+                    <View style={styles.picto}>{pictoTab}</View>
+                    <View style={styles.picto}>{starsTab}</View>
                   </View>
-                  <Text style={styles.pad}>{element.shopAddress}</Text>
-                  <View style={styles.picto}>
-                    {priceTab}
-                  </View>
-                  <View style={styles.picto}>{pictoTab}</View>
-                  <View style={styles.picto}>{starsTab}</View>
-                </View>
-                <View style={styles.div2}>
-                  <Image 
-                  source={{uri: element.shopImages[0]}}
-                  style={styles.image}></Image>
-                </View>    
-              </View> 
+                  <View style={styles.div2}>
+                    <Image 
+                    source={{uri: element.shopImages[0]}}
+                    style={styles.image}></Image>
+                  </View>    
+                </View> 
+              </TouchableOpacity>
             )
           })
         : null }
@@ -144,3 +172,19 @@ const styles = StyleSheet.create({
   picto: {display: 'flex', flexDirection: 'row'},
 
 });
+
+function mapDispatchToProps(dispatch){
+  return {
+    saveChoosenOffer: function(shopDetails){
+      dispatch({
+        type: 'selectOffer',
+        shopDetails: shopDetails,
+      })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+  )(List);
