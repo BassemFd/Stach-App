@@ -48,7 +48,7 @@ var coiffeurs = [
     },
   ]
 
-export default function Map() {
+export default function Map(props) {
 
 
   const [shopsList, setShopsList] = useState([]);
@@ -119,8 +119,10 @@ export default function Map() {
     setUrl(image);  
   }
 
-
-  
+  function naviagtion() {
+    props.navigation.navigate('Shop');
+    setVisible(false);
+  }
 
 
   return (
@@ -172,7 +174,7 @@ export default function Map() {
                 </View>    
               </View> 
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB'/>
+                <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB' onPress={()=> naviagtion()}/>
                 <Button title='Retour' color='white' backgroundColor='#AB4242' onPress={() => setVisible(false)}/>
               </View>
         </Overlay>
