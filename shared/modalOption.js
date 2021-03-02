@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {connect} from 'react-redux';
 
 
 
-const ModalOption = () => {
+const ModalOption = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Expérience ++");
 
@@ -11,7 +12,7 @@ const experience = [
     "PlayStation", "Café avec les copains", "Coupe & Cocktail", "Détente, massage, spa"
 ]
 
-const experienceTab = experience.map((choix, i)=>{
+const experienceTab = props.shopDetails.packages.map((choix, i)=>{
     return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedOption(choix); setModalVisible(!modalVisible)}}>
     <Text style={styles.textStyle}>{choix}</Text>
 </Pressable>)
@@ -111,4 +112,12 @@ const styles = StyleSheet.create({
   
 });
 
-export default ModalOption;
+
+function mapStateToProps(state) {
+  return {shopDetails: state.shopDetails }
+ }
+  
+ export default connect(
+  mapStateToProps,
+  null
+ )(ModalOption);
