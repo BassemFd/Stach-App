@@ -152,7 +152,7 @@ function List(props) {
 
   function navigation(shopDetails) {
     props.navigation.navigate('Shop');
-    props.saveChoosenOffer(shopDetails);
+    props.saveChosenOffer(shopDetails);
   }
 
   function sortByPrice() {
@@ -167,6 +167,7 @@ function List(props) {
   console.log(shopsList);
 
   return (
+    
     <View style={globalStyles.container}>
       
         
@@ -177,7 +178,7 @@ function List(props) {
           <Button title='Trier par prix' color='#4280AB' onPress={() => sortByPrice()}></Button>
           <Button title='Trier par note' color='#4280AB'></Button>
         </View>
-
+        <ScrollView>
         
 
         {shopsList.length > 0 ?
@@ -211,7 +212,7 @@ function List(props) {
            
               
               <TouchableOpacity onPress={()=>navigation(element)}>
-                <View key={i} style={styles.card} >
+                <View key={i} style={styles.card} onPress={()=>navigation(element)}>
                   <View style={styles.text}>
                     <View style={styles.div1}>
                       <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
@@ -231,14 +232,16 @@ function List(props) {
                   </View>    
                 </View> 
               </TouchableOpacity>
+              
 
            
               
             )
           })
         : null }
-
+    </ScrollView>
     </View>
+    
   );
 }
 
@@ -266,7 +269,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch){
   return {
-    saveChoosenOffer: function(shopDetails){
+    saveChosenOffer: function(shopDetails){
       dispatch({
         type: 'selectOffer',
         shopDetails: shopDetails,
