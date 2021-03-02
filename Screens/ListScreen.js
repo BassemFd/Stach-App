@@ -34,7 +34,7 @@ function List(props) {
     atHome: false,
     appointments: [],
     priceFork: 1,
-    rating: 4,
+    rating: 4.2,
     },
     {
       shopName: 'Coiff',
@@ -52,7 +52,7 @@ function List(props) {
       atHome: true,
       appointments: [],
       priceFork: 2,
-      rating: 2,
+      rating: 2.1,
       },
       {
         shopName: 'Yaya',
@@ -70,7 +70,7 @@ function List(props) {
         atHome: true,
         appointments: [],
         priceFork: 3,
-        rating: 2,
+        rating: 2.8,
         },
         {
           shopName: 'Raf',
@@ -88,7 +88,7 @@ function List(props) {
           atHome: true,
           appointments: [],
           priceFork: 1,
-          rating: 2,
+          rating: 1.7,
           },
           {
             shopName: 'Bassem',
@@ -106,10 +106,10 @@ function List(props) {
             atHome: true,
             appointments: [],
             priceFork: 2,
-            rating: 2,
+            rating: 3.8,
             },
             {
-              shopName: 'Bassem',
+              shopName: 'Hello',
               shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
               shopAddress: '23 rue Legendre, 75017, Paris',
               shopPhone: '0200000000',
@@ -124,7 +124,7 @@ function List(props) {
               atHome: true,
               appointments: [],
               priceFork: 3,
-              rating: 2,
+              rating: 2.6,
               },
   ]  
 
@@ -156,15 +156,16 @@ function List(props) {
   }
 
   function sortByPrice() {
-    var array1 = shopsList.filter(item => item.priceFork === 1);
-    var array2 = shopsList.filter(item => item.priceFork === 2);
-    var array3 = shopsList.filter(item => item.priceFork === 3);
-    var concat1 = array1.concat(array2);
-    var concat2 = concat1.concat(array3)
-    setShopsList(concat2);
+    var shopListCopy = [...shopsList];
+    var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork > b.priceFork))
+    setShopsList(sortByPrice);
   }
 
-  console.log(shopsList);
+  function sortByNote() {
+    var shopListCopy = [...shopsList]
+    var sortByNote = shopListCopy.sort((a, b) => (a.rating < b.rating))
+    setShopsList(sortByNote)
+  }
 
   return (
     
@@ -176,7 +177,7 @@ function List(props) {
         </View>
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10, paddingBottom: 10}}>
           <Button title='Trier par prix' color='#4280AB' onPress={() => sortByPrice()}></Button>
-          <Button title='Trier par note' color='#4280AB'></Button>
+          <Button title='Trier par note' color='#4280AB' onPress={() => sortByNote()}></Button>
         </View>
         <ScrollView>
         
@@ -209,8 +210,6 @@ function List(props) {
             
             return (
 
-           
-              
               <TouchableOpacity onPress={()=>navigation(element)}>
                 <View key={i} style={styles.card} onPress={()=>navigation(element)}>
                   <View style={styles.text}>
@@ -232,10 +231,7 @@ function List(props) {
                   </View>    
                 </View> 
               </TouchableOpacity>
-              
 
-           
-              
             )
           })
         : null }
