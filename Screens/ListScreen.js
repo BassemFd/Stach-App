@@ -146,6 +146,10 @@ function List(props) {
         //     }
         //   );
         // }
+
+
+
+
         var shopsTab = [];
         for (let i=0; i<coiffeurs.length; i++) {
           let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
@@ -281,6 +285,8 @@ function mapDispatchToProps(dispatch){
     }
   }
 }
+
+
 
 export default connect(
   null,

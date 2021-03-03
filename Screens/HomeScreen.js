@@ -194,9 +194,9 @@ function HomeScreen(props) {
       let timeToReducer = null;
       var zeroHour = "";
       var zeroMinute = "";
-      date.getHours() <10 ? zeroHour="0" : null;
+      date.getHours() <11 ? zeroHour="0" : null;
       date.getMinutes() <10 ? zeroMinute="0" : null;
-      isTimeSelected ? timeToReducer = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes() : null;
+      isTimeSelected ? timeToReducer = "" + zeroHour + (date.getHours()-1) +":"+ zeroMinute + date.getMinutes() : null;
 
       let serviceToReducer = null;
       props.selectedService != "TOUTES LES PRESTATIONS" ? serviceToReducer = props.selectedService : null;
@@ -208,7 +208,11 @@ function HomeScreen(props) {
       }    
 
       props.onSubmitSearch(selectType, completeDateToReducer, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
+      
       props.navigation.navigate('ButtonTabShop');
+      if (isOverlayVisible) {
+        setIsOverlayVisible(!isOverlayVisible)
+      }
       }
     }
 
