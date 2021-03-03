@@ -18,6 +18,9 @@ import {connect} from 'react-redux';
 
 function Shop(props) {
 
+
+
+
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(false);
@@ -149,6 +152,22 @@ const convertMinsToTime = (mins) => {
 
 let hoursTab;
 let hoursArr = [];
+let appointmentTime = []
+
+for(let z = 0; z < props.shopDetails.appointments.length; z++){
+
+  let startTime = new Date(props.shopDetails.appointments[z].startDate)
+  let hourApp = startTime.getHours() - 1
+  let minuteApp = startTime.getMinutes()
+ 
+  minuteApp = minuteApp < 10 ? '0' + minuteApp : minuteApp;
+  let formatedTime = hourApp + ":" + minuteApp;
+ appointmentTime.push(formatedTime) 
+
+}
+console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
+
+
   for(let i = 570; i <= 1080; i+=30){
     hoursArr.push(i)
     hoursTab = hoursArr.map((hour, i)=>{
@@ -156,16 +175,31 @@ let hoursArr = [];
         if(chosenHour === hour){
           color = '#4280AB'
         } 
-
-      return <TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
-   
+        let interTab = []
+      
+        let isFull = 0;
+        for(let y = 0; y < appointmentTime.length; y++){
+          
+        if(appointmentTime[y] == convertMinsToTime(hour)){
+        
+         isFull++;        
+        } 
+        
+      }
+      if(isFull >= props.shopDetails.shopEmployees.length){
+        
+          interTab.push(
+            <TouchableOpacity disabled={true} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: "grey", borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>)
+      }
+      else {
+        interTab.push(<TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>)
+      }
+      return interTab
   })
     
   }
 
-  // console.log("Hairdresser from shop screen:", props.hairdresser)
-  // console.log("Prestation from Shop Screen:", props.prestation)
-  // console.log("Experience from Shop Screen:", props.experience)
+
 
   //*DATETIME PICKER ****************************************
 

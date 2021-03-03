@@ -150,7 +150,7 @@ function List(props) {
         body: JSON.stringify({data : props.search}) 
       });
       let body = await shopsFetch.json();
-      console.log("shoplist FFFFFFFFFFFFFFFFff", body)
+      // console.log("shoplist FFFFFFFFFFFFFFFFff", body)
       setShopsData(body.filteredDistanceShopsList)
       
     } 
