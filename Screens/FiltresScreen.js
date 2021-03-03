@@ -27,18 +27,20 @@ export default function Filtres() {
   const [servicesVisible, setServicesVisible] = useState(false);
   const [services, setServices] = useState(null);
 
+  const [priceVisible, setPriceVisible] = useState(false);
+  const [price, setPrice] = useState(null);
   
 
 
 
   // QUAND 
-  function everyQuand() {
+  function closeQuand() {
     setQuandVisible(false);
     setQuand(null);
   }
 
   //HEURE
-  function everyHeure() {
+  function closeHeure() {
     setHeureVisible(false);
     setHeure(null);
   }
@@ -46,18 +48,18 @@ export default function Filtres() {
   // QUOI
   var coupesTab = coupes.map((element, i) => {
     return(
-      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => closeQuoi(element)}>
+      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => ChosenQuoi(element)}>
         <Text style={styles.textStyle}>{element}</Text>
     </Pressable>
     )
   })
   
-  function closeQuoi(element) {
+  function ChosenQuoi(element) {
     setQuoi(element)
     setQuoiVisible(false)
   }
 
-  function everyQuoi() {
+  function closeQuoi() {
     setQuoiVisible(false);
     setQuoi(null);
   }
@@ -66,20 +68,40 @@ export default function Filtres() {
 
   var pictosTab = pictos.map((element, i) => {
     return(
-      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => closeServices(element)}>
+      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => ChosenServices(element)}>
         <FontAwesome name={element} size={15} color='black' style={styles.pad} />
       </Pressable>
     )
   })
 
-  function closeServices(element) {
+  function ChosenServices(element) {
     setServices(element)
     setServicesVisible(false)
   }
 
-  function everyServices() {
+  function closeServices() {
     setServicesVisible(false)
+    setServices(null);
   }
+
+  //PRIX
+
+  function closePrice() {
+    setPriceVisible(false);
+    setPrice(null)
+  }
+
+  var pricePicto1 = 
+  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+
+  var pricePicto2 = 
+  
+
+  var pricePicto = null;
+  if (price === 1) {
+    pricePicto = 
+  }
+
 
   
 
@@ -125,7 +147,12 @@ export default function Filtres() {
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-          <Text style={styles.title}>PRIX ?</Text>
+          <TouchableOpacity onPress={() => setPriceVisible(true)}>
+            <Text style={styles.title}>PRIX ?</Text>
+            <FontAwesome name={pricePicto} size={25} color='black' style={{padding: 5}} />
+            <Card.Divider></Card.Divider>
+          </TouchableOpacity>
+
           <Text style={globalStyles.paragraph}>€€€</Text>
           <Text style={styles.title}>EXPERIENCES ?</Text>
           <Text style={globalStyles.paragraph}>BIEN ETRE</Text>
@@ -133,30 +160,56 @@ export default function Filtres() {
 
         <Overlay isVisible={quandVisible}>
           <View style={{display: 'flex', alignItems: 'flex-end'}}>
-              <EvilIcons name="close" size={24} color="black" onPress={() => everyQuand()} style={{margin: 5}}/>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeQuand()} style={{margin: 5}}/>
             </View>
         </Overlay>
 
         <Overlay isVisible={heureVisible}>
           <View style={{display: 'flex', alignItems: 'flex-end'}}>
-              <EvilIcons name="close" size={24} color="black" onPress={() => everyHeure()} style={{margin: 5}}/>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeHeure()} style={{margin: 5}}/>
             </View>
         </Overlay>
 
         <Overlay isVisible={quoiVisible}>
             <View style={{display: 'flex', alignItems: 'flex-end'}}>
-              <EvilIcons name="close" size={24} color="black" onPress={() => everyQuoi()} style={{margin: 5}}/>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeQuoi()} style={{margin: 5}}/>
             </View>
             {coupesTab}
         </Overlay>
 
         <Overlay isVisible={servicesVisible}>
             <View style={{display: 'flex', alignItems: 'flex-end'}}>
-              <EvilIcons name="close" size={24} color="black" onPress={() => everyServices()} style={{margin: 5}}/>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeServices()} style={{margin: 5}}/>
             </View>
             <View style={{display: 'flex', flexDirection: 'row'}}>
               {pictosTab}
             </View>
+        </Overlay>
+
+        <Overlay isVisible={priceVisible}>
+          
+            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closePrice()} style={{margin: 5}}/>
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => setPrice(1)}>
+                <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+              </Pressable>
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => setPrice(2)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+                </View>
+              </Pressable>
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => setPrice(3)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+                </View>
+              </Pressable>
+            </View>
+          
         </Overlay>
 
     </View>
