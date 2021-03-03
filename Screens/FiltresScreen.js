@@ -142,7 +142,7 @@ export default function Filtres() {
 
   var starsTab = []
   for (let i=0; i<note; i++) {
-    starsTab.push(<FontAwesome key={i} style={{marginRight: 5}} name="star" size={24} color='gold' />)
+    starsTab.push(<FontAwesome key={i} style={{marginRight: 5}} name="star" size={24} color='#AB4242' />)
   }
 
   function chosenNote(note) {

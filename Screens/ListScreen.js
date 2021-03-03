@@ -4,7 +4,7 @@ LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
 
-
+import {IP_ADDRESS} from '@env';
 
 import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
@@ -21,6 +21,7 @@ import {connect} from 'react-redux';
 
 
 function List(props) {
+
 
   const [shopsList, setShopsList] = useState([])
 
