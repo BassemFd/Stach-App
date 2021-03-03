@@ -36,6 +36,9 @@ export default function Filtres() {
   const [experiencesVisible, setExperiencesVisible] = useState(false);
   const [experiences, setExperiences] = useState(null);
 
+  const [noteVisible, setNoteVisible] = useState(false);
+  const [note, setNote] = useState(null);
+
   // ajouter use effect avec valeur par defaut du reducer reçu
 
   // QUAND 
@@ -134,11 +137,23 @@ export default function Filtres() {
     setExperiencesVisible(false);
     setExperiences(null);
   }
-// faire un if else experience rempli = quoi null et inverse
-
-
 
   //RATING
+
+  var starsTab = []
+  for (let i=0; i<note; i++) {
+    starsTab.push(<FontAwesome key={i} style={{marginRight: 5}} name="star" size={24} color='gold' />)
+  }
+
+  function chosenNote(note) {
+    setNote(note);
+    setNoteVisible(false);
+  }
+  
+  function closeNote() {
+    setNoteVisible(false);
+    setNote(null);
+  }
 
   return (
     <View style={globalStyles.container}>
@@ -187,7 +202,13 @@ export default function Filtres() {
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-          <Text style={globalStyles.paragraph}>BIEN ETRE</Text>
+          <TouchableOpacity onPress={() => setNoteVisible(true)}>
+            <Text style={styles.title}>NOTE ?</Text>
+            <Text style={globalStyles.paragraph}>{starsTab}</Text>
+            <Card.Divider></Card.Divider>
+          </TouchableOpacity>
+
+
         </View>
 
         <Overlay isVisible={quandVisible}>
@@ -232,6 +253,63 @@ export default function Filtres() {
               <EvilIcons name="close" size={24} color="black" onPress={() => closeExperiences()} style={{margin: 5}}/>
             </View>
             {experiencesTab}
+        </Overlay>
+
+        <Overlay isVisible={noteVisible}>
+            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeNote()} style={{margin: 5}}/>
+            </View >
+            
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(1)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <Text>Minimum une étoile</Text>
+                </View>
+              </Pressable>
+
+
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(2)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <Text>Minimum deux étoiles</Text>
+                </View>
+              </Pressable>
+
+
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(3)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <Text>Minimum trois étoiles</Text>
+                </View>
+              </Pressable>
+
+
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(4)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <Text>Minimum quatres étoiles</Text>
+                </View>
+              </Pressable>
+
+
+              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(5)}>
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
+                  <Text>Minimum cinq étoiles</Text>
+                </View>
+              </Pressable>
+            
+            
         </Overlay>
 
     </View>
