@@ -53,12 +53,12 @@ function HomeScreen(props) {
   }, []);
 
     //Checking console.log to see what are user's inputs
-    console.log("service", props.selectedService);
-    console.log("type", selectType);
-    console.log("date", date);
-    console.log("address", address);
-    console.log("position",position)
-    console.log("reducers: ", props.search)
+    // console.log("service", props.selectedService);
+    // console.log("type", selectType);
+    // console.log("date", date);
+    // console.log("address", address);
+    // console.log("position",position)
+    // console.log("reducers: ", props.search)
 
     //Overlay states to display
     const [dataOverlay, setDataOverlay] = useState({})

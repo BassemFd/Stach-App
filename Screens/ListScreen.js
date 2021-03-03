@@ -78,9 +78,10 @@ function List(props) {
         body: JSON.stringify({data : props.search}) 
       });
       let body = await shopsFetch.json();
-      console.log("shoplist FFFFFFFFFFFFFFFFff", body)
-      setShopsData(body.filteredDistanceShopsList)
-      
+      // console.log("shoplist FFFFFFFFFFFFFFFFff", body)
+      setShopsData(body.filteredDistanceShopsList);
+      var shopsDataCopy = body.filteredDistanceShopsList
+      props.saveShopsdata(shopsDataCopy);
     } 
     getShops()
 
@@ -232,6 +233,12 @@ function mapDispatchToProps(dispatch){
       dispatch({
         type: 'selectOffer',
         shopDetails: shopDetails,
+      })
+    },
+    saveShopsdata: function(shopsData) {
+      dispatch({
+        type: 'saveShopsData',
+        shopsData: shopsData,
       })
     }
   }
