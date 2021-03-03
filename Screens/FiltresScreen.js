@@ -23,12 +23,15 @@ function Filtres(props) {
   const [adress, setAdress] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [completeDate, setCompleteDate] = useState(null);
+  const [date, setDate] = useState(null);
+  const [hour, setHour] = useState(null);
 
-  const [quandVisible, setQuandVisible] = useState(false);
-  const [quand, setQuand] = useState(null);
+  // const [quandVisible, setQuandVisible] = useState(false);
+  // const [quand, setQuand] = useState(null);
 
-  const [heureVisible, setHeureVisible] = useState(false);
-  const [heure, setHeure] = useState(null)
+  // const [heureVisible, setHeureVisible] = useState(false);
+  // const [heure, setHeure] = useState(null)
   
   const [quoiVisible, setQuoiVisible] = useState(false);
   const [quoi, setQuoi] = useState(null);
@@ -49,16 +52,16 @@ function Filtres(props) {
   // ajouter use effect avec valeur par defaut du reducer reçu
 
   // QUAND 
-  function closeQuand() {
-    setQuandVisible(false);
-    setQuand(null);
-  }
+  // function closeQuand() {
+  //   setQuandVisible(false);
+  //   setQuand(null);
+  // }
 
   //HEURE
-  function closeHeure() {
-    setHeureVisible(false);
-    setHeure(null);
-  }
+  // function closeHeure() {
+  //   setHeureVisible(false);
+  //   setHeure(null);
+  // }
 
   // QUOI
   var coupesTab = coupes.map((element, i) => {
@@ -163,21 +166,22 @@ function Filtres(props) {
   }
 
   //USE EFFECT ENTREE
-  // useEffect( () => {
-  //   console.log('RECHERCHE', props.search);
-  //   setQuand(props.search.date);
-  //   setHeure(props.search.hour);
-  //   setQuoi(props.search.offer);
-  //   setExperiences(props.search.experiences);
-  //   setSalonOrHome(props.search.salonOrHome);
-  //   setAdress(props.search.address);
-  //   setLatitude(props.search.latitude)
-  //   setLongitude(props.search.longitude)
-  // }, []);
+  useEffect( () => {
+    console.log('RECHERCHE', props.search);
+    setDate(props.search.date);
+    setHour(props.search.hour);
+    setCompleteDate(props.search.completeDate);
+    setQuoi(props.search.offer);
+    setExperiences(props.search.experiences);
+    setSalonOrHome(props.search.salonOrHome);
+    setAdress(props.search.address);
+    setLatitude(props.search.latitude)
+    setLongitude(props.search.longitude)
+  }, []);
 
   //VALIDATION
   function validation() {
-    // addToSearch(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude);
+    props.addToSearch(date, hour, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude, completeDate);
     props.navigation.navigate('ButtonTabShop')
   }
 
@@ -186,7 +190,7 @@ function Filtres(props) {
         <Text style={globalStyles.brand}>Filtres</Text>
         <View >
 
-          <TouchableOpacity  onPress={() => setQuandVisible(true)}>
+          {/* <TouchableOpacity  onPress={() => setQuandVisible(true)}>
             <Text style={styles.title}>QUAND ?</Text>
             <View style={styles.row}>
               <Icon name='calendar' size={24} color="#4E342E" style={{margin: 5}}/>
@@ -201,7 +205,7 @@ function Filtres(props) {
               <Text style={globalStyles.paragraph}>{heure}</Text>
             </View>
             <Card.Divider></Card.Divider>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity onPress={() => setQuoiVisible(true)}>
             <Text style={styles.title}>QUOI ?</Text>
@@ -237,17 +241,17 @@ function Filtres(props) {
           <Button title='Valider' onPress={() => validation()} color='white' backgroundColor='#4280AB'></Button>
         </View>
 
-        <Overlay isVisible={quandVisible}>
+        {/* <Overlay isVisible={quandVisible}>
           <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeQuand()} style={{margin: 5}}/>
             </View>
-        </Overlay>
+        </Overlay> */}
 
-        <Overlay isVisible={heureVisible}>
+        {/* <Overlay isVisible={heureVisible}>
           <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeHeure()} style={{margin: 5}}/>
             </View>
-        </Overlay>
+        </Overlay> */}
 
         <Overlay isVisible={quoiVisible}>
             <View style={styles.cross}>
@@ -371,34 +375,34 @@ const styles = StyleSheet.create({
   row: {display: 'flex', flexDirection: 'row'}
 });
 
-export default Filtres
+// export default Filtres
 
-// function mapStateToProps(state){
-//   return {search: state.search}
-// }
+function mapStateToProps(state){
+  return {search: state.search}
+}
 
-// function mapDispatchToProps(dispatch){
-//   return {
-//     addToSearch: function(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude){
-//       dispatch({type: 'createSearch', 
-//         salonOrHome : salonOrHome, 
-//         completeDate : ..., ---------> à régler
-//         date : quand, 
-//         hour : heure, 
-//         address : adress, 
-//         latitude : latitude, 
-//         longitude : longitude, 
-//         offer : quoi, 
-//         experience : experiences, 
-//         service : services, 
-//         priceFork : price, 
-//         rating: note})
-//     }
-//   }
-// }
+function mapDispatchToProps(dispatch){
+  return {
+    addToSearch: function(date, hour, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude, completeDate){
+      dispatch({type: 'createSearch', 
+        salonOrHome : salonOrHome, 
+        completeDate : completeDate,
+        date : date, 
+        hour : hour, 
+        address : adress, 
+        latitude : latitude, 
+        longitude : longitude, 
+        offer : quoi, 
+        experience : experiences, 
+        service : services, 
+        priceFork : price, 
+        rating: note})
+    }
+  }
+}
 
-// export default connect(
-//   mapStateToProps, 
-//   mapDispatchToProps,
-// )(Filtres);
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps,
+)(Filtres);
 
