@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import { globalStyles }from '../styles/Global';
-import { Card, ListItem, Badge} from 'react-native-elements';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button} from 'react-native';
+import { globalStyles } from '../styles/Global';
+import { Card, ListItem} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MapView, { Marker } from 'react-native-maps';
 import PrimaryButton from '../shared/Button';
 import ModalCoiffeur from '../shared/modal';
@@ -14,17 +14,14 @@ import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarous
 import {connect} from 'react-redux';
 
 
-// import PickerCascader  from 'react-native-picker-cascader';
-
-
-
 function Shop(props) {
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(false);
-  
-  
+  const [chosenHour, setChosenHour] = useState()
+  const [lock, setLock] = useState(false)
+
   const toggleOverlay = () => {
     setVisible(!visible);
   };
@@ -57,7 +54,10 @@ function Shop(props) {
 
   //* handling validation button, 
   //!! see what to send to SignIn/SignOut or Reducer
- function handleChoixDuCoiffeur(){
+ function handleChoixDuSalon(){
+   console.log(chosenHour)
+   
+  props.chosenAppointment(chosenHour, props.hairdresser, props.prestation, props.experience, props.chosenDate, props.shopDetails)
   props.navigation.navigate('ButtonTabSign')
   }
 
@@ -96,7 +96,7 @@ function Shop(props) {
   
 //! should navigate to lower screen to check comments
 const handleAvis = () => {
-  console.log("avis")
+  // console.log("avis")
 // ScrollView.scrollToEnd({animated: true})
 // ScrollView.ScrollTo({x: 0, y: 0, animated: true})
 }
@@ -122,26 +122,84 @@ var listCommentItem = listComment.map((l, i) => {return (
 
 
 const hours =  [{mon: {open: 570, close: 1080 }}]
-  console.log(hours[0].mon.close)
+  // console.log(hours[0].mon.close)
 
 const convertMinsToTime = (mins) => {
+  
   let hours = Math.floor(mins / 60);
   let minutes = mins % 60;
   minutes = minutes < 10 ? '0' + minutes : minutes;
   return `${hours}:${minutes}`;
 }
-console.log("CONVERTER", convertMinsToTime(1000))
+// console.log("CONVERTER", convertMinsToTime(1000))
+
+
 
 let hoursTab;
 let hoursArr = [];
   for(let i = 570; i <= 1080; i+=30){
     hoursArr.push(i)
-    hoursTab = hoursArr.map((number, i)=>{
-      return <TouchableOpacity key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(number)}</Text></TouchableOpacity>
-    })
+    hoursTab = hoursArr.map((hour, i)=>{
+      var color = '#FFCD41'
+        if(chosenHour === hour){
+          color = '#4280AB'
+        } 
+
+      return <TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
+   
+  })
+    
   }
 
+  // console.log("Hairdresser from shop screen:", props.hairdresser)
+  // console.log("Prestation from Shop Screen:", props.prestation)
+  // console.log("Experience from Shop Screen:", props.experience)
 
+  //*DATETIME PICKER ****************************************
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [isDateSelected, setIsDateSelected] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+var datePhrase;
+// if(datePhrase === undefined){
+//   datePhrase= "Choisir une date"
+// }
+  const handleConfirm = (choice) => {
+    console.log("A date has been picked: ", choice);
+    setDate(choice)
+    setIsDateSelected(true)
+    let dateToReducer = null;
+     
+    isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
+
+    console.log("final date?:", dateToReducer)
+    
+
+    datePhrase = dateToReducer
+    hideDatePicker();
+  };
+  if (isDateSelected) {
+    var zeroDay = "";
+    var zeroMonth = "";
+    date.getDate() <10 ? zeroDay="0" : null;
+    date.getMonth() <10 ? zeroMonth="0" : null; 
+    datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
+  } else {
+    datePhrase = "TOUTES LES DATES"
+  }
+
+  
+
+
+//**************************************** */
   return (
     
     <View style={styles.card}>
@@ -250,7 +308,21 @@ let hoursArr = [];
         </Card>
 
         <Card style={{flex: 1, alignItems: "center"}}>
-        <Text style={{fontSize: 24, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
+              {(props.chosenDate !== undefined) ?
+          (<Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>)
+              : 
+            (  <View>
+            <PrimaryButton  backgroundColor="#4280AB" color="white" title={datePhrase} onPress={showDatePicker} />
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                minimumDate={new Date()}
+              />
+              </View>)
+              }
+        <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
           {hoursTab}
           </View>
@@ -259,7 +331,7 @@ let hoursArr = [];
      </View>
 
     <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 20}}>
-      <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuCoiffeur()}/>  
+      <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuSalon()}/>  
       <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
       </View>
     
@@ -329,13 +401,30 @@ const styles = StyleSheet.create({
 });
 
 
+function mapDispatchToProps(dispatch){
+    return {
+      chosenAppointment: function(hour, hairdresser, prestation, experience, date, shopDetails){
+              dispatch({
+                type: 'finalAppointment',
+                hour: hour, 
+                hairdresser: hairdresser, 
+                prestation: prestation, 
+                experience: experience,
+                date: date,
+                shopDetails: shopDetails
+              })
+                  }
+                }
+              }
+
 
 
 function mapStateToProps(state) {
-  return {shopDetails: state.shopDetails }
+  return {shopDetails: state.shopDetails, hairdresser: state.hairdresser, prestation: state.prestation, experience: state.experience, chosenDate: state.search.date }
  }
   
  export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
  )(Shop);
+
