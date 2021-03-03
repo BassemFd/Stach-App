@@ -267,33 +267,12 @@ function mapDispatchToProps(dispatch){
   }
 }
 
+
+
 export default connect(
   null,
   mapDispatchToProps
   )(Map);
 
 
-// overlay filtres : 
-// <View>
-//               <Text>Filtrer par : </Text>
-//               <Button title='€' color='black'/>
-//               <Text>Prix</Text>
-//                 <View style={styles.picto}>
-//                   <Button title='€' color='black'/>
-//                   <Button title='€€' color='black'/>
-//                   <Button title='€€€' color='black'/>
-//                 </View>
 
-//               <Text>Services</Text>
-//                 <View style={styles.picto}>
-//                   <TouchableOpacity><FontAwesome name='coffee' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='wheelchair-alt' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='glass' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='gamepad' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='leaf' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='paw' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                 </View>
-
-//               <Text>Avis</Text>
-
-//             </View>

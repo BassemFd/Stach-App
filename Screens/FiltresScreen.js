@@ -175,6 +175,12 @@ function Filtres(props) {
   //   setLongitude(props.search.longitude)
   // }, []);
 
+  //VALIDATION
+  function validation() {
+    // addToSearch(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude);
+    props.navigation.navigate('ButtonTabShop')
+  }
+
   return (
     <View style={globalStyles.container}>
         <Text style={globalStyles.brand}>Filtres</Text>
@@ -228,7 +234,7 @@ function Filtres(props) {
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-          <Button title='Valider' onPress={() => addToSearch(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude)} color='white' backgroundColor='#4280AB'></Button>
+          <Button title='Valider' onPress={() => validation()} color='white' backgroundColor='#4280AB'></Button>
         </View>
 
         <Overlay isVisible={quandVisible}>
