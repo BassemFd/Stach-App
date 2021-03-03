@@ -8,7 +8,7 @@ import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 var coiffeurs = [
   {
@@ -161,7 +161,7 @@ function Map(props) {
           paddingBottom: 10,
         }}
       >
-        <Button title='Filtrer' backgroundColor='#FFCD41'></Button>
+        <Button title='Filtrer' backgroundColor='#FFCD41' onPress={() => props.navigation.navigate('Filtres')}></Button>
         
       </View>
       <MapView
