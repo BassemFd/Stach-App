@@ -8,54 +8,54 @@ import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-var coiffeurs = [
-  {
-    shopName: 'Coup Tif',
-    shopImages: [
-      'https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-      'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-    ],
-    shopAddress: '72 rue dulong, 75017, Paris',
-    shopPhone: '0100000000',
-    shopMail: 'couptif@gmail.com',
-    shopDescription:
-      'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-    shopFeatures: ['wheelchair-alt', 'glass', 'gamepad'],
-    comments: [],
-    shopEmployees: ['Fred', 'Dany'],
-    offers: ['coupe homme', 'coupe femme'],
-    packages: ['playstation'],
-    schedule: [],
-    atHome: false,
-    appointments: [],
-    priceFork: 1,
-    rating: 4,
-  },
-  {
-    shopName: 'Coiff',
-    shopImages: [
-      'https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-      'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-    ],
-    shopAddress: '23 rue Legendre, 75017, Paris',
-    shopPhone: '0200000000',
-    shopMail: 'coiff@gmail.com',
-    shopDescription:
-      'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-    shopFeatures: ['coffee', 'leaf', 'paw'],
-    comments: [],
-    shopEmployees: ['Philippe', 'Emma'],
-    offers: ['coupe homme', 'coupe femme', 'coupe enfant'],
-    packages: ['à deux'],
-    schedule: [],
-    atHome: true,
-    appointments: [],
-    priceFork: 2,
-    rating: 2,
-  },
-];
+
+// var coiffeurs = [
+//   {
+//     shopName: 'Coup Tif',
+//     shopImages: [
+//       'https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+//       'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+//     ],
+//     shopAddress: '72 rue dulong, 75017, Paris',
+//     shopPhone: '0100000000',
+//     shopMail: 'couptif@gmail.com',
+//     shopDescription:
+//       'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+//     shopFeatures: ['wheelchair-alt', 'glass', 'gamepad'],
+//     comments: [],
+//     shopEmployees: ['Fred', 'Dany'],
+//     offers: ['coupe homme', 'coupe femme'],
+//     packages: ['playstation'],
+//     schedule: [],
+//     atHome: false,
+//     appointments: [],
+//     priceFork: 1,
+//     rating: 4,
+//   },
+//   {
+//     shopName: 'Coiff',
+//     shopImages: [
+//       'https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+//       'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+//     ],
+//     shopAddress: '23 rue Legendre, 75017, Paris',
+//     shopPhone: '0200000000',
+//     shopMail: 'coiff@gmail.com',
+//     shopDescription:
+//       'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+//     shopFeatures: ['coffee', 'leaf', 'paw'],
+//     comments: [],
+//     shopEmployees: ['Philippe', 'Emma'],
+//     offers: ['coupe homme', 'coupe femme', 'coupe enfant'],
+//     packages: ['à deux'],
+//     schedule: [],
+//     atHome: true,
+//     appointments: [],
+//     priceFork: 2,
+//     rating: 2,
+//   },
+// ];
 
 function Map(props) {
 
@@ -67,28 +67,36 @@ function Map(props) {
   const [features, setFeatures] = useState([]);
   const [rating, setRating] = useState([]);
   const [url, setUrl] = useState('');
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude]  = useState(null)
  
   
   useEffect(() => {
-    async function getLocation() {
-        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        // if (status === 'granted') {
-        //   Location.watchPositionAsync({ distanceInterval: 2 },
-        //     (location) => {
-        //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
-        //     }
-        //   );
-        // }
-        var shopsTab = [];
-        for (let i=0; i<coiffeurs.length; i++) {
-          let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
-          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
-          shopsTab.push(shop);
-        }
+
+    setShopsList(props.shopsData);
+    console.log('search', props.search);
+    setLatitude(props.search.latitude);
+    setLongitude(props.search.longitude);
+
+    // async function getLocation() {
+    //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //     // if (status === 'granted') {
+    //     //   Location.watchPositionAsync({ distanceInterval: 2 },
+    //     //     (location) => {
+    //     //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
+    //     //     }
+    //     //   );
+    //     // }
+    //     var shopsTab = [];
+    //     for (let i=0; i<coiffeurs.length; i++) {
+    //       let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
+    //       let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
+    //       shopsTab.push(shop);
+    //     }
        
-      setShopsList(shopsTab);
-    }
-    getLocation();
+      
+    // }
+    // getLocation();
   
   }, []);
 
@@ -161,15 +169,15 @@ function Map(props) {
           paddingBottom: 10,
         }}
       >
-        <Button title='Filtrer' backgroundColor='#FFCD41'></Button>
+        <Button title='Filtrer' backgroundColor='#FFCD41' onPress={() => props.navigation.navigate('Filtres')}></Button>
         
       </View>
       <MapView
         style={styles.map}
 
         initialRegion={{
-          latitude: 48.8876513,
-          longitude: 2.3037661,
+          latitude: latitude,
+          longitude: longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -267,33 +275,16 @@ function mapDispatchToProps(dispatch){
   }
 }
 
+function mapStateToProps(state) {
+  return {shopsData: state.shopsData, search: state.search};
+}
+
+
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
   )(Map);
 
 
-// overlay filtres : 
-// <View>
-//               <Text>Filtrer par : </Text>
-//               <Button title='€' color='black'/>
-//               <Text>Prix</Text>
-//                 <View style={styles.picto}>
-//                   <Button title='€' color='black'/>
-//                   <Button title='€€' color='black'/>
-//                   <Button title='€€€' color='black'/>
-//                 </View>
 
-//               <Text>Services</Text>
-//                 <View style={styles.picto}>
-//                   <TouchableOpacity><FontAwesome name='coffee' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='wheelchair-alt' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='glass' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='gamepad' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='leaf' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                   <TouchableOpacity><FontAwesome name='paw' size={25} color="black" style={styles.pad}/></TouchableOpacity>
-//                 </View>
-
-//               <Text>Avis</Text>
-
-//             </View>

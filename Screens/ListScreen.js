@@ -4,7 +4,7 @@ LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
 
-
+import {IP_ADDRESS} from '@env';
 
 import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
@@ -22,140 +22,96 @@ import {connect} from 'react-redux';
 
 function List(props) {
 
-  const [shopsList, setShopsList] = useState([])
+
+  //const [shopsList, setShopsList] = useState([])
+  const [shopsData, setShopsData] = useState([])
 
 
-  var coiffeurs = [
-    {
-    shopName: 'Coup Tif',
-    shopImages: ['https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260', 'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
-    shopAddress: '72 Boulevard Pereire, 75017, Paris',
-    shopPhone: '0100000000',
-    shopMail: 'couptif@gmail.com',
-    shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-    shopFeatures: ['wheelchair-alt', 'glass', 'gamepad'],
-    comments: [],
-    shopEmployees: ['Fred', 'Dany'],
-    offers: ['coupe homme', 'coupe femme'], 
-    packages: ['playstation'],
-    schedule: [],
-    atHome: false,
-    appointments: [],
-    priceFork: 1,
-    rating: 4.2,
-    },
-    {
-      shopName: 'Coiff',
-      shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
-      shopAddress: '23 rue Legendre, 75017, Paris',
-      shopPhone: '0200000000',
-      shopMail: 'coiff@gmail.com',
-      shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-      shopFeatures: ['coffee', 'leaf', 'paw'],
-      comments: [],
-      shopEmployees: ['Philippe', 'Emma'],
-      offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-      packages: ['à deux'],
-      schedule: [],
-      atHome: true,
-      appointments: [],
-      priceFork: 2,
-      rating: 2.1,
-      },
-      {
-        shopName: 'Yaya',
-        shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
-        shopAddress: '23 rue Legendre, 75017, Paris',
-        shopPhone: '0200000000',
-        shopMail: 'coiff@gmail.com',
-        shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-        shopFeatures: ['coffee', 'leaf', 'paw'],
-        comments: [],
-        shopEmployees: ['Philippe', 'Emma'],
-        offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-        packages: ['à deux'],
-        schedule: [],
-        atHome: true,
-        appointments: [],
-        priceFork: 3,
-        rating: 2.8,
-        },
-        {
-          shopName: 'Raf',
-          shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
-          shopAddress: '23 rue Legendre, 75017, Paris',
-          shopPhone: '0200000000',
-          shopMail: 'coiff@gmail.com',
-          shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-          shopFeatures: ['coffee', 'leaf', 'paw'],
-          comments: [],
-          shopEmployees: ['Philippe', 'Emma'],
-          offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-          packages: ['à deux'],
-          schedule: [],
-          atHome: true,
-          appointments: [],
-          priceFork: 1,
-          rating: 1.7,
-          },
-          {
-            shopName: 'Bassem',
-            shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
-            shopAddress: '23 rue Legendre, 75017, Paris',
-            shopPhone: '0200000000',
-            shopMail: 'coiff@gmail.com',
-            shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-            shopFeatures: ['coffee', 'leaf', 'paw'],
-            comments: [],
-            shopEmployees: ['Philippe', 'Emma'],
-            offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-            packages: ['à deux'],
-            schedule: [],
-            atHome: true,
-            appointments: [],
-            priceFork: 2,
-            rating: 3.8,
-            },
-            {
-              shopName: 'Hello',
-              shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
-              shopAddress: '23 rue Legendre, 75017, Paris',
-              shopPhone: '0200000000',
-              shopMail: 'coiff@gmail.com',
-              shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-              shopFeatures: ['coffee', 'leaf', 'paw'],
-              comments: [],
-              shopEmployees: ['Philippe', 'Emma'],
-              offers: ['coupe homme', 'coupe femme', 'coupe enfant'], 
-              packages: ['à deux'],
-              schedule: [],
-              atHome: true,
-              appointments: [],
-              priceFork: 3,
-              rating: 2.6,
-              },
-  ]  
+  // var coiffeurs = [
+  //   {
+  //   shopName: 'Coup Tif',
+  //   shopImages: ['https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260', 'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+  //   shopAddress: '72 Boulevard Pereire, 75017, Paris',
+  //   shopPhone: '0100000000',
+  //   shopMail: 'couptif@gmail.com',
+  //   shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+  //   shopFeatures: ['wheelchair-alt', 'glass', 'gamepad'],
+  //   comments: [],
+  //   shopEmployees: ['Fred', 'Dany'],
+  //   offers: ['Coupe Homme', 'Coupe Femme'], 
+  //   packages: ['Playstation'],
+  //   schedule: [],
+  //   atHome: false,
+  //   appointments: [],
+  //   priceFork: 1,
+  //   rating: 4.2,
+  //   },
+  //   {
+  //     shopName: 'Coiff',
+  //     shopImages: ['https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260', 'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'],
+  //     shopAddress: '23 rue Legendre, 75017, Paris',
+  //     shopPhone: '0200000000',
+  //     shopMail: 'coiff@gmail.com',
+  //     shopDescription: 'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
+  //     shopFeatures: ['coffee', 'leaf', 'paw'],
+  //     comments: [],
+  //     shopEmployees: ['Philippe', 'Emma'],
+  //     offers: ['Coupe Homme', 'Coupe Femme', 'Coupe Enfant'], 
+  //     packages: ['à deux'],
+  //     schedule: [],
+  //     atHome: true,
+  //     appointments: [],
+  //     priceFork: 2,
+  //     rating: 2.1,
+  //     },
+  // ]  
+
+  
 
   useEffect(() => {
-    async function getLocation() {
-        // let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        // if (status === 'granted') {
-        //   Location.watchPositionAsync({ distanceInterval: 2 },
-        //     (location) => {
-        //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
-        //     }
-        //   );
-        // }
-        var shopsTab = [];
-        for (let i=0; i<coiffeurs.length; i++) {
-          let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
-          let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
-          shopsTab.push(shop);
-        }
-        setShopsList(shopsTab);
-      }
-      getLocation();
+
+    // Fetch request from search to BDD
+    async function getShops(){
+      let shopsFetch = await fetch(`${IP_ADDRESS}/search`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({data : props.search}) 
+      });
+      let body = await shopsFetch.json();
+      // console.log("shoplist FFFFFFFFFFFFFFFFff", body)
+      setShopsData(body.filteredDistanceShopsList);
+      var shopsDataCopy = body.filteredDistanceShopsList
+      props.saveShopsdata(shopsDataCopy);
+    } 
+    getShops()
+
+
+
+    // async function getLocation() {
+    //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //     // if (status === 'granted') {
+    //     //   Location.watchPositionAsync({ distanceInterval: 2 },
+    //     //     (location) => {
+    //     //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
+    //     //     }
+    //     //   );
+    //     // }
+
+        
+
+    //     var shopsTab = [];
+    //     for (let i=0; i<coiffeurs.length; i++) {
+    //       let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
+    //       let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
+    //       shopsTab.push(shop);
+    //     }
+    //     setShopsList(shopsTab);
+    //   }
+    //   getLocation();
+      
   }, []);
+
+  // console.log("shopList :", shopsData)
 
 
   function navigation(shopDetails) {
@@ -164,15 +120,15 @@ function List(props) {
   }
 
   function sortByPrice() {
-    var shopListCopy = [...shopsList];
+    var shopListCopy = [...shopsData];
     var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork > b.priceFork))
-    setShopsList(sortByPrice);
+    setShopsData(sortByPrice);
   }
 
   function sortByNote() {
-    var shopListCopy = [...shopsList]
+    var shopListCopy = [...shopsData]
     var sortByNote = shopListCopy.sort((a, b) => (a.rating < b.rating))
-    setShopsList(sortByNote)
+    setShopsData(sortByNote)
   }
 
   return (
@@ -181,7 +137,7 @@ function List(props) {
       
         
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 30, paddingBottom: 10}}>
-          <ButtonYaya title="Filtrer" backgroundColor="#FFCD41" ></ButtonYaya>
+          <ButtonYaya title="Filtrer" backgroundColor="#FFCD41" onPress={() => props.navigation.navigate('Filtres')}></ButtonYaya>
         </View>
         <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', paddingTop: 10, paddingBottom: 10}}>
           <Button title='Trier par prix' color='#4280AB' onPress={() => sortByPrice()}></Button>
@@ -190,8 +146,8 @@ function List(props) {
         <ScrollView>
         
 
-        {shopsList.length > 0 ?
-          shopsList.map((element, i) => {
+        {shopsData.length > 0 ?
+          shopsData.map((element, i) => {
             var priceTab = [];
             for (let y=0; y<3; y++) {
               var color = 'white'
@@ -278,11 +234,21 @@ function mapDispatchToProps(dispatch){
         type: 'selectOffer',
         shopDetails: shopDetails,
       })
+    },
+    saveShopsdata: function(shopsData) {
+      dispatch({
+        type: 'saveShopsData',
+        shopsData: shopsData,
+      })
     }
   }
 }
 
+function mapStateToProps(state) {
+  return {search: state.search};
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
   )(List);
