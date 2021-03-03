@@ -8,7 +8,7 @@ import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 var coiffeurs = [
   {
