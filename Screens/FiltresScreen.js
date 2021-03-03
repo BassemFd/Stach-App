@@ -163,17 +163,17 @@ function Filtres(props) {
   }
 
   //USE EFFECT ENTREE
-  useEffect( () => {
-    console.log('RECHERCHE', props.search);
-    setQuand(props.search.date);
-    setHeure(props.search.hour);
-    setQuoi(props.search.offer);
-    setExperiences(props.search.experiences);
-    setSalonOrHome(props.search.salonOrHome);
-    setAdress(props.search.address);
-    setLatitude(props.search.latitude)
-    setLongitude(props.search.longitude)
-  }, []);
+  // useEffect( () => {
+  //   console.log('RECHERCHE', props.search);
+  //   setQuand(props.search.date);
+  //   setHeure(props.search.hour);
+  //   setQuoi(props.search.offer);
+  //   setExperiences(props.search.experiences);
+  //   setSalonOrHome(props.search.salonOrHome);
+  //   setAdress(props.search.address);
+  //   setLatitude(props.search.latitude)
+  //   setLongitude(props.search.longitude)
+  // }, []);
 
   return (
     <View style={globalStyles.container}>
@@ -182,7 +182,7 @@ function Filtres(props) {
 
           <TouchableOpacity  onPress={() => setQuandVisible(true)}>
             <Text style={styles.title}>QUAND ?</Text>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
+            <View style={styles.row}>
               <Icon name='calendar' size={24} color="#4E342E" style={{margin: 5}}/>
               <Text style={globalStyles.paragraph}>{quand}</Text>
             </View>
@@ -190,7 +190,7 @@ function Filtres(props) {
           </TouchableOpacity>
 
           <TouchableOpacity  onPress={() => setHeureVisible(true)}>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
+            <View style={styles.row}>
               <Icon name='clock-o' size={24} color="#4E342E" style={{margin: 5}}/>
               <Text style={globalStyles.paragraph}>{heure}</Text>
             </View>
@@ -228,104 +228,104 @@ function Filtres(props) {
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-          <Button title='Valider' onPress={() => addToSearch(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude)}></Button>
+          <Button title='Valider' onPress={() => addToSearch(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude)} color='white' backgroundColor='#4280AB'></Button>
         </View>
 
         <Overlay isVisible={quandVisible}>
-          <View style={{display: 'flex', alignItems: 'flex-end'}}>
+          <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeQuand()} style={{margin: 5}}/>
             </View>
         </Overlay>
 
         <Overlay isVisible={heureVisible}>
-          <View style={{display: 'flex', alignItems: 'flex-end'}}>
+          <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeHeure()} style={{margin: 5}}/>
             </View>
         </Overlay>
 
         <Overlay isVisible={quoiVisible}>
-            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+            <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeQuoi()} style={{margin: 5}}/>
             </View>
             {coupesTab}
         </Overlay>
 
         <Overlay isVisible={servicesVisible}>
-            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+            <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeServices()} style={{margin: 5}}/>
             </View>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
+            <View style={styles.row}>
               {pictosTab}
             </View>
         </Overlay>
 
         <Overlay isVisible={priceVisible}>
-            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+            <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closePrice()} style={{margin: 5}}/>
             </View>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
+            <View style={styles.row}>
               {prixTab}
             </View>
         </Overlay>
 
         <Overlay isVisible={experiencesVisible}>
-            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+            <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeExperiences()} style={{margin: 5}}/>
             </View>
             {experiencesTab}
         </Overlay>
 
         <Overlay isVisible={noteVisible}>
-            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+            <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeNote()} style={{margin: 5}}/>
             </View >
             
               <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(1)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
+                <View style={styles.row}>
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
-                  <Text>Minimum une étoile</Text>
+                  <Text style={styles.starsText}>Minimum une étoile</Text>
                 </View>
               </Pressable>
 
 
               <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(2)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
+                <View style={styles.row}>
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
-                  <Text>Minimum deux étoiles</Text>
+                  <Text style={styles.starsText}>Minimum deux étoiles</Text>
                 </View>
               </Pressable>
 
 
               <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(3)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
+                <View style={styles.row}>
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
-                  <Text>Minimum trois étoiles</Text>
+                  <Text style={styles.starsText}>Minimum trois étoiles</Text>
                 </View>
               </Pressable>
 
 
               <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(4)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
+                <View style={styles.row}>
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
-                  <Text>Minimum quatres étoiles</Text>
+                  <Text style={styles.starsText}>Minimum quatres étoiles</Text>
                 </View>
               </Pressable>
 
 
               <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => chosenNote(5)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
+                <View style={styles.row}>
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
                   <FontAwesome style={{marginRight: 5}} name="star" size={24} color='gold' />
-                  <Text>Minimum cinq étoiles</Text>
+                  <Text style={styles.starsText}>Minimum cinq étoiles</Text>
                 </View>
               </Pressable>
         </Overlay>
@@ -360,36 +360,39 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   pad: {padding: 2},
+  starsText : {color: 'white'},
+  cross: {display: 'flex', alignItems: 'flex-end'}, 
+  row: {display: 'flex', flexDirection: 'row'}
 });
 
-//export default Filtres
+export default Filtres
 
-function mapStateToProps(state){
-  return {search: state.search}
-}
+// function mapStateToProps(state){
+//   return {search: state.search}
+// }
 
-function mapDispatchToProps(dispatch){
-  return {
-    addToSearch: function(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude){
-      dispatch({type: 'createSearch', 
-        salonOrHome : salonOrHome, 
-        completeDate : ..., ---------> à régler
-        date : quand, 
-        hour : heure, 
-        address : adress, 
-        latitude : latitude, 
-        longitude : longitude, 
-        offer : quoi, 
-        experience : experiences, 
-        service : services, 
-        priceFork : price, 
-        rating: note})
-    }
-  }
-}
+// function mapDispatchToProps(dispatch){
+//   return {
+//     addToSearch: function(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude){
+//       dispatch({type: 'createSearch', 
+//         salonOrHome : salonOrHome, 
+//         completeDate : ..., ---------> à régler
+//         date : quand, 
+//         hour : heure, 
+//         address : adress, 
+//         latitude : latitude, 
+//         longitude : longitude, 
+//         offer : quoi, 
+//         experience : experiences, 
+//         service : services, 
+//         priceFork : price, 
+//         rating: note})
+//     }
+//   }
+// }
 
-export default connect(
-  mapStateToProps, 
-  mapDispatchToProps,
-)(Filtres);
+// export default connect(
+//   mapStateToProps, 
+//   mapDispatchToProps,
+// )(Filtres);
 
