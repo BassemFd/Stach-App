@@ -30,11 +30,12 @@ import details from '../reducers/ChosenAppointment.reducer';
 import hairdresser from '../reducers/ChosenHairdresser.reducer';
 import prestation from '../reducers/ChosenPrestation.reducer';
 import experience from '../reducers/ChosenExperience.reducer';
+import shopsData from '../reducers/shopsData.reducer'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-const store = createStore(combineReducers( {shopDetails, search, selectedService, details, hairdresser, prestation, experience}))
+const store = createStore(combineReducers( {shopDetails, search, selectedService, details, hairdresser, prestation, experience, shopsData}))
 
 function ButtonTabSign() {
   return (
