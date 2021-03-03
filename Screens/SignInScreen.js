@@ -16,10 +16,10 @@ import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 export default function SignIn() {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    console.log(`${IP_ADDRESS}/users/signIn`);
-    // try {
     const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,22 +28,37 @@ export default function SignIn() {
         password: signInPassword,
       }),
     });
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     console.log(responseJson);
-    //     return responseJson;
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-    const body = await data.json();
-    console.log('Test');
-    console.log(body, 'body');
 
-    // console.log(JSON.parse(data), 'ss');
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    const body = await data.json();
+
+    if (!body.result) {
+      setEmailError(body.emailNotFound);
+      setPasswordError(body.invalidPassword);
+    }
+    switch (body.error) {
+      case '"email" is not allowed to be empty':
+        setEmailError("L'email ne doit pas être vide");
+        break;
+      case '"email" must be a valid email':
+        setEmailError("L'email doit être une adresse e-mail valide");
+        break;
+      case '"email" length must be at least 6 characters long':
+        setEmailError(
+          "La longueur de l'email doit comporter au moins 6 caractères"
+        );
+        break;
+      case '"password" length must be at least 6 characters long':
+        setPasswordError(
+          'La longueur du mot de passe doit comporter au moins 6 caractères'
+        );
+        break;
+      case '"password" is not allowed to be empty':
+        setPasswordError('Le mot de passe ne doit pas être vide ');
+        break;
+
+      default:
+        break;
+    }
 
     // if (body.result === true) {
     //   onAddToken(body.tokenSignIn);
@@ -87,14 +102,18 @@ export default function SignIn() {
             placeholder='Email'
             onChangeText={(value) => setSignInEmail(value)}
           />
-          {/* <Text style={globalStyles.errorText}>Error</Text> */}
+          {emailError !== null && (
+            <Text style={globalStyles.errorText}>{emailError}</Text>
+          )}
           <TextInput
             style={globalStyles.input}
             secureTextEntry={true}
             placeholder='Password'
             onChangeText={(value) => setSignInPassword(value)}
           />
-          <Text style={globalStyles.errorText}>Error</Text>
+          {passwordError !== null && (
+            <Text style={globalStyles.errorText}>{passwordError}</Text>
+          )}
           <View style={styles.mtButton}>
             <CustomButton
               title='Valider'

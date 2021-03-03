@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import { globalStyles }from '../styles/Global';
-import { Card, ListItem} from 'react-native-elements';
+import { Card, ListItem, Badge} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
 import PrimaryButton from '../shared/Button';
 import ModalCoiffeur from '../shared/modal';
 import ModalOption from '../shared/modalOption';
@@ -23,17 +22,22 @@ function Shop(props) {
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
-  // const [selectedPrestation, setSelectedPrestation] = useState("choixPrestation");
-  // const [selectedOptions, setSelectedOptions] = useState("choixOptions");
-  console.log(props.shopDetails)
+  const [visible, setVisible] = useState(false);
+  
+  
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+ 
 
+//* Handling data for Carousel, using reducer
   var data = [];
   for (let i= 0; i<props.shopDetails.shopImages.length; i++) {
     data.push({imgUrl: {uri: props.shopDetails.shopImages[i]}})
   }
   
 
-
+// * setting up all info to display on shop screen, using reducer
  const hairdresser = {
   name: props.shopDetails.shopName,
   data: data,
@@ -42,50 +46,24 @@ function Shop(props) {
   priceFork: props.shopDetails.priceFork,
   starRating: props.shopDetails.rating,
   shopFeatures: props.shopDetails.shopFeatures,
-
   }
 
-  
-  
-           
-  // const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [visible, setVisible] = useState(false);
-  
- 
 
-  // useEffect(() => {
-  //   (async () => {
-     
-  //     let locationGeo = await Location.geocodeAsync(hairdresser.address);
-  //   setLocation(locationGeo)
-    
-  
-  //     // console.log("LOCATION", locationGeo)
-  //   })();
-  // }, []);
-//  console.log("LCOATINO SETTER", location)
-
-  // let text = 'Waiting..';
-  // if (errorMsg) {
-  //   text = errorMsg;
-  // } else if (location) {
-  //   text = JSON.stringify(location);
-  // }
-
+  // * handling return button
   function handleReturnButton(){
-    console.log("return");
     props.navigation.goBack()
   }
 
- function handleChoixDuCoiffeur(){
-  console.log("handled")
 
+  //* handling validation button, 
+  //!! see what to send to SignIn/SignOut or Reducer
+ function handleChoixDuCoiffeur(){
   props.navigation.navigate('ButtonTabSign')
   }
 
+
+  // * mapping on euro logo to showcase price range of saloon
     var priceTab = [];
-    
     for (let y=0; y<3; y++) {
       var euroColor = 'grey'
       if (y<hairdresser.priceFork) {
@@ -95,8 +73,9 @@ function Shop(props) {
       <FontAwesome key={y} style={{marginRight: 5}} name="euro" size={24} color={euroColor} />)
     }
 
-    var starTab = [];
 
+//* mapping on black/golden star to set rating with average rating, rounded, so star rating is closest to reality
+    var starTab = [];
     var flooredStarRating = Math.round(hairdresser.starRating)
     for (let i = 0; i<5; i++){
     var starColor = "black"
@@ -106,19 +85,23 @@ function Shop(props) {
     starTab.push( <FontAwesome style={{marginRight: 5}} key={i} name="star" size={24} color={starColor} />)
     }
 
+
+//* mapping to showcase different utilities/extras/ using logos, accept animals, handi access etc...
     var pictoTab = [];
     for (let z=0; z<hairdresser.shopFeatures.length; z++) {
       pictoTab.push(<FontAwesome key={z} name={hairdresser.shopFeatures[z]} size={24} color="black" style={{marginRight: 5}}/>)
     }
 
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
+  
+//! should navigate to lower screen to check comments
 const handleAvis = () => {
   console.log("avis")
+// ScrollView.scrollToEnd({animated: true})
+// ScrollView.ScrollTo({x: 0, y: 0, animated: true})
 }
+
+
 
 const listComment = [
   {pseudo: "Juliette", message: "J'adore ce salon"},
@@ -136,6 +119,28 @@ var listCommentItem = listComment.map((l, i) => {return (
     </ListItem.Content>
   </ListItem>
 )})
+
+
+const hours =  [{mon: {open: 570, close: 1080 }}]
+  console.log(hours[0].mon.close)
+
+const convertMinsToTime = (mins) => {
+  let hours = Math.floor(mins / 60);
+  let minutes = mins % 60;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  return `${hours}:${minutes}`;
+}
+console.log("CONVERTER", convertMinsToTime(1000))
+
+let hoursTab;
+let hoursArr = [];
+  for(let i = 570; i <= 1080; i+=30){
+    hoursArr.push(i)
+    hoursTab = hoursArr.map((number, i)=>{
+      return <TouchableOpacity key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(number)}</Text></TouchableOpacity>
+    })
+  }
+
 
   return (
     
@@ -158,8 +163,8 @@ var listCommentItem = listComment.map((l, i) => {return (
         onSnapToItem={(index) => setIndex(index)}
         useScrollView={true}
         
-      />
-      </View>
+        />
+        </View>
               <Pagination
                 dotsLength={hairdresser.data.length}
                 activeDotIndex={index}
@@ -184,7 +189,7 @@ var listCommentItem = listComment.map((l, i) => {return (
         <Card.Divider/>
 
         <View style={styles.containerMap}>
-          <View>
+          <View style={{width: 180}}>
 
             <Text style={{marginBottom: 10}}>
             {hairdresser.address}
@@ -204,7 +209,7 @@ var listCommentItem = listComment.map((l, i) => {return (
           
             <Text>({hairdresser.starRating})</Text>
             </View>
-            <View style={styles.avis}>
+            <View style={[styles.avis, {marginTop: 10}]}>
            
           
             <TouchableOpacity style={styles.avis}  onPress={()=>handleAvis()}><Text style={styles.avisText}>Voir tout les Avis</Text></TouchableOpacity>
@@ -237,18 +242,22 @@ var listCommentItem = listComment.map((l, i) => {return (
 
         <Card.Divider></Card.Divider>
         
-      <View style={{flex: 1, flexDirection: "row"}}>
-       <ModalCoiffeur></ModalCoiffeur>
-       <ModalPrestation></ModalPrestation>
-       <ModalOption></ModalOption>
-     
+        <View style={{flex: 1, flexDirection: "row"}}>
+        <ModalCoiffeur></ModalCoiffeur>
+        <ModalPrestation></ModalPrestation>
+        <ModalOption></ModalOption>
+        </View>
+        </Card>
 
-       </View>
-      
-      </Card>
-    
+        <Card style={{flex: 1, alignItems: "center"}}>
+        <Text style={{fontSize: 24, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
+          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
+          {hoursTab}
+          </View>
+        </Card>
 
-    </View>
+     </View>
+
     <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 20}}>
       <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuCoiffeur()}/>  
       <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
