@@ -11,12 +11,15 @@ const Modaltest = (props) => {
 // const coiffeur = [
 //     "Charlotte", "Raph", "Yaya", "Bassem"
 // ]
-console.log(props.shopDetails)
+// console.log(props.shopDetails)
 const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i)=>{
-    return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedCoiffeur(choix); setModalVisible(!modalVisible)}}>
+  
+    return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {props.chosenHairdresser(choix); setSelectedCoiffeur(choix); setModalVisible(!modalVisible)}}>
     <Text style={styles.textStyle}>{choix}</Text>
 </Pressable>)
+
 })
+
 
 
   return (
@@ -37,7 +40,7 @@ const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i)=>{
             
             <Pressable
               style={[styles.button, styles.buttonClose, styles.buttonW]}
-              onPress={() => {setModalVisible(!modalVisible); setSelectedCoiffeur("Choix du Coiffeur")}}
+              onPress={() => {setModalVisible(!modalVisible); setSelectedCoiffeur("Choix du Coiffeur"), props.chosenHairdresser("Peu Importe")}}
             >
               <Text style={styles.textStyle}>Peu Importe</Text>
             </Pressable>
@@ -113,11 +116,22 @@ const styles = StyleSheet.create({
 
 
 
+function mapDispatchToProps(dispatch){
+  return {
+    chosenHairdresser: function(hairdresser){
+            dispatch({
+              type: 'hairdresser',
+              hairdresser: hairdresser
+            })
+                }
+              }
+            }
+
 function mapStateToProps(state) {
   return {shopDetails: state.shopDetails }
  }
   
  export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
  )(Modaltest);

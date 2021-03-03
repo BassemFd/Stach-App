@@ -13,7 +13,7 @@ import {
 import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
-import { IP_ADDRESS } from '@env';
+import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 
 export default function SignUp() {
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -30,7 +30,7 @@ export default function SignUp() {
   const [inputError, setInputError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    const data = await fetch(`${IP_ADDRESS}/users/signUp`, {
+    const data = await fetch(`${IP_ADDRESS_HOME}/users/signUp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
