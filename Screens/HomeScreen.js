@@ -31,6 +31,10 @@ function HomeScreen(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [service, setService] = useState(null);
+  const [priceFork, setPriceFork] = useState(null);
+  const [rating, setRating] = useState(null) 
+
   const GOOGLE_PLACES_API_KEY = 'AIzaSyDhW13-YcWkEnPgvmEfBPu_IOJ2go6Evws';
   const ref = useRef();
   
@@ -207,7 +211,7 @@ function HomeScreen(props) {
         serviceToReducer = null;
       }    
 
-      props.onSubmitSearch(selectType, completeDateToReducer, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
+      props.onSubmitSearch(selectType, completeDateToReducer, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer, service, priceFork, rating);
       
       props.navigation.navigate('ButtonTabShop');
       if (isOverlayVisible) {
@@ -421,8 +425,8 @@ function HomeScreen(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitSearch: function(salonOrHome, completeDate, date, hour, address, latitude, longitude, service, experience) { 
-      dispatch({type: 'createSearch', salonOrHome : salonOrHome, completeDate : completeDate, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, service : service, experience : experience}) 
+    onSubmitSearch: function(salonOrHome, completeDate, date, hour, address, latitude, longitude, offer, experience, service, priceFork, rating) { 
+      dispatch({type: 'createSearch', salonOrHome : salonOrHome, completeDate : completeDate, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, offer : offer, experience : experience, service : service, priceFork : priceFork, rating: rating}) 
     }
   }
 }

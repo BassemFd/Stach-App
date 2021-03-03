@@ -148,7 +148,14 @@ function List(props) {
         //   );
         // }
 
-
+        // Fetch request from search to BDD
+        async function getShops(){
+          let shopsList = await fetch("/search", {
+            method: 'POST',
+            headers: {'Content-Type':'application/x-www-form-urlencoded'},
+            body: `type=${props.search.type}&img=${img}`
+          });
+        } 
 
 
         var shopsTab = [];
@@ -287,9 +294,11 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-
+function mapStateToProps(state) {
+  return {search: state.search};
+}
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
   )(List);
