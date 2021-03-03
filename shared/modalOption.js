@@ -13,9 +13,10 @@ const ModalOption = (props) => {
 // ]
 
 const experienceTab = props.shopDetails.packages.map((choix, i)=>{
-    return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedOption(choix); setModalVisible(!modalVisible)}}>
+    return (<View style={{ flexDirection: 'row'}}><Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedOption(choix); setModalVisible(!modalVisible)}}>
     <Text style={styles.textStyle}>{choix}</Text>
-</Pressable>)
+</Pressable>
+<Pressable key={i} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>50€</Text></Pressable></View>)
 })
 
 

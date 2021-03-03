@@ -137,7 +137,7 @@ let hoursArr = [];
   for(let i = 570; i <= 1080; i+=30){
     hoursArr.push(i)
     hoursTab = hoursArr.map((number, i)=>{
-      return <TouchableOpacity key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(number)}</Text></TouchableOpacity>
+      return <TouchableOpacity key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(number)}</Text></TouchableOpacity>
     })
   }
 
@@ -250,7 +250,7 @@ let hoursArr = [];
         </Card>
 
         <Card style={{flex: 1, alignItems: "center"}}>
-        <Text style={{fontSize: 24, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
+        <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
           {hoursTab}
           </View>
