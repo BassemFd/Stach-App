@@ -109,10 +109,26 @@ function HomeScreen(props) {
 
     const handleConfirm = (choice) => {
       if (mode == 'date') {
-        setDate(choice)
+
+        let chosenDate = choice.getDate();
+        let chosenMonth = choice.getMonth();
+        let chosenYear = choice.getFullYear();
+
+        let newDate = new Date(date.setDate(chosenDate));
+        let newDateBis = new Date(newDate.setMonth(chosenMonth));
+        let newDateTer = new Date(newDateBis.setFullYear(chosenYear));
+
+        setDate(newDateTer)
         setIsDateSelected(true)
       } else if (mode == 'time') {
-        setDate(choice)
+        console.log("choice time", choice.getHours(), choice.getMinutes(), date)
+        let chosenHour = choice.getHours();
+        let chosenMinutes = choice.getMinutes();
+        let newDate = new Date (date.setHours(chosenHour+1))
+        let newDateBis = new Date (newDate.setMinutes(chosenMinutes))
+        console.log("NEW DATEEEEEEEEEE", newDateBis)
+        // SetDate juste en changeant l'heure
+        setDate(newDateBis)
         setIsTimeSelected(true)
       }
       hideDatePicker();
@@ -136,7 +152,7 @@ function HomeScreen(props) {
       var zeroMinute = "";
       date.getHours() <10 ? zeroHour="0" : null;
       date.getMinutes() <10 ? zeroMinute="0" : null;
-      displayTime = "" + zeroHour + date.getHours() +":"+ zeroMinute + date.getMinutes();
+      displayTime = "" + zeroHour + date.getHours()-1 +":"+ zeroMinute + date.getMinutes();
     } else {
       displayTime = "TOUTES LES HEURES"
     }
@@ -164,6 +180,10 @@ function HomeScreen(props) {
         setErrorMessage("Veuillez resaisir votre addresse")
       } else {
       
+      let completeDateToReducer = null;
+
+      isDateSelected ? completeDateToReducer = date : null;
+
       let dateToReducer = null;
       var zeroDay = "";
       var zeroMonth = "";
@@ -187,7 +207,7 @@ function HomeScreen(props) {
         serviceToReducer = null;
       }    
 
-      props.onSubmitSearch(selectType, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
+      props.onSubmitSearch(selectType, completeDateToReducer, dateToReducer, timeToReducer, address, position.latitude, position.longitude, serviceToReducer, experienceToReducer);
       props.navigation.navigate('ButtonTabShop');
       }
     }
@@ -397,8 +417,8 @@ function HomeScreen(props) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmitSearch: function(salonOrHome, date, hour, address, latitude, longitude, service, experience) { 
-      dispatch({type: 'createSearch', salonOrHome : salonOrHome, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, service : service, experience : experience}) 
+    onSubmitSearch: function(salonOrHome, completeDate, date, hour, address, latitude, longitude, service, experience) { 
+      dispatch({type: 'createSearch', salonOrHome : salonOrHome, completeDate : completeDate, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, service : service, experience : experience}) 
     }
   }
 }
