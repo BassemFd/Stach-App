@@ -24,6 +24,7 @@ function List(props) {
 
 
   const [shopsList, setShopsList] = useState([])
+  const [shopsData, setShopsData] = useState([])
 
 
   var coiffeurs = [
@@ -137,7 +138,26 @@ function List(props) {
               },
   ]  
 
+  
+
   useEffect(() => {
+
+    // Fetch request from search to BDD
+    async function getShops(){
+      let shopsFetch = await fetch(`${IP_ADDRESS}/search`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({data : props.search}) 
+      });
+      let body = await shopsFetch.json();
+      console.log("shoplist FFFFFFFFFFFFFFFFff", body)
+      setShopsData(body.filteredDistanceShopsList)
+      
+    } 
+    getShops()
+
+
+
     async function getLocation() {
         // let { status } = await Permissions.askAsync(Permissions.LOCATION);
         // if (status === 'granted') {
@@ -148,15 +168,7 @@ function List(props) {
         //   );
         // }
 
-        // Fetch request from search to BDD
-        async function getShops(){
-          let shopsList = await fetch("/search", {
-            method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `type=${props.search.type}&img=${img}`
-          });
-        } 
-
+        
 
         var shopsTab = [];
         for (let i=0; i<coiffeurs.length; i++) {
@@ -167,7 +179,10 @@ function List(props) {
         setShopsList(shopsTab);
       }
       getLocation();
+      
   }, []);
+
+  // console.log("shopList :", shopsData)
 
 
   function navigation(shopDetails) {
@@ -202,8 +217,8 @@ function List(props) {
         <ScrollView>
         
 
-        {shopsList.length > 0 ?
-          shopsList.map((element, i) => {
+        {shopsData.length > 0 ?
+          shopsData.map((element, i) => {
             var priceTab = [];
             for (let y=0; y<3; y++) {
               var color = 'white'
