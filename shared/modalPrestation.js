@@ -8,9 +8,9 @@ const ModalPrestation = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPrestation, setSelectedPrestation] = useState("Choisir une Prestation");
 
-  const prestation = [
-    "Coupe Homme + Barbe", "Coloration Femme", "Brushing", "Coupe Homme + Shampoing"
-]
+//   const prestation = [
+//     "Coupe Homme + Barbe", "Coloration Femme", "Brushing", "Coupe Homme + Shampoing"
+// ]
 
 const prestationTab = props.shopDetails.offers.map((choix, i)=>{
     return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedPrestation(choix); setModalVisible(!modalVisible)}}>
