@@ -8,9 +8,9 @@ const Modaltest = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCoiffeur, setSelectedCoiffeur] = useState("Choix du Coiffeur");
 
-const coiffeur = [
-    "Charlotte", "Raph", "Yaya", "Bassem"
-]
+// const coiffeur = [
+//     "Charlotte", "Raph", "Yaya", "Bassem"
+// ]
 console.log(props.shopDetails)
 const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i)=>{
     return (<Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedCoiffeur(choix); setModalVisible(!modalVisible)}}>
