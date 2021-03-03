@@ -22,14 +22,18 @@ import ContactScreen from '../Screens/ContactScreen';
 import {Provider} from 'react-redux'
 import {createStore, combineReducers} from 'redux'
 
-import shopDetails from '../reducers/OfferDetails.reducer'
-import search from '../reducers/Search.reducer'
-import selectedService from '../reducers/ModalSelectedService.reducer'
+import shopDetails from '../reducers/OfferDetails.reducer';
+import search from '../reducers/Search.reducer';
+import selectedService from '../reducers/ModalSelectedService.reducer';
+import details from '../reducers/ChosenAppointment.reducer';
+import hairdresser from '../reducers/ChosenHairdresser.reducer';
+import prestation from '../reducers/ChosenPrestation.reducer';
+import experience from '../reducers/ChosenExperience.reducer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-const store = createStore(combineReducers( {shopDetails, search, selectedService}))
+const store = createStore(combineReducers( {shopDetails, search, selectedService, details, hairdresser, prestation, experience}))
 
 function ButtonTabSign() {
   return (

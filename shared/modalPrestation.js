@@ -14,10 +14,10 @@ const ModalPrestation = (props) => {
 
 const prestationTab = props.shopDetails.offers.map((choix, i)=>{
     return (<View style={{ flexDirection: 'row'}}>
-    <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedPrestation(choix); setModalVisible(!modalVisible)}}>
+    <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedPrestation(choix); setModalVisible(!modalVisible); props.chosenPrestation(choix)}}>
       <Text style={styles.textStyle}>{choix}</Text>
     </Pressable>
-    <Pressable key={i} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>50€</Text></Pressable>
+    <Pressable key={i+1} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>50€</Text></Pressable>
     </View>)
 })
 
@@ -40,7 +40,7 @@ const prestationTab = props.shopDetails.offers.map((choix, i)=>{
             
             <Pressable
               style={[styles.button, styles.buttonClose, styles.buttonW]}
-              onPress={() => {setModalVisible(!modalVisible); setSelectedPrestation("Choisir une Prestation")}}
+              onPress={() => {setModalVisible(!modalVisible); setSelectedPrestation("Choisir une Prestation"); props.chosenPrestation("Aucune")}}
             >
               <Text style={styles.textStyle}>Aucune</Text>
             </Pressable>
@@ -114,6 +114,16 @@ const styles = StyleSheet.create({
   
 });
 
+function mapDispatchToProps(dispatch){
+  return {
+    chosenPrestation: function(prestation){
+            dispatch({
+              type: 'prestation',
+              prestation: prestation
+            })
+                }
+              }
+            }
 
 function mapStateToProps(state) {
   return {shopDetails: state.shopDetails }
@@ -121,5 +131,5 @@ function mapStateToProps(state) {
   
  export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
  )(ModalPrestation);

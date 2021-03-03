@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import { globalStyles }from '../styles/Global';
-import { Card, ListItem, Badge} from 'react-native-elements';
+import { globalStyles } from '../styles/Global';
+import { Card, ListItem} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -14,16 +14,12 @@ import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarous
 import {connect} from 'react-redux';
 
 
-// import PickerCascader  from 'react-native-picker-cascader';
-
-
-
 function Shop(props) {
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(false);
-  
+  const [chosenHour, setChosenHour] = useState()
   
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -57,7 +53,10 @@ function Shop(props) {
 
   //* handling validation button, 
   //!! see what to send to SignIn/SignOut or Reducer
- function handleChoixDuCoiffeur(){
+ function handleChoixDuSalon(){
+   console.log(chosenHour)
+   
+  props.chosenAppointment(chosenHour, props.hairdresser, props.prestation, props.experience, props.chosenDate, props.shopDetails)
   props.navigation.navigate('ButtonTabSign')
   }
 
@@ -96,7 +95,7 @@ function Shop(props) {
   
 //! should navigate to lower screen to check comments
 const handleAvis = () => {
-  console.log("avis")
+  // console.log("avis")
 // ScrollView.scrollToEnd({animated: true})
 // ScrollView.ScrollTo({x: 0, y: 0, animated: true})
 }
@@ -122,24 +121,29 @@ var listCommentItem = listComment.map((l, i) => {return (
 
 
 const hours =  [{mon: {open: 570, close: 1080 }}]
-  console.log(hours[0].mon.close)
+  // console.log(hours[0].mon.close)
 
 const convertMinsToTime = (mins) => {
+  
   let hours = Math.floor(mins / 60);
   let minutes = mins % 60;
   minutes = minutes < 10 ? '0' + minutes : minutes;
   return `${hours}:${minutes}`;
 }
-console.log("CONVERTER", convertMinsToTime(1000))
+// console.log("CONVERTER", convertMinsToTime(1000))
 
 let hoursTab;
 let hoursArr = [];
   for(let i = 570; i <= 1080; i+=30){
     hoursArr.push(i)
-    hoursTab = hoursArr.map((number, i)=>{
-      return <TouchableOpacity key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(number)}</Text></TouchableOpacity>
+    hoursTab = hoursArr.map((hour, i)=>{
+      return <TouchableOpacity onPress={()=> setChosenHour(hour)} key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
     })
   }
+
+  // console.log("Hairdresser from shop screen:", props.hairdresser)
+  // console.log("Prestation from Shop Screen:", props.prestation)
+  // console.log("Experience from Shop Screen:", props.experience)
 
 
   return (
@@ -250,6 +254,7 @@ let hoursArr = [];
         </Card>
 
         <Card style={{flex: 1, alignItems: "center"}}>
+          <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>
         <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
           {hoursTab}
@@ -259,7 +264,7 @@ let hoursArr = [];
      </View>
 
     <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 20}}>
-      <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuCoiffeur()}/>  
+      <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuSalon()}/>  
       <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
       </View>
     
@@ -329,13 +334,30 @@ const styles = StyleSheet.create({
 });
 
 
+function mapDispatchToProps(dispatch){
+    return {
+      chosenAppointment: function(hour, hairdresser, prestation, experience, date, shopDetails){
+              dispatch({
+                type: 'finalAppointment',
+                hour: hour, 
+                hairdresser: hairdresser, 
+                prestation: prestation, 
+                experience: experience,
+                date: date,
+                shopDetails: shopDetails
+              })
+                  }
+                }
+              }
+
 
 
 function mapStateToProps(state) {
-  return {shopDetails: state.shopDetails }
+  return {shopDetails: state.shopDetails, hairdresser: state.hairdresser, prestation: state.prestation, experience: state.experience, chosenDate: state.search.date }
  }
   
  export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
  )(Shop);
+
