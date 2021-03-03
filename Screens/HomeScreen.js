@@ -335,6 +335,7 @@ function HomeScreen(props) {
         mode={mode}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        minimumDate={new Date()}
       />
 
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUOI ?
