@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button} from 'react-native';
 import { globalStyles } from '../styles/Global';
 import { Card, ListItem} from 'react-native-elements';
 import { FontAwesome} from '@expo/vector-icons';
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MapView, { Marker } from 'react-native-maps';
 import PrimaryButton from '../shared/Button';
 import ModalCoiffeur from '../shared/modal';
@@ -20,7 +20,8 @@ function Shop(props) {
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(false);
   const [chosenHour, setChosenHour] = useState()
-  
+  const [lock, setLock] = useState(false)
+
   const toggleOverlay = () => {
     setVisible(!visible);
   };
@@ -132,20 +133,73 @@ const convertMinsToTime = (mins) => {
 }
 // console.log("CONVERTER", convertMinsToTime(1000))
 
+
+
 let hoursTab;
 let hoursArr = [];
   for(let i = 570; i <= 1080; i+=30){
     hoursArr.push(i)
     hoursTab = hoursArr.map((hour, i)=>{
-      return <TouchableOpacity onPress={()=> setChosenHour(hour)} key={i} style={{padding: 10, margin: 5, backgroundColor: '#FFCD41', borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
-    })
+      var color = '#FFCD41'
+        if(chosenHour === hour){
+          color = '#4280AB'
+        } 
+
+      return <TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
+   
+  })
+    
   }
 
   // console.log("Hairdresser from shop screen:", props.hairdresser)
   // console.log("Prestation from Shop Screen:", props.prestation)
   // console.log("Experience from Shop Screen:", props.experience)
 
+  //*DATETIME PICKER ****************************************
 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [isDateSelected, setIsDateSelected] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+var datePhrase;
+// if(datePhrase === undefined){
+//   datePhrase= "Choisir une date"
+// }
+  const handleConfirm = (choice) => {
+    console.log("A date has been picked: ", choice);
+    setDate(choice)
+    setIsDateSelected(true)
+    let dateToReducer = null;
+     
+    isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
+
+    console.log("final date?:", dateToReducer)
+    
+
+    datePhrase = dateToReducer
+    hideDatePicker();
+  };
+  if (isDateSelected) {
+    var zeroDay = "";
+    var zeroMonth = "";
+    date.getDate() <10 ? zeroDay="0" : null;
+    date.getMonth() <10 ? zeroMonth="0" : null; 
+    datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
+  } else {
+    datePhrase = "TOUTES LES DATES"
+  }
+
+  
+
+
+//**************************************** */
   return (
     
     <View style={styles.card}>
@@ -254,7 +308,20 @@ let hoursArr = [];
         </Card>
 
         <Card style={{flex: 1, alignItems: "center"}}>
-          <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>
+              {(props.chosenDate !== undefined) ?
+          (<Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>)
+              : 
+            (  <View>
+            <PrimaryButton  backgroundColor="#4280AB" color="white" title={datePhrase} onPress={showDatePicker} />
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                minimumDate={new Date()}
+              />
+              </View>)
+              }
         <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
           {hoursTab}
