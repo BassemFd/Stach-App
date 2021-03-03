@@ -12,7 +12,7 @@ export const globalStyles = StyleSheet.create({
     fontSize: 44,
   },
   hr: {
-    borderBottomColor: '#333',
+    borderBottomColor: '#FFCD41',
     borderBottomWidth: 1,
     marginVertical: 10,
   },

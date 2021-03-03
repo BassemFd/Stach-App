@@ -20,7 +20,7 @@ export default function SignIn() {
   const [emailError, setEmailError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
+    const data = await fetch(`${IP_ADDRESS_HOME}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
