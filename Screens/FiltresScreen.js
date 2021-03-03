@@ -9,11 +9,13 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function Filtres() {
 
-  
-
   var coupes = ['COUPE HOMME','COUPE FEMME','COUPE HOMME + BARBE','COUPE HOMME COLORATION','COUPE FEMME COLORATION','COUPE FEMME AFRO', 'COUPE HOMME AFRO', 'COUPE FEMME BALAYAGE', 'COUPE FEMME PERMANENTE']
 
-  var pictos = ['wheelchair-alt', 'glass', 'gamepad', 'coffee', 'leaf', 'paw']
+  var pictos = ['wheelchair-alt', 'glass', 'gamepad', 'coffee', 'leaf', 'paw'];
+
+  var prix = ['€', '€€', '€€€'];
+
+  var nosExperiences = ['MOMENT A DEUX', 'APERO COIF', 'PLAY HARD CUT HARD', 'BIEN ETRE'];
 
   const [quandVisible, setQuandVisible] = useState(false);
   const [quand, setQuand] = useState(null);
@@ -29,9 +31,12 @@ export default function Filtres() {
 
   const [priceVisible, setPriceVisible] = useState(false);
   const [price, setPrice] = useState(null);
-  
+  const [afficherPrice, setAfficherPrice] = useState(null);
 
+  const [experiencesVisible, setExperiencesVisible] = useState(false);
+  const [experiences, setExperiences] = useState(null);
 
+  // ajouter use effect avec valeur par defaut du reducer reçu
 
   // QUAND 
   function closeQuand() {
@@ -57,6 +62,7 @@ export default function Filtres() {
   function ChosenQuoi(element) {
     setQuoi(element)
     setQuoiVisible(false)
+    setExperiences(null)
   }
 
   function closeQuoi() {
@@ -65,7 +71,6 @@ export default function Filtres() {
   }
 
   // SERVICES
-
   var pictosTab = pictos.map((element, i) => {
     return(
       <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => ChosenServices(element)}>
@@ -85,27 +90,55 @@ export default function Filtres() {
   }
 
   //PRIX
+  var prixTab = prix.map((element, i) => {
+    return(
+      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => ChosenPrices(element)}>
+        <Text style={styles.textStyle}>{element}</Text>
+      </Pressable>
+    )
+  })  
 
+  function ChosenPrices(element) {
+    setAfficherPrice(element);
+    if (element === '€') {
+      setPrice(1);
+    } else if (element === '€€')  {
+      setPrice(2) 
+    } else if (element === '€€€') {
+      setPrice(3)
+    }
+    setPriceVisible(false)
+  };
+  
   function closePrice() {
     setPriceVisible(false);
     setPrice(null)
   }
 
-  var pricePicto1 = 
-  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
+  //EXPERIENCES
+  var experiencesTab = nosExperiences.map((element, i) => {
+    return(
+      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => ChosenExperiences(element)}>
+        <Text style={styles.textStyle}>{element}</Text>
+    </Pressable>
+    )
+  })
 
-  var pricePicto2 = 
-  
-
-  var pricePicto = null;
-  if (price === 1) {
-    pricePicto = 
+  function ChosenExperiences(element) {
+    setExperiences(element);
+    setExperiencesVisible(false);
+    setQuoi(null);
   }
 
+  function closeExperiences() {
+    setExperiencesVisible(false);
+    setExperiences(null);
+  }
+// faire un if else experience rempli = quoi null et inverse
 
-  
 
-  
+
+  //RATING
 
   return (
     <View style={globalStyles.container}>
@@ -141,20 +174,19 @@ export default function Filtres() {
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => setServicesVisible(true)}>
-            <Text style={styles.title}>SERVICES ?</Text>
-            <FontAwesome name={services} size={25} color='black' style={{padding: 5}} />
-            <Card.Divider></Card.Divider>
-          </TouchableOpacity>
-
           <TouchableOpacity onPress={() => setPriceVisible(true)}>
             <Text style={styles.title}>PRIX ?</Text>
-            <FontAwesome name={pricePicto} size={25} color='black' style={{padding: 5}} />
+            <Text style={globalStyles.paragraph}>{afficherPrice}</Text>
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-          <Text style={globalStyles.paragraph}>€€€</Text>
-          <Text style={styles.title}>EXPERIENCES ?</Text>
+          
+          <TouchableOpacity onPress={() => setExperiencesVisible(true)}>
+            <Text style={styles.title}>EXPERIENCE ?</Text>
+            <Text style={globalStyles.paragraph}>{experiences}</Text>
+            <Card.Divider></Card.Divider>
+          </TouchableOpacity>
+
           <Text style={globalStyles.paragraph}>BIEN ETRE</Text>
         </View>
 
@@ -187,29 +219,19 @@ export default function Filtres() {
         </Overlay>
 
         <Overlay isVisible={priceVisible}>
-          
             <View style={{display: 'flex', alignItems: 'flex-end'}}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closePrice()} style={{margin: 5}}/>
             </View>
             <View style={{display: 'flex', flexDirection: 'row'}}>
-              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => setPrice(1)}>
-                <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
-              </Pressable>
-              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => setPrice(2)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
-                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
-                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
-                </View>
-              </Pressable>
-              <Pressable style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={() => setPrice(3)}>
-                <View style={{display: 'flex', flexDirection: 'row'}}>
-                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
-                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
-                  <FontAwesome  name="euro" size={15} color='black' style={styles.pad} />
-                </View>
-              </Pressable>
+              {prixTab}
             </View>
-          
+        </Overlay>
+
+        <Overlay isVisible={experiencesVisible}>
+            <View style={{display: 'flex', alignItems: 'flex-end'}}>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeExperiences()} style={{margin: 5}}/>
+            </View>
+            {experiencesTab}
         </Overlay>
 
     </View>
