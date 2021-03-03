@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-native';
 import { globalStyles } from '../styles/Global';
 import { Overlay, Card } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesome } from '@expo/vector-icons';
+import {connect} from 'react-redux';
 
 
-export default function Filtres() {
+function Filtres(props) {
 
   var coupes = ['COUPE HOMME','COUPE FEMME','COUPE HOMME + BARBE','COUPE HOMME COLORATION','COUPE FEMME COLORATION','COUPE FEMME AFRO', 'COUPE HOMME AFRO', 'COUPE FEMME BALAYAGE', 'COUPE FEMME PERMANENTE']
 
@@ -154,6 +155,14 @@ export default function Filtres() {
     setNoteVisible(false);
     setNote(null);
   }
+
+  //USE EFFECT ENTREE
+  // useEffect( () => {
+  //   setQuand(props.date);
+  //   setHeure(props.hour);
+  //   setQuoi(props.service);
+  //   setExperiences(props.experiences)
+  // }, []);
 
   return (
     <View style={globalStyles.container}>
@@ -343,3 +352,18 @@ const styles = StyleSheet.create({
   },
   pad: {padding: 2},
 });
+
+export default Filtres
+
+// function mapDispatchToProps(dispatch){
+//   return {
+//     addToSearch: function(){
+//       dispatch({
+//         type: 'editSearch', 
+//       })
+  
+//   }
+  
+//   }
+  
+//   }
