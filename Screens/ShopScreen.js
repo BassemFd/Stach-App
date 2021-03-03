@@ -12,7 +12,7 @@ import ModalPrestation from '../shared/modalPrestation';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
 import {connect} from 'react-redux';
-import { color } from 'react-native-reanimated';
+
 
 
 
