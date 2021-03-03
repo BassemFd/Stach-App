@@ -6,6 +6,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
+import Button from '../shared/Button'
 
 
 function Filtres(props) {
@@ -17,6 +18,11 @@ function Filtres(props) {
   var prix = ['€', '€€', '€€€'];
 
   var nosExperiences = ['MOMENT A DEUX', 'APERO COIF', 'PLAY HARD CUT HARD', 'BIEN ETRE'];
+
+  const [salonOrHome, setSalonOrHome] = useState(null);
+  const [adress, setAdress] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   const [quandVisible, setQuandVisible] = useState(false);
   const [quand, setQuand] = useState(null);
@@ -157,12 +163,17 @@ function Filtres(props) {
   }
 
   //USE EFFECT ENTREE
-  // useEffect( () => {
-  //   setQuand(props.date);
-  //   setHeure(props.hour);
-  //   setQuoi(props.service);
-  //   setExperiences(props.experiences)
-  // }, []);
+  useEffect( () => {
+    console.log('RECHERCHE', props.search);
+    setQuand(props.search.date);
+    setHeure(props.search.hour);
+    setQuoi(props.search.offer);
+    setExperiences(props.search.experiences);
+    setSalonOrHome(props.search.salonOrHome);
+    setAdress(props.search.address);
+    setLatitude(props.search.latitude)
+    setLongitude(props.search.longitude)
+  }, []);
 
   return (
     <View style={globalStyles.container}>
@@ -217,7 +228,7 @@ function Filtres(props) {
             <Card.Divider></Card.Divider>
           </TouchableOpacity>
 
-
+          <Button title='Valider' onPress={() => addToSearch(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude)}></Button>
         </View>
 
         <Overlay isVisible={quandVisible}>
@@ -317,8 +328,6 @@ function Filtres(props) {
                   <Text>Minimum cinq étoiles</Text>
                 </View>
               </Pressable>
-            
-            
         </Overlay>
 
     </View>
@@ -353,17 +362,34 @@ const styles = StyleSheet.create({
   pad: {padding: 2},
 });
 
-export default Filtres
+//export default Filtres
 
-// function mapDispatchToProps(dispatch){
-//   return {
-//     addToSearch: function(){
-//       dispatch({
-//         type: 'editSearch', 
-//       })
-  
-//   }
-  
-//   }
-  
-//   }
+function mapStateToProps(state){
+  return {search: state.search}
+}
+
+function mapDispatchToProps(dispatch){
+  return {
+    addToSearch: function(quand, heure, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude){
+      dispatch({type: 'createSearch', 
+        salonOrHome : salonOrHome, 
+        completeDate : ..., ---------> à régler
+        date : quand, 
+        hour : heure, 
+        address : adress, 
+        latitude : latitude, 
+        longitude : longitude, 
+        offer : quoi, 
+        experience : experiences, 
+        service : services, 
+        priceFork : price, 
+        rating: note})
+    }
+  }
+}
+
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps,
+)(Filtres);
+
