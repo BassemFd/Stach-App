@@ -12,6 +12,8 @@ import ModalPrestation from '../shared/modalPrestation';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
 import {connect} from 'react-redux';
+import { color } from 'react-native-reanimated';
+
 
 
 function Shop(props) {
@@ -20,7 +22,17 @@ function Shop(props) {
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(false);
   const [chosenHour, setChosenHour] = useState()
-  const [lock, setLock] = useState(false)
+  const [favorite, setFavorite] = useState(false)
+  
+  var handleFavorite = () => {
+    setFavorite(!favorite);
+  }
+  var color;
+  if(favorite === true ){
+    color = "#e74c3c"
+  } else {
+    color = "black"
+  }
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -145,7 +157,7 @@ let hoursArr = [];
           color = '#4280AB'
         } 
 
-      return <TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 80, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
+      return <TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
    
   })
     
@@ -196,7 +208,7 @@ var datePhrase;
     datePhrase = "TOUTES LES DATES"
   }
 
-  
+
 
 
 //**************************************** */
@@ -238,7 +250,11 @@ var datePhrase;
                 inactiveDotScale={0.6}
                 tappableDots={true}
             />
-        <Text style={{fontSize: 24, fontFamily: "graduate-regular", textAlign: 'center', marginBottom: 10}}>{hairdresser.name}</Text>
+            <Card.Divider/>
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>       
+              <Text style={{fontSize: 24, fontFamily: "graduate-regular", textAlign: 'center'}}>{hairdresser.name}</Text>
+              <FontAwesome onPress={()=> handleFavorite()}  name="heart" size={24} color={color} />
+            </View>
 
         <Text style={{marginBottom: 10}}>
           {hairdresser.description}
@@ -307,35 +323,37 @@ var datePhrase;
         </View>
         </Card>
 
-        <Card style={{flex: 1, alignItems: "center"}}>
+        <Card>
+        <View style={{alignItems: "center", marginTop: 10}}>
               {(props.chosenDate !== undefined) ?
-          (<Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>)
-              : 
-            (  <View>
-            <PrimaryButton  backgroundColor="#4280AB" color="white" title={datePhrase} onPress={showDatePicker} />
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-                minimumDate={new Date()}
-              />
-              </View>)
-              }
-        <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Choisis l'heure du RDV :</Text>
-          <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start'}}>
-          {hoursTab}
+              (<Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>)
+                  : 
+                (  <View style={{width: 270}}>
+                <PrimaryButton  backgroundColor="#4280AB" color="white" title={datePhrase} onPress={showDatePicker} />
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    minimumDate={new Date()}
+                  />
+                  </View>)
+                  }
+            <Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10, marginTop: 10}}>Choisis l'heure du RDV :</Text>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap', margin: 12}}>
+            {hoursTab}
+            </View>
           </View>
         </Card>
 
      </View>
 
-    <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 20}}>
+    <View style={{flexDirection:"row", justifyContent:"space-evenly", margin: 30}}>
       <PrimaryButton title="Choisir Ce Salon" backgroundColor="#4280AB" color="white" onPress={() => handleChoixDuSalon()}/>  
       <PrimaryButton title="retour" backgroundColor="#AB4242" color="white" onPress={() => handleReturnButton()}/>
       </View>
     
-      <View style={{flex: 1, alignItems: "center", backgroundColor: "#FFCD41"}}>
+      <View style={{flex: 1, alignItems: "center", backgroundColor: "#FFCD41", marginTop: 10}}>
         <Text style={{fontSize: 24, fontFamily: "graduate-regular"}}>Tout les avis du Salon</Text>
         
       </View>
