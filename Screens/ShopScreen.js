@@ -28,6 +28,8 @@ function Shop(props) {
   const [visible, setVisible] = useState(false);
   const [chosenHour, setChosenHour] = useState()
   const [favorite, setFavorite] = useState(false)
+
+  const scrollRef = useRef(null);
   
   var handleFavorite = () => {
     setFavorite(!favorite);
@@ -113,9 +115,12 @@ function Shop(props) {
   
 //! should navigate to lower screen to check comments
 const handleAvis = () => {
-  // console.log("avis")
+  console.log("avis")
 // ScrollView.scrollToEnd({animated: true})
-// ScrollView.ScrollTo({x: 0, y: 0, animated: true})
+scrollRef.current?.scrollTo({
+  y: 1200,
+  animated: true,
+});
 }
 
 
@@ -299,7 +304,7 @@ if(filteredSchedule.length !== 0){
     
     <View style={styles.card}>
       <Text style={[globalStyles.brand, {marginTop: 10}]}>'Stach</Text>
-      <ScrollView>
+      <ScrollView ref={scrollRef}>
       
       <View >
         <Card  >
