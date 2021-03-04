@@ -5,8 +5,10 @@ import { globalStyles } from '../styles/Global';
 import Card from '../shared/Card';
 import RadioButton from '../shared/RadioButton';
 import CustomButton from '../shared/Button';
+import {connect} from 'react-redux';
 
-export default function Appointment() {
+function Appointment(props) {
+  console.log("Details", props.appointment)
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
     { id: 2, value: false, name: 'Paiement sur place', selected: false },
@@ -66,16 +68,17 @@ export default function Appointment() {
             color='#333'
           />
           <View>
-            <Text style={styles.appointmentShop}>Chez Bassem</Text>
+            <Text style={styles.appointmentShop}>{props.appointment.shopDetails.shopName}</Text>
             <Text>12 Rue Henri Barbusse</Text>
             <Text>92110 Clichy</Text>
           </View>
         </View>
-        <Text>Professionnel : Juliette</Text>
-        <Text>Date et heure : 12 Décembre 2021 - 14h</Text>
+        <Text>Professionnel : {props.appointment.hairdresser}</Text>
+        <Text>Date et heure : 12 Décembre 2021 - {props.appointment.hour}</Text>
         <View style={styles.appoinTService}>
-          <Text>Prestation : Coupe Homme - 20.50 €</Text>
-          <Text>Autres options : Café sur place 2 €</Text>
+          <Text>Prestation : {props.appointment.prestation} - 20.50 €</Text>
+         
+          <Text>Autres options : {props.appointment.experience}2 €</Text>
         </View>
         <Text style={styles.appointPrice}>Total commande : 22.50€</Text>
       </Card>
@@ -115,7 +118,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   icon: {
-    resizeMode: 'contain',
     height: 50,
     width: 50,
     borderRadius: 50 / 2,
@@ -182,3 +184,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+
+
+
+
+function mapStateToProps(state) {
+  return {appointment: state.details};
+}
+
+export default connect(
+    mapStateToProps, 
+    null
+)(Appointment);

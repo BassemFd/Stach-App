@@ -109,7 +109,7 @@ function List(props) {
     //   }
     //   getLocation();
       
-  }, []);
+  }, [props.search]);
 
   // console.log("shopList :", shopsData)
 

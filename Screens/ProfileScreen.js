@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,9 +14,13 @@ import CustomBadge from '../shared/Badge';
 import CustomButton from '../shared/Button';
 import Card from '../shared/Card';
 import CommentFormScreen from './CommentFormScreen';
+import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 
 export default function Profile() {
+  const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [user, setUser] = useState(false);
+  const [appointments, setAppointments] = useState([]);
 
   const [comments, setComments] = useState([
     {
@@ -26,6 +30,44 @@ export default function Profile() {
       date: '04/03/2021-21:32pm',
     },
   ]);
+
+  // This token will come from the Reducer
+  let token = '3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa';
+
+  useEffect(() => {
+    setLoading(true);
+    const getUser = async () => {
+      const data = await fetch(`${IP_ADDRESS}/users/myProfile/${token}`);
+      const body = await data.json();
+
+      setUser(body.user);
+      setAppointments(body.appointments);
+      setLoading(false);
+    };
+
+    getUser();
+  }, [token]);
+
+  // Format appointment date
+  const formatAppointDate = (date) => {
+    const event = new Date(date);
+    // event.getHours() - 1;
+
+    // Get the day of the week with a long date
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Africa/Dakar', // Pck UTC de Dakar == UTC+0 idem que ce qu'on enregistre en BDD
+    };
+
+    date = event.toLocaleString('fr-FR', options);
+    const dateFirstUpper = `${date[0].toUpperCase() + date.slice(1)}`;
+    return dateFirstUpper;
+  };
 
   // Add Comment
   const addComment = (comment) => {
@@ -41,11 +83,14 @@ export default function Profile() {
 
   let points = 562;
   let appointmentPrice = 67;
+  const dateNow = new Date(Date.now()).toString();
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.brand}>'Stach</Text>
       <View style={styles.userContent}>
-        <Text style={styles.userName}>John Doe</Text>
+        <Text style={styles.userName}>
+          {user.firstName} {user.lastName}
+        </Text>
         <CustomBadge
           title={`${points} Points`}
           color='#fff'
@@ -58,46 +103,38 @@ export default function Profile() {
         <View style={styles.appointmentBox}>
           <Text style={styles.appointmentTitle}>Rdv à venir :</Text>
           <View style={styles.bottomTitle}></View>
-          <Card>
-            <View style={styles.cardHeader}>
-              <Text style={styles.appointmentShop}>Chez Juliette</Text>
-              <CustomBadge
-                title={`${appointmentPrice}€`}
-                color='#fff'
-                backgroundColor='#E65100'
-                width={40}
-              />
-            </View>
-            <Text style={styles.appointmentAddresses}>
-              56 Boulevard Pereire 75017 Paris
-            </Text>
-            <Text style={styles.appointmentDate}>Le 17 mars 2021 à 15:30</Text>
-            <CustomButton
-              title='Mon coiffeur'
-              color='#fff'
-              backgroundColor='#4280AB'
-            />
-          </Card>
-          <Card>
-            <View style={styles.cardHeader}>
-              <Text style={styles.appointmentShop}>Chez Bassem</Text>
-              <CustomBadge
-                title={`${appointmentPrice}€`}
-                color='#fff'
-                backgroundColor='#16a085'
-                width={40}
-              />
-            </View>
-            <Text style={styles.appointmentAddresses}>
-              15 Square des Sports 95500 Gonesse
-            </Text>
-            <Text style={styles.appointmentDate}>Le 5 mars 2021 à 17:00</Text>
-            <CustomButton
-              title='Mon coiffeur'
-              color='#fff'
-              backgroundColor='#4280AB'
-            />
-          </Card>
+          {appointments.map((appointment) => {
+            return appointment.startDate < dateNow ? (
+              <Card key={appointment._id}>
+                <View style={styles.cardHeader}>
+                  <Text style={styles.appointmentShop}>Chez Juliette</Text>
+                  <CustomBadge
+                    title={`${appointment.chosenPrice}€`}
+                    color='#fff'
+                    backgroundColor={
+                      appointment.chosenPayment === 'online'
+                        ? '#16a085'
+                        : '#E65100'
+                    }
+                    width={40}
+                  />
+                </View>
+                <Text style={styles.appointmentAddresses}>
+                  56 Boulevard Pereire 75017 Paris
+                </Text>
+                <Text style={styles.appointmentDate}>
+                  {formatAppointDate(appointment.startDate)}
+                </Text>
+                <CustomButton
+                  title='Mon coiffeur'
+                  color='#fff'
+                  backgroundColor='#4280AB'
+                />
+              </Card>
+            ) : (
+              <Text>Pas de Rdv à venir</Text>
+            );
+          })}
         </View>
         {/* Appointement Passed */}
         <View style={styles.appointmentBox}>
