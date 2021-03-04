@@ -125,12 +125,12 @@ function HomeScreen(props) {
         setDate(newDateTer)
         setIsDateSelected(true)
       } else if (mode == 'time') {
-        console.log("choice time", choice.getHours(), choice.getMinutes(), date)
+        // console.log("choice time", choice.getHours(), choice.getMinutes(), date)
         let chosenHour = choice.getHours();
         let chosenMinutes = choice.getMinutes();
         let newDate = new Date (date.setHours(chosenHour+1))
         let newDateBis = new Date (newDate.setMinutes(chosenMinutes))
-        console.log("NEW DATEEEEEEEEEE", newDateBis)
+        // console.log("NEW DATEEEEEEEEEE", newDateBis)
         // SetDate juste en changeant l'heure
         setDate(newDateBis)
         setIsTimeSelected(true)
