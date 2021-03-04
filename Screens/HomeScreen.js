@@ -1,11 +1,10 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, ScrollView, Image} from 'react-native';
+import {Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { globalStyles } from '../styles/Global';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SafeAreaView } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from 'expo-location';
 import { Dimensions } from 'react-native';
@@ -125,12 +124,12 @@ function HomeScreen(props) {
         setDate(newDateTer)
         setIsDateSelected(true)
       } else if (mode == 'time') {
-        console.log("choice time", choice.getHours(), choice.getMinutes(), date)
+        // console.log("choice time", choice.getHours(), choice.getMinutes(), date)
         let chosenHour = choice.getHours();
         let chosenMinutes = choice.getMinutes();
         let newDate = new Date (date.setHours(chosenHour+1))
         let newDateBis = new Date (newDate.setMinutes(chosenMinutes))
-        console.log("NEW DATEEEEEEEEEE", newDateBis)
+        // console.log("NEW DATEEEEEEEEEE", newDateBis)
         // SetDate juste en changeant l'heure
         setDate(newDateBis)
         setIsTimeSelected(true)
@@ -297,7 +296,7 @@ function HomeScreen(props) {
     <Icon name='map-marker' size={36} color="#4E342E" onPress={locateMe}/>
     </View>
     
-    <Overlay isVisible={visible} >
+    <Overlay isVisible={visible} backdropStyle={{backgroundColor:'transparent', borderColor:"transparent"}} >
       <View style={{flex:0.1, alignItems:'center'}}>
     <Text style={{marginBottom:12}}>Localisation en cours...</Text>
     <Icon name='globe' size={36} color="#4E342E"/>
@@ -379,7 +378,7 @@ function HomeScreen(props) {
     buttonStyle = {{backgroundColor : "#4280AB"}}
     />
 
-    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>EXPERIENCES</Text>
+    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10, marginBottom:10}}>EXPERIENCES</Text>
     </View>
 
     <View style={{flex:1, alignItems:'center', backgroundColor: "#FFE082"}}>
@@ -393,24 +392,24 @@ function HomeScreen(props) {
     snapToInterval={windowWidth - snapToIntervalValue}
     >
 {dataExperience.map((experience,i)=>
-    (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#4280AB"}} >
-      <Card.Image style={{width : "100%"}} source={experience.image_url} onPress={() => toggleOverlay(experience)}/>
+    (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#4280AB", borderRadius:20, borderColor:"transparent"}} >
+      <Card.Image style={{width : "100%", borderTopLeftRadius:20, borderTopRightRadius:20}} source={experience.image_url} onPress={() => toggleOverlay(experience)}/>
       <Card.Divider/>
       <Text style={{marginBottom: 10, textAlign:"center", color:'white', fontWeight:'bold'}}>{experience.title}</Text>
     </Card>)
 )} 
-      <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"70%"}}>
-      <Card containerStyle={{ padding : 0, width : "90%", height:"95%"}}>
-      <Card.Image style={{width : "100%", marginTop:50}} source={dataOverlay.image_url}/>
+      <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"60%", borderRadius:25, borderColor:"transparent"}} backdropStyle={{backgroundColor:'transparent', borderColor:"transparent"}}>
+      <Card containerStyle={{ padding : 0, margin:0, width : "90%", height:"100%", backgroundColor: 'white', borderRadius: 25, borderColor:"transparent"}}>
+      <Card.Image style={{width : "100%", borderTopLeftRadius:25, borderTopRightRadius:25}} source={dataOverlay.image_url}/>
       <Card.Divider/>
-      <Card.Title style={{marginBottom: 50, textAlign:"center"}}>{dataOverlay.title}</Card.Title>
-      <Text style={{marginBottom: 50, textAlign:"center"}}>{dataOverlay.description}</Text>
+      <Card.Title style={{marginBottom: 20, marginTop:10, textAlign:"center", fontWeight:'bold', fontSize:24}}>{dataOverlay.title}</Card.Title>
+      <Text style={{textAlign:"center", fontWeight:'bold', padding:40}}>{dataOverlay.description}</Text>
       <Button
 
       title="VIVRE CETTE EXPERIENCE"
       type="solid"
       onPress={() => validationButton()}
-      buttonStyle = {{backgroundColor : "#4280AB", marginTop:50}}
+      buttonStyle = {{backgroundColor : "#4280AB", width:"70%", alignSelf:'center'}}
       />
 
       </Card>
