@@ -85,7 +85,16 @@ function Profile({ token }) {
       body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}&appointmentId=${appointmentId}`
     });
     await newComment.json()
+  
+    const getUser = async () => {
+      const data = await fetch(`${IP_ADDRESS}/users/myProfile/${token}`);
+      const body = await data.json();
+      setUser(body.user);
+      setShops(body.shops);
+      setAppointments(body.appointments);
+    };
 
+    getUser();
     setModalOpen(false);
   };
 
@@ -95,8 +104,8 @@ function Profile({ token }) {
     setModalOpen(true);
   }
 
-  const openShop = (shopId) => {
-    // fetch shopId
+  const openShop = (myShopId) => {
+    console.log(myShopId);
   }
 
   let points = 562;
