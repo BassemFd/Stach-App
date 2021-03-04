@@ -17,7 +17,7 @@ import CommentFormScreen from './CommentFormScreen';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function Profile({ token }) {
+function Profile({ token, saveChoosenOffer, navigation}) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState(false);
@@ -104,8 +104,13 @@ function Profile({ token }) {
     setModalOpen(true);
   }
 
-  const openShop = (myShopId) => {
-    console.log(myShopId);
+
+
+  const openShop = async (myShopId) => {
+    var data = await fetch(`${IP_ADDRESS}/shop/${myShopId}`);
+    var body = await data.json();
+    saveChoosenOffer(body.shop);
+    navigation.navigate('Shop');
   }
 
   let points = 562;
@@ -335,7 +340,18 @@ const styles = StyleSheet.create({
   },
 });
 
+function mapDispatchToProps(dispatch){
+  return {
+    saveChoosenOffer: function(shopDetails){
+      dispatch({
+        type: 'selectOffer',
+        shopDetails: shopDetails,
+      })
+    }
+  }
+}
+
 const mapStateToProps = (state) => {
   return { token: state.token };
 };
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
