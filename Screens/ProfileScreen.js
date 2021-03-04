@@ -24,14 +24,14 @@ function Profile({ token }) {
   const [appointments, setAppointments] = useState([]);
   const [shops, setShops] = useState([]);
 
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      comment: 'Zelda, Breach of Fresh Air',
-      rating: 5,
-      date: '04/03/2021-21:32pm',
-    },
-  ]);
+  // const [comments, setComments] = useState([
+  //   {
+  //     id: 1,
+  //     comment: 'Zelda, Breach of Fresh Air',
+  //     rating: 5,
+  //     date: '04/03/2021-21:32pm',
+  //   },
+  // ]);
 
   // This token will come from the Reducer
   // let token = '3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa';
@@ -80,12 +80,10 @@ function Profile({ token }) {
   // Add Comment
   const addComment = (comment) => {
     //
-    let newComment = {
-      body: comment.body,
-      rating: comment.rating,
-    };
+    console.log(comment);
+    
 
-    setComments([newComment, ...comments]);
+    // setComments([newComment, ...comments]);
     setModalOpen(false);
   };
 

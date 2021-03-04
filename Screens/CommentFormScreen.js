@@ -15,7 +15,6 @@ const CommentFormScreen = ({ addComment }) => {
     console.log()
     if (rating != 0 && avis != null) {
       comment = {rating: rating, avis: avis};
-      console.log('commentaire', comment);
       addComment(comment);
     } else {
       setText('Veuillez saisir une note et un avis')
