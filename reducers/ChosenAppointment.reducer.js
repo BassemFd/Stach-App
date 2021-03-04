@@ -7,9 +7,11 @@ export default function(details = {}, action){
             prestation: action.prestation, 
             experience: action.experience ,
             date: action.date,
-            shopDetails: action.shopDetails
+            shopDetailsName: action.shopDetailsName,
+            shopDetailsAddress: action.shopDetailsAddress,
+            shopDetailsID: action.shopDetailsID
         }
-        console.log("HOUR", finalAppointment.shopDetails)
+        // console.log("HOUR", finalAppointment.shopDetails)
         return finalAppointment
     } else {
         return details;

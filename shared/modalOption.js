@@ -7,16 +7,16 @@ import {connect} from 'react-redux';
 const ModalOption = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Expérience ++");
-
+// console.log(props.shopDetails)
 // const experience = [
 //     "PlayStation", "Café avec les copains", "Coupe & Cocktail", "Détente, massage, spa"
 // ]
 
 const experienceTab = props.shopDetails.packages.map((choix, i)=>{
-    return (<View style={{ flexDirection: 'row'}}><Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedOption(choix); setModalVisible(!modalVisible), props.chosenExperience(choix)}}>
-    <Text style={styles.textStyle}>{choix}</Text>
+    return (<View style={{ flexDirection: 'row'}}><Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedOption(choix.type); setModalVisible(!modalVisible), props.chosenExperience(choix.type, choix.price, choix.duration, choix.description)}}>
+    <Text style={styles.textStyle}>{choix.type}</Text>
 </Pressable>
-<Pressable key={i+1} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>50€</Text></Pressable></View>)
+<Pressable key={i+1} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>{choix.price}€</Text></Pressable></View>)
 })
 
 
@@ -116,10 +116,13 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch){
   return {
-    chosenExperience: function(experience){
+    chosenExperience: function(packageName, price, duration, description){
             dispatch({
               type: 'experience',
-              experience: experience
+              packageName: packageName,
+              price: price,
+              duration: duration, 
+              description: description
             })
                 }
               }

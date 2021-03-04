@@ -68,19 +68,19 @@ function Appointment(props) {
             color='#333'
           />
           <View>
-            <Text style={styles.appointmentShop}>{props.appointment.shopDetails.shopName}</Text>
-            <Text>12 Rue Henri Barbusse</Text>
-            <Text>92110 Clichy</Text>
+            <Text style={styles.appointmentShop}>{props.appointment.shopDetailsName}</Text>
+            <Text>{props.appointment.shopDetailsAddress}</Text>
+            {/* <Text>92110 Clichy</Text> */}
           </View>
         </View>
         <Text>Professionnel : {props.appointment.hairdresser}</Text>
-        <Text>Date et heure : 12 Décembre 2021 - {props.appointment.hour}</Text>
+        <Text>Date et heure : {props.appointment.date} - {props.appointment.hour}</Text>
         <View style={styles.appoinTService}>
-          <Text>Prestation : {props.appointment.prestation} - 20.50 €</Text>
+          <Text>Prestation : {props.appointment.prestation.prestaName} - {props.appointment.prestation.price}€</Text>
          
-          <Text>Autres options : {props.appointment.experience}2 €</Text>
+          <Text>Autres options : {props.appointment.experience.packageName} - {props.appointment.experience.price} €</Text>
         </View>
-        <Text style={styles.appointPrice}>Total commande : 22.50€</Text>
+        <Text style={styles.appointPrice}>Total commande : {props.appointment.prestation.price + props.appointment.experience.price}€</Text>
       </Card>
       <View style={styles.paiement}>
         {paiement.map((item) => (

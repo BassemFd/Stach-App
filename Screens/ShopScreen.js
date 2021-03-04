@@ -73,8 +73,8 @@ function Shop(props) {
   //!! see what to send to SignIn/SignOut or Reducer
  function handleChoixDuSalon(){
   //  console.log(chosenHour)
-   
-  props.chosenAppointment(chosenHour, props.hairdresser, props.prestation, props.experience, date, props.shopDetails)
+   let convertedHour = convertMinsToTime(chosenHour)
+  props.chosenAppointment(convertedHour, props.hairdresser, props.prestation, props.experience, date, props.shopDetails.shopName, props.shopDetails.shopAddress, props.shopDetails._id)
   props.navigation.navigate('ButtonTabSign')
   }
 
@@ -217,7 +217,7 @@ var zeroMonth = "";
 // }}
 
 
-if(chosenVar !== null ){
+if(chosenVar){
   // console.log("PROPS Schedule ", props.shopDetails.schedule)
 let dateGoodFormat = chosenVar.split('-')[2] + "-" + chosenVar.split('-')[1] + "-" + chosenVar.split('-')[0];
 let chosenDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(dateGoodFormat).getDay()];
@@ -238,7 +238,7 @@ if(filteredSchedule.length !== 0){
       
         let isFull = 0;
         for(let y = 0; y < appointmentTime.length; y++){
-          // && chosenVar ===
+          
           
             if(appointmentTime[y] == convertMinsToTime(hour)  && chosenVar == appointDate[y]){
             isFull++;        
@@ -378,7 +378,7 @@ if(filteredSchedule.length !== 0){
           </View>
 
             <View style={styles.mapPosition}>
-            {/* {location ? */}
+           
             <MapView mapType={'standard'} showsTraffic ={false} style={styles.map}
               initialRegion={{
                 latitude: props.shopDetails.latitude,
@@ -393,7 +393,7 @@ if(filteredSchedule.length !== 0){
               />
            
             </MapView>
-             {/* : null } */}
+            
             </View>
             
         </View>
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch){
     return {
-      chosenAppointment: function(hour, hairdresser, prestation, experience, date, shopDetails){
+      chosenAppointment: function(hour, hairdresser, prestation, experience, date, shopDetailsName, shopDetailsAddress, shopDetailsID){
               dispatch({
                 type: 'finalAppointment',
                 hour: hour, 
@@ -524,7 +524,9 @@ function mapDispatchToProps(dispatch){
                 prestation: prestation, 
                 experience: experience,
                 date: date,
-                shopDetails: shopDetails
+                shopDetailsName: shopDetailsName,
+                shopDetailsAddress: shopDetailsAddress,
+                shopDetailsID: shopDetailsID
               })
                   }
                 }

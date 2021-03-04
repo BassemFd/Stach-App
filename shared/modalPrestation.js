@@ -8,16 +8,31 @@ const ModalPrestation = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPrestation, setSelectedPrestation] = useState("Choisir une Prestation");
 
-//   const prestation = [
-//     "Coupe Homme + Barbe", "Coloration Femme", "Brushing", "Coupe Homme + Shampoing"
-// ]
+
+//     offers
+// :
+// 0
+// :
+// _id
+// :
+// 603e4da20c2ea9418ce67b26
+// type
+// :
+// "COUPE HOMME"
+// price
+// :
+// 50
+// duration
+// :
+// 30
+
 
 const prestationTab = props.shopDetails.offers.map((choix, i)=>{
     return (<View style={{ flexDirection: 'row'}}>
-    <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedPrestation(choix); setModalVisible(!modalVisible); props.chosenPrestation(choix)}}>
-      <Text style={styles.textStyle}>{choix}</Text>
+    <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} onPress={()=> {setSelectedPrestation(choix.type); setModalVisible(!modalVisible); props.chosenPrestation(choix.type, choix.price, choix.duration)}}>
+      <Text style={styles.textStyle}>{choix.type}</Text>
     </Pressable>
-    <Pressable key={i+1} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>50€</Text></Pressable>
+    <Pressable key={i+1} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>{choix.price}€</Text></Pressable>
     </View>)
 })
 
@@ -116,10 +131,12 @@ const styles = StyleSheet.create({
 
 function mapDispatchToProps(dispatch){
   return {
-    chosenPrestation: function(prestation){
+    chosenPrestation: function(prestaName, price, duration){
             dispatch({
               type: 'prestation',
-              prestation: prestation
+              prestaName: prestaName,
+              price: price,
+              duration: duration
             })
                 }
               }
