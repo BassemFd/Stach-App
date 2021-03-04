@@ -51,7 +51,7 @@ function Profile({ token }) {
     getUser();
   }, [token]);
 
-  console.log(shops, 'shops');
+  // console.log(shops, 'shops');
   // console.log(appointments);
 
   // Format appointment date
@@ -92,8 +92,9 @@ function Profile({ token }) {
   let points = 562;
   let appointmentPrice = 67;
   let msgInfo = false;
-  const dateNow = new Date(Date.now()).toString();
-  console.log(dateNow);
+  const dateNow = new Date();
+  // const dateNow = new Date(Date.now()).toString();
+  // console.log(dateNow);
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.brand}>'Stach</Text>
@@ -154,10 +155,17 @@ function Profile({ token }) {
           <Text style={styles.appointmentTitle}>Rdv passés :</Text>
           <View style={styles.bottomTitle}></View>
           {appointments.map((appointment, i) => {
-            if (i > 0 && i < 2) {
+            {
+              /* if (i > 0 && i < 2) {
               msgInfo = true;
+            } */
             }
-            if (appointment.startDate > dateNow && msgInfo === false) {
+
+            console.log('IF');
+            console.log(appointment.startDate, 'Start');
+            console.log(dateNow, 'Date now');
+
+            if (appointment.startDate > dateNow) {
               <Card key={appointment._id}>
                 <View style={styles.cardHeader}>
                   <Text style={styles.appointmentShop}>
