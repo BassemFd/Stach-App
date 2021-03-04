@@ -95,6 +95,10 @@ function Profile({ token }) {
     setModalOpen(true);
   }
 
+  const openShop = (shopId) => {
+    // fetch shopId
+  }
+
   let points = 562;
   let msgInfo = false;
   const newDate = new Date();
@@ -213,9 +217,10 @@ function Profile({ token }) {
                   </Modal>
                   {appointment.commentExists ? 
                   <CustomButton
-                  title='Merci pour votre avis'
+                  title='Reprendre Rendez-vous'
                   color='#fff'
-                  backgroundColor='#4280AB'
+                  backgroundColor='#AB4242'
+                  onPress={() => openShop(shops[i]._id)}
                   />
                   : 
                   <CustomButton
