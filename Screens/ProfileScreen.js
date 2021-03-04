@@ -29,6 +29,7 @@ export default function Profile() {
 
   // Add Comment
   const addComment = (comment) => {
+    //
     let newComment = {
       body: comment.body,
       rating: comment.rating,

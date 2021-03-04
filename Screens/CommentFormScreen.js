@@ -4,7 +4,7 @@ import { globalStyles } from '../styles/Global';
 import FlatButton from '../shared/Button';
 
 const CommentFormScreen = ({ addComment }) => {
-  const handleSubmit = (comment) => {
+  const handleSubmit = (comment) => {    
     addComment(comment);
   };
 
