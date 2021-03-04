@@ -12,15 +12,16 @@ import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { connect } from 'react-redux';
 
-export default function SignIn() {
+function SignIn({ navigation, onAddToken }) {
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [passwordError, setPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    const data = await fetch(`${IP_ADDRESS_HOME}/users/signIn`, {
+    const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -34,7 +35,12 @@ export default function SignIn() {
     if (!body.result) {
       setEmailError(body.emailNotFound);
       setPasswordError(body.invalidPassword);
+    } else {
+      onAddToken(body.token);
+      navigation.navigate('Profile');
+      console.log('True');
     }
+
     switch (body.error) {
       case '"email" is not allowed to be empty':
         setEmailError("L'email ne doit pas être vide");
@@ -59,13 +65,6 @@ export default function SignIn() {
       default:
         break;
     }
-
-    // if (body.result === true) {
-    //   onAddToken(body.tokenSignIn);
-    //   setUserExists(true);
-    // } else {
-    //   setErrorsSignin(body.error);
-    // }
   };
 
   return (
@@ -133,3 +132,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddToken: (token) => {
+      dispatch({ type: 'ADD_TOKEN', token });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SignIn);

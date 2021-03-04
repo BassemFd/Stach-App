@@ -20,8 +20,8 @@ import ProfileScreen from '../Screens/ProfileScreen';
 import ContactScreen from '../Screens/ContactScreen';
 import Filtres from '../Screens/FiltresScreen';
 
-import {Provider} from 'react-redux'
-import {createStore, combineReducers} from 'redux'
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
 
 import shopDetails from '../reducers/OfferDetails.reducer';
 import search from '../reducers/Search.reducer';
@@ -30,12 +30,25 @@ import details from '../reducers/ChosenAppointment.reducer';
 import hairdresser from '../reducers/ChosenHairdresser.reducer';
 import prestation from '../reducers/ChosenPrestation.reducer';
 import experience from '../reducers/ChosenExperience.reducer';
-import shopsData from '../reducers/shopsData.reducer'
+import shopsData from '../reducers/shopsData.reducer';
+import token from '../reducers/token.reducer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-const store = createStore(combineReducers( {shopDetails, search, selectedService, details, hairdresser, prestation, experience, shopsData}))
+const store = createStore(
+  combineReducers({
+    shopDetails,
+    search,
+    selectedService,
+    details,
+    hairdresser,
+    prestation,
+    experience,
+    shopsData,
+    token,
+  })
+);
 
 function ButtonTabSign() {
   return (
@@ -116,5 +129,3 @@ function NavigatorStack() {
 }
 
 export default NavigatorStack;
-
-
