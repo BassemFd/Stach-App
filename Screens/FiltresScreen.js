@@ -20,7 +20,7 @@ function Filtres(props) {
   var nosExperiences = ['MOMENT A DEUX', 'APERO COIF', 'PLAY HARD CUT HARD', 'BIEN ETRE'];
 
   const [salonOrHome, setSalonOrHome] = useState(null);
-  const [adress, setAdress] = useState(null);
+  const [address, setAddress] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [completeDate, setCompleteDate] = useState(null);
@@ -125,6 +125,7 @@ function Filtres(props) {
   
   function closePrice() {
     setPriceVisible(false);
+    setAfficherPrice(null)
     setPrice(null)
   }
 
@@ -172,16 +173,26 @@ function Filtres(props) {
     setHour(props.search.hour);
     setCompleteDate(props.search.completeDate);
     setQuoi(props.search.offer);
-    setExperiences(props.search.experiences);
+    setExperiences(props.search.experience);
     setSalonOrHome(props.search.salonOrHome);
-    setAdress(props.search.address);
+    setAddress(props.search.address);
     setLatitude(props.search.latitude)
     setLongitude(props.search.longitude)
+    setServices(props.search.service)
+    setPrice(props.search.priceFork)
+    if (props.search.priceFork === 1) {
+      setAfficherPrice('€');
+    } else if (props.search.priceFork === 2)  {
+      setAfficherPrice('€€'); 
+    } else if (props.search.priceFork === 3) {
+      setAfficherPrice('€€€');
+    }
+    setNote(props.search.rating)
   }, []);
 
   //VALIDATION
   function validation() {
-    props.addToSearch(date, hour, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude, completeDate);
+    props.addToSearch(date, hour, quoi, services, price, experiences, note, salonOrHome, address, latitude, longitude, completeDate);
     props.navigation.navigate('ButtonTabShop')
   }
 
@@ -383,13 +394,13 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
   return {
-    addToSearch: function(date, hour, quoi, services, price, experiences, note, salonOrHome, adress, latitude, longitude, completeDate){
+    addToSearch: function(date, hour, quoi, services, price, experiences, note, salonOrHome, address, latitude, longitude, completeDate){
       dispatch({type: 'createSearch', 
         salonOrHome : salonOrHome, 
         completeDate : completeDate,
         date : date, 
         hour : hour, 
-        address : adress, 
+        address : address, 
         latitude : latitude, 
         longitude : longitude, 
         offer : quoi, 
