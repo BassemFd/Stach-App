@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -51,6 +51,7 @@ const store = createStore(
 );
 
 function ButtonTabSign() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -74,8 +75,12 @@ function ButtonTabSign() {
         },
       }}
     >
-      <Tab.Screen name='SignIn' component={SignInScreen} />
-      <Tab.Screen name='SignUp' component={SignUpScreen} />
+      {!isSignedIn && (
+        <>
+          <Tab.Screen name='SignIn' component={SignInScreen} />
+          <Tab.Screen name='SignUp' component={SignUpScreen} />
+        </>
+      )}
     </Tab.Navigator>
   );
 }

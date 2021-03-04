@@ -193,7 +193,7 @@ function Filtres(props) {
   //VALIDATION
   function validation() {
     props.addToSearch(date, hour, quoi, services, price, experiences, note, salonOrHome, address, latitude, longitude, completeDate);
-    props.navigation.navigate('ButtonTabShop')
+    props.navigation.navigate('ButtonTabShop', {screen: 'List'})
   }
 
   return (
