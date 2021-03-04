@@ -296,7 +296,7 @@ function HomeScreen(props) {
     <Icon name='map-marker' size={36} color="#4E342E" onPress={locateMe}/>
     </View>
     
-    <Overlay isVisible={visible} >
+    <Overlay isVisible={visible} backdropStyle={{backgroundColor:'transparent', borderColor:"transparent"}} >
       <View style={{flex:0.1, alignItems:'center'}}>
     <Text style={{marginBottom:12}}>Localisation en cours...</Text>
     <Icon name='globe' size={36} color="#4E342E"/>
@@ -398,18 +398,18 @@ function HomeScreen(props) {
       <Text style={{marginBottom: 10, textAlign:"center", color:'white', fontWeight:'bold'}}>{experience.title}</Text>
     </Card>)
 )} 
-      <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"70%", borderRadius:25, borderColor:"transparent"}} backdropStyle={{backgroundColor:'transparent', borderColor:"transparent"}}>
-      <Card containerStyle={{ padding : 0, margin:0, width : "90%", height:"100%", backgroundColor: '#4280AB', borderRadius: 25, borderColor:"transparent"}}>
-      <Card.Image style={{width : "100%", marginTop:50}} source={dataOverlay.image_url}/>
+      <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"60%", borderRadius:25, borderColor:"transparent"}} backdropStyle={{backgroundColor:'transparent', borderColor:"transparent"}}>
+      <Card containerStyle={{ padding : 0, margin:0, width : "90%", height:"100%", backgroundColor: 'white', borderRadius: 25, borderColor:"transparent"}}>
+      <Card.Image style={{width : "100%", borderTopLeftRadius:25, borderTopRightRadius:25}} source={dataOverlay.image_url}/>
       <Card.Divider/>
-      <Card.Title style={{marginBottom: 50, marginTop:20, textAlign:"center", color:'white', fontWeight:'bold', fontSize:24}}>{dataOverlay.title}</Card.Title>
-      <Text style={{textAlign:"center", color:'white', fontWeight:'bold', padding:40}}>{dataOverlay.description}</Text>
+      <Card.Title style={{marginBottom: 20, marginTop:10, textAlign:"center", fontWeight:'bold', fontSize:24}}>{dataOverlay.title}</Card.Title>
+      <Text style={{textAlign:"center", fontWeight:'bold', padding:40}}>{dataOverlay.description}</Text>
       <Button
 
       title="VIVRE CETTE EXPERIENCE"
       type="solid"
       onPress={() => validationButton()}
-      buttonStyle = {{backgroundColor : "#FFE082", marginTop:45, width:"70%", alignSelf:'center'}}
+      buttonStyle = {{backgroundColor : "#4280AB", width:"70%", alignSelf:'center'}}
       />
 
       </Card>
