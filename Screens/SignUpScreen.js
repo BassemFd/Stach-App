@@ -14,8 +14,9 @@ import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { connect } from 'react-redux';
 
-export default function SignUp() {
+function SignUp({ navigation, onAddToken }) {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPhoneNumber, setSignUpPhoneNumber] = useState('');
   const [signUpFirstName, setSignUpFirstName] = useState('');
@@ -30,7 +31,7 @@ export default function SignUp() {
   const [inputError, setInputError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    const data = await fetch(`${IP_ADDRESS_HOME}/users/signUp`, {
+    const data = await fetch(`${IP_ADDRESS}/users/signUp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -47,6 +48,9 @@ export default function SignUp() {
     if (!body.result) {
       setEmailError(body.emaiExist);
       setPasswordError(body.invalidPassword);
+    } else {
+      onAddToken(body.token);
+      navigation.navigate('Profile');
     }
 
     if (body.error) {
@@ -140,3 +144,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddToken: (token) => {
+      dispatch({ type: 'ADD_TOKEN', token });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SignUp);

@@ -15,8 +15,9 @@ import CustomButton from '../shared/Button';
 import Card from '../shared/Card';
 import CommentFormScreen from './CommentFormScreen';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { connect } from 'react-redux';
 
-export default function Profile() {
+function Profile({ token }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState(false);
@@ -33,7 +34,7 @@ export default function Profile() {
   ]);
 
   // This token will come from the Reducer
-  let token = '3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa';
+  // let token = '3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa';
 
   useEffect(() => {
     setLoading(true);
@@ -327,3 +328,8 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
 });
+
+const mapStateToProps = (state) => {
+  return { token: state.token };
+};
+export default connect(mapStateToProps)(Profile);
