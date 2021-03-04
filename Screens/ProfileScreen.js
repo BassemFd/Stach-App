@@ -24,6 +24,7 @@ function Profile({ token }) {
   const [appointments, setAppointments] = useState([]);
   const [shops, setShops] = useState([]);
   const [shopId, setShopId] = useState('');
+  const [appointmentId, setAppointmentId] = useState('');
   
   
 
@@ -81,15 +82,15 @@ function Profile({ token }) {
     var newComment = await fetch(`${IP_ADDRESS}/users/addcomment`, {
       method: 'PUT',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}`
+      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}&appointmentId=${appointmentId}`
     });
     await newComment.json()
-    
 
     setModalOpen(false);
   };
 
-  const openComment = (shop_id) => {
+  const openComment = (shop_id, appointment_id) => {
+    setAppointmentId(appointment_id)
     setShopId(shop_id);
     setModalOpen(true);
   }
@@ -210,12 +211,19 @@ function Profile({ token }) {
                       </View>
                     </TouchableWithoutFeedback>
                   </Modal>
+                  {appointment.commentExists ? 
+                  <CustomButton
+                  title='Merci pour votre avis'
+                  color='#fff'
+                  backgroundColor='#4280AB'
+                  />
+                  : 
                   <CustomButton
                     title='Écrire un avis'
                     color='#fff'
                     backgroundColor='#4280AB'
-                    onPress={() => openComment(shops[i]._id)}
-                  />
+                    onPress={() => openComment(shops[i]._id, appointment._id)}
+                  />}
                 </Card>
               );
             } else {
