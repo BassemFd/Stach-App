@@ -189,7 +189,7 @@ function Filtres(props) {
     }
     setNote(props.search.rating)
   }, []);
-
+  
   //VALIDATION
   function validation() {
     props.addToSearch(date, hour, quoi, services, price, experiences, note, salonOrHome, address, latitude, longitude, completeDate);

@@ -17,26 +17,19 @@ import {connect} from 'react-redux';
 
 
 function Shop(props) {
-
-  console.log("SHOPDETAILS", props.shopDetails.schedule)
-  let appointmentArray = []
- props.shopDetails.appointments.map((app)=>{
-  console.log("AppArray", app.startDate)
-  appointmentArray.push(app.startDate)
-
-console.log("ARRAYYYY", appointmentArray)
-
-// console.log("AppArray", appointmentArray)
- let weekday = [];
- weekday.push(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(app.startDate).getDay()])
- console.log("WEEKDAY", weekday)
-})
-
+  // let chosenVar = props.chosenDate
+  // console.log("CHOSENVAR", chosenVar)
+  const [chosenVar, setChosenVar ] = useState(props.chosenDate)
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState(chosenVar);
+  const [isDateSelected, setIsDateSelected] = useState(false);
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(false);
   const [chosenHour, setChosenHour] = useState()
   const [favorite, setFavorite] = useState(false)
+
+  const scrollRef = useRef(null);
   
   var handleFavorite = () => {
     setFavorite(!favorite);
@@ -81,9 +74,9 @@ console.log("ARRAYYYY", appointmentArray)
   //* handling validation button, 
   //!! see what to send to SignIn/SignOut or Reducer
  function handleChoixDuSalon(){
-   console.log(chosenHour)
+  //  console.log(chosenHour)
    
-  props.chosenAppointment(chosenHour, props.hairdresser, props.prestation, props.experience, props.chosenDate, props.shopDetails)
+  props.chosenAppointment(chosenHour, props.hairdresser, props.prestation, props.experience, date, props.shopDetails)
   props.navigation.navigate('ButtonTabSign')
   }
 
@@ -122,9 +115,12 @@ console.log("ARRAYYYY", appointmentArray)
   
 //! should navigate to lower screen to check comments
 const handleAvis = () => {
-  // console.log("avis")
+  console.log("avis")
 // ScrollView.scrollToEnd({animated: true})
-// ScrollView.ScrollTo({x: 0, y: 0, animated: true})
+scrollRef.current?.scrollTo({
+  y: 1200,
+  animated: true,
+});
 }
 
 
@@ -147,8 +143,8 @@ var listCommentItem = listComment.map((l, i) => {return (
 )})
 
 
-const hours =  [{mon: {open: 570, close: 1080 }}]
-  // console.log(hours[0].mon.close)
+
+
 
 const convertMinsToTime = (mins) => {
   
@@ -157,16 +153,20 @@ const convertMinsToTime = (mins) => {
   minutes = minutes < 10 ? '0' + minutes : minutes;
   return `${hours}:${minutes}`;
 }
-// console.log("CONVERTER", convertMinsToTime(1000))
 
 
 
+// const hours =  [{mon: {open: 570, close: 1080 }}]
 let hoursTab;
 let hoursArr = [];
 let appointmentTime = []
+let appointDate = []
 
 for(let z = 0; z < props.shopDetails.appointments.length; z++){
 
+  let zeroD = "";
+  let zeroM = ""
+  
   let startTime = new Date(props.shopDetails.appointments[z].startDate)
   let hourApp = startTime.getHours() - 1
   let minuteApp = startTime.getMinutes()
@@ -175,11 +175,61 @@ for(let z = 0; z < props.shopDetails.appointments.length; z++){
   let formatedTime = hourApp + ":" + minuteApp;
  appointmentTime.push(formatedTime) 
 
+ startTime.getDate() <10 ? zeroD="0" : null;
+ startTime.getMonth() <10 ? zeroM="0" : null;
+ let formatedDate = zeroD + startTime.getDate() + "-" + zeroM + (startTime.getMonth() + 1) +"-"+ startTime.getFullYear()
+ appointDate.push(formatedDate)
+ 
+
 }
-console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
 
 
-  for(let i = 570; i <= 1080; i+=30){
+
+
+const handleConfirm = (choice) => {
+  var zeroDay = "";
+var zeroMonth = "";
+  
+    choice.getDate() <10 ? zeroDay="0" : null;
+    choice.getMonth() <10 ? zeroMonth="0" : null; 
+
+  setIsDateSelected(true)
+  let dateToSetter = null;
+ dateToSetter = zeroDay + choice.getDate() + "-" + zeroMonth + (choice.getMonth() + 1) +"-"+ choice.getFullYear()
+ setChosenVar(dateToSetter)
+  // console.log("final date?:", chosenVar)
+ 
+  //  datePhrase = dateToReducer
+  hideDatePicker();
+};
+// let weeklyTab = ["Monday", "Tuesday",
+// "Wednesday",
+// "Thursday",
+// "Friday",
+// "Saturday",
+// "Sunday",]
+// // props.shopDetails.schedule.map((schedule)=>{
+// //   console.log("DAY OF THE WEEK", schedule.dayOfTheWeek);
+// //   weeklyTab.push(schedule.dayOfTheWeek)
+// // })
+
+// console.log(weeklyTab)
+
+// let isOpen = false
+// for(let dayOftheTab = 0; dayOftheTab < weeklyTab.length; dayOftheTab ++){
+// if(weeklyTab[dayOftheTab] === props.shopDetails.schedule[dayOftheTab].dayOfTheWeek){
+// isOpen = true
+// }}
+
+
+if(chosenVar !== null ){
+  // console.log("PROPS Schedule ", props.shopDetails.schedule)
+let dateGoodFormat = chosenVar.split('-')[2] + "-" + chosenVar.split('-')[1] + "-" + chosenVar.split('-')[0];
+let chosenDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(dateGoodFormat).getDay()];
+let filteredSchedule = props.shopDetails.schedule.filter(e=> e.dayOfTheWeek == chosenDay)
+// console.log("GOOD FORMAT", dateGoodFormat)
+if(filteredSchedule.length !== 0){
+  for(let i = filteredSchedule[0].openingHours; i <= filteredSchedule[0].closingHours; i+=30){
     hoursArr.push(i)
 
     hoursTab = hoursArr.map((hour, i)=>{
@@ -193,8 +243,9 @@ console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
       
         let isFull = 0;
         for(let y = 0; y < appointmentTime.length; y++){
+          // && chosenVar ===
           
-            if(appointmentTime[y] == convertMinsToTime(hour)){
+            if(appointmentTime[y] == convertMinsToTime(hour)  && chosenVar == appointDate[y]){
             isFull++;        
             } 
         }
@@ -209,15 +260,19 @@ console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
       return interTab
     })
     
-  }
+  }} else {
+    hoursTab = <Text>Pas de dispo ou choisir une autre date</Text>
+
+} 
+} 
+
+
 
 
 
   //*DATETIME PICKER ****************************************
 
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [isDateSelected, setIsDateSelected] = useState(false);
+  
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -225,41 +280,31 @@ console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
-  };
-  var datePhrase;
-// if(datePhrase === undefined){
-//   datePhrase= "Choisir une date"
-// }
-  const handleConfirm = (choice) => {
-      console.log("A date has been picked: ", choice);
-      setDate(choice)
-      setIsDateSelected(true)
-      let dateToReducer = null;
-      isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
-      console.log("final date?:", dateToReducer)
-      datePhrase = dateToReducer
-      hideDatePicker();
-    };
 
-  if (isDateSelected) {
-      var zeroDay = "";
-      var zeroMonth = "";
-      date.getDate() <10 ? zeroDay="0" : null;
-      date.getMonth() <10 ? zeroMonth="0" : null; 
-      datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
-    } else {
-      datePhrase = "TOUTES LES DATES"
-   }
+  };
+  var datePhrase = "Choisir une Date"
+
+ 
+
+  // if (isDateSelected) {
+  //    
+  //     datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
+
+  //   } else {
+  //     datePhrase = "TOUTES LES DATES"
+  //  }
 
 
 
 
 //**************************************** */
+
+
   return (
     
     <View style={styles.card}>
       <Text style={[globalStyles.brand, {marginTop: 10}]}>'Stach</Text>
-      <ScrollView>
+      <ScrollView ref={scrollRef}>
       
       <View >
         <Card  >
@@ -369,8 +414,19 @@ console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
 
         <Card>
         <View style={{alignItems: "center", marginTop: 10}}>
-              {(props.chosenDate !== null) ?
-              (<Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>)
+              {(chosenVar !== null) ?
+               (  <View style={{width: 270}}>
+                <PrimaryButton  backgroundColor="#4280AB" color="white" title={datePhrase} onPress={showDatePicker} />
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    minimumDate={new Date()}
+                  />
+                  
+              <Text style={{fontSize: 20, fontFamily: "graduate-regular", margin: 20}}>Pour le {chosenVar},</Text>
+              </View>)
                   : 
                 (  <View style={{width: 270}}>
                 <PrimaryButton  backgroundColor="#4280AB" color="white" title={datePhrase} onPress={showDatePicker} />
