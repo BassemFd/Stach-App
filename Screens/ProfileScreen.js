@@ -51,14 +51,10 @@ function Profile({ token }) {
     getUser();
   }, [token]);
 
-  // console.log(shops, 'shops');
-  // console.log(appointments);
-
   // Format appointment date
   const formatAppointDate = (date) => {
     const event = new Date(date);
     // event.getHours() - 1;
-    // console.log(event, 'e');
 
     // Get the day of the week with a long date
     const options = {
@@ -71,7 +67,6 @@ function Profile({ token }) {
       timeZone: 'Africa/Dakar', // Pck UTC de Dakar == UTC+0 idem que ce qu'on enregistre en BDD
     };
 
-    // console.log(date, 'da');
     date = event.toLocaleString('fr-FR', options);
     const dateFirstUpper = `${date[0].toUpperCase() + date.slice(1)}`;
     return dateFirstUpper;
@@ -89,11 +84,9 @@ function Profile({ token }) {
   };
 
   let points = 562;
-  let appointmentPrice = 67;
   let msgInfo = false;
-  const dateNow = new Date();
-  // const dateNow = new Date(Date.now()).toString();
-  // console.log(dateNow);
+  const newDate = new Date();
+  const dateNow = newDate;
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.brand}>'Stach</Text>
@@ -115,38 +108,40 @@ function Profile({ token }) {
           <View style={styles.bottomTitle}></View>
 
           {appointments.map((appointment, i) => {
-            return appointment.startDate < dateNow ? (
-              <Card key={appointment._id}>
-                <View style={styles.cardHeader}>
-                  <Text style={styles.appointmentShop}>
-                    {shops[i].shopName}
+            if (new Date(appointment.startDate) > dateNow) {
+              return (
+                <Card key={appointment._id}>
+                  <View style={styles.cardHeader}>
+                    <Text style={styles.appointmentShop}>
+                      {shops[i].shopName}
+                    </Text>
+                    <CustomBadge
+                      title={`${appointment.chosenPrice}€`}
+                      color='#fff'
+                      backgroundColor={
+                        appointment.chosenPayment === 'online'
+                          ? '#16a085'
+                          : '#E65100'
+                      }
+                      width={40}
+                    />
+                  </View>
+                  <Text style={styles.appointmentAddresses}>
+                    {shops[i].shopAddress}
                   </Text>
-                  <CustomBadge
-                    title={`${appointment.chosenPrice}€`}
+                  <Text style={styles.appointmentDate}>
+                    {formatAppointDate(appointment.startDate)}
+                  </Text>
+                  <CustomButton
+                    title='Mon coiffeur'
                     color='#fff'
-                    backgroundColor={
-                      appointment.chosenPayment === 'online'
-                        ? '#16a085'
-                        : '#E65100'
-                    }
-                    width={40}
+                    backgroundColor='#4280AB'
                   />
-                </View>
-                <Text style={styles.appointmentAddresses}>
-                  {shops[i].shopAddress}
-                </Text>
-                <Text style={styles.appointmentDate}>
-                  {formatAppointDate(appointment.startDate)}
-                </Text>
-                <CustomButton
-                  title='Mon coiffeur'
-                  color='#fff'
-                  backgroundColor='#4280AB'
-                />
-              </Card>
-            ) : (
-              <Text style={styles.noAppoints}>Pas de Rdv à venir</Text>
-            );
+                </Card>
+              );
+            } else {
+              <Text style={styles.noAppoints}>Pas de Rdv à venir</Text>;
+            }
           })}
         </View>
         {/* Appointement Passed */}
@@ -157,97 +152,67 @@ function Profile({ token }) {
             {
               /* if (i > 0 && i < 2) {
               msgInfo = true;
-            } */
-            }
-
-            console.log('IF');
-            console.log(appointment.startDate, 'Start');
-            console.log(dateNow, 'Date now');
-
-            if (appointment.startDate > dateNow) {
-              <Card key={appointment._id}>
-                <View style={styles.cardHeader}>
-                  <Text style={styles.appointmentShop}>
-                    {shops[i].shopAddress}
-                  </Text>
-                  <CustomBadge
-                    title={`${appointmentPrice}€`}
-                    color='#fff'
-                    backgroundColor='#16a085'
-                    width={40}
-                  />
-                </View>
-                <Text style={styles.appointmentAddresses}>
-                  {shops[i].shopAddress}
-                </Text>
-                <Text style={styles.appointmentDate}>
-                  {formatAppointDate(appointment.startDate)}
-                </Text>
-                <Modal visible={modalOpen} animationType='slide'>
-                  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                    <View style={styles.modalContent}>
-                      <FontAwesome
-                        style={{ ...styles.modalToggle, ...styles.modalClose }}
-                        name='close'
-                        color='#E65100'
-                        size={24}
-                        onPress={() => setModalOpen(false)}
-                      />
-                      <CommentFormScreen addComment={addComment} />
-                    </View>
-                  </TouchableWithoutFeedback>
-                </Modal>
-                <CustomButton
-                  title='Écrire un avis'
-                  color='#fff'
-                  backgroundColor='#4280AB'
-                  onPress={() => setModalOpen(true)}
-                />
-              </Card>;
-            } else if (msgInfo === true) {
               return (
-                <Text key={appointment._id} style={styles.noAppoints}>
+                <Text key={i} style={styles.noAppoints}>
                   Pas de Rdv passés
                 </Text>
               );
+            } */
+            }
+
+            if (new Date(appointment.startDate) < dateNow) {
+              return (
+                <Card key={appointment._id}>
+                  <View style={styles.cardHeader}>
+                    <Text style={styles.appointmentShop}>
+                      {shops[i].shopName}
+                    </Text>
+                    <CustomBadge
+                      title={`${appointment.chosenPrice}€`}
+                      color='#fff'
+                      backgroundColor='#16a085'
+                      width={40}
+                    />
+                  </View>
+                  <Text style={styles.appointmentAddresses}>
+                    {shops[i].shopAddress}
+                  </Text>
+                  <Text style={styles.appointmentDate}>
+                    {formatAppointDate(appointment.startDate)}
+                  </Text>
+                  <Modal visible={modalOpen} animationType='slide'>
+                    <TouchableWithoutFeedback
+                      onPress={() => Keyboard.dismiss()}
+                    >
+                      <View style={styles.modalContent}>
+                        <FontAwesome
+                          style={{
+                            ...styles.modalToggle,
+                            ...styles.modalClose,
+                          }}
+                          name='close'
+                          color='#E65100'
+                          size={24}
+                          onPress={() => setModalOpen(false)}
+                        />
+                        <CommentFormScreen addComment={addComment} />
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </Modal>
+                  <CustomButton
+                    title='Écrire un avis'
+                    color='#fff'
+                    backgroundColor='#4280AB'
+                    onPress={() => setModalOpen(true)}
+                  />
+                </Card>
+              );
+            } else {
+              <Text key={i} style={styles.noAppoints}>
+                Pas de Rdv passés
+              </Text>;
             }
           })}
-          <Card>
-            <View style={styles.cardHeader}>
-              <Text style={styles.appointmentShop}>Chez Bassem</Text>
-              <CustomBadge
-                title={`${appointmentPrice}€`}
-                color='#fff'
-                backgroundColor='#16a085'
-                width={40}
-              />
-            </View>
-            <Text style={styles.appointmentAddresses}>
-              15 Square des Sports 95500 Gonesse
-            </Text>
-
-            <Text style={styles.appointmentDate}>Le 5 mars 2021 à 17:00</Text>
-            <Modal visible={modalOpen} animationType='slide'>
-              <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View style={styles.modalContent}>
-                  <FontAwesome
-                    style={{ ...styles.modalToggle, ...styles.modalClose }}
-                    name='close'
-                    color='#E65100'
-                    size={24}
-                    onPress={() => setModalOpen(false)}
-                  />
-                  <CommentFormScreen addComment={addComment} />
-                </View>
-              </TouchableWithoutFeedback>
-            </Modal>
-            <CustomButton
-              title='Écrire un avis'
-              color='#fff'
-              backgroundColor='#4280AB'
-              onPress={() => setModalOpen(true)}
-            />
-          </Card>
         </View>
       </ScrollView>
     </View>
