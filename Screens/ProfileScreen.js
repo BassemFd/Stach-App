@@ -23,6 +23,7 @@ function Profile({ token }) {
   const [user, setUser] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [shops, setShops] = useState([]);
+  const [shopId, setShopId] = useState('')
 
   // const [comments, setComments] = useState([
   //   {
@@ -73,14 +74,21 @@ function Profile({ token }) {
   };
 
   // Add Comment
-  const addComment = (comment) => {
-    //
-    console.log(comment);
-    
+  const addComment = async (comment) => {
 
-    // setComments([newComment, ...comments]);
+    await fetch(`${IP_ADDRESS}/users/addcomment`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}`
+    });
+
     setModalOpen(false);
   };
+
+  const openComment = (shop_id) => {
+    setShopId(shop_id);
+    setModalOpen(true)
+  }
 
   let points = 562;
   let msgInfo = false;
@@ -202,7 +210,7 @@ function Profile({ token }) {
                     title='Écrire un avis'
                     color='#fff'
                     backgroundColor='#4280AB'
-                    onPress={() => setModalOpen(true)}
+                    onPress={() => openComment(shops[i]._id)}
                   />
                 </Card>
               );

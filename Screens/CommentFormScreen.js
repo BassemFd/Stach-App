@@ -12,7 +12,6 @@ const CommentFormScreen = ({ addComment }) => {
 
   
   const handleSubmit = () => {   
-    console.log()
     if (rating != 0 && avis != null) {
       comment = {rating: rating, avis: avis};
       addComment(comment);
@@ -23,12 +22,12 @@ const CommentFormScreen = ({ addComment }) => {
 
 
 var starsTab = [];
-for (let i=1; i<=5; i++) {
+for (let i=0; i<5; i++) {
   var color = 'white';
   if (i<rating) {
     color = '#AB4242'
   }
-  let count = i+1;
+  let count = i+1
   starsTab.push(<FontAwesome key={i} style={{marginRight: 5}} name="star" size={24} color={color} onPress={() => setRating(count)} />)
 };
 
