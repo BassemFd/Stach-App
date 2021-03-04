@@ -393,10 +393,10 @@ function HomeScreen(props) {
     snapToInterval={windowWidth - snapToIntervalValue}
     >
 {dataExperience.map((experience,i)=>
-    (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#FFECB2"}}>
+    (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#4280AB"}} >
       <Card.Image style={{width : "100%"}} source={experience.image_url} onPress={() => toggleOverlay(experience)}/>
       <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center"}}>{experience.title}</Text>
+      <Text style={{marginBottom: 10, textAlign:"center", color:'white', fontWeight:'bold'}}>{experience.title}</Text>
     </Card>)
 )} 
       <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"70%"}}>

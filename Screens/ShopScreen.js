@@ -12,11 +12,25 @@ import ModalPrestation from '../shared/modalPrestation';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
 import {connect} from 'react-redux';
-import { color } from 'react-native-reanimated';
+
 
 
 
 function Shop(props) {
+
+  console.log("SHOPDETAILS", props.shopDetails.schedule)
+  let appointmentArray = []
+ props.shopDetails.appointments.map((app)=>{
+  console.log("AppArray", app.startDate)
+  appointmentArray.push(app.startDate)
+
+console.log("ARRAYYYY", appointmentArray)
+
+// console.log("AppArray", appointmentArray)
+ let weekday = [];
+ weekday.push(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(app.startDate).getDay()])
+ console.log("WEEKDAY", weekday)
+})
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
@@ -149,23 +163,55 @@ const convertMinsToTime = (mins) => {
 
 let hoursTab;
 let hoursArr = [];
+let appointmentTime = []
+
+for(let z = 0; z < props.shopDetails.appointments.length; z++){
+
+  let startTime = new Date(props.shopDetails.appointments[z].startDate)
+  let hourApp = startTime.getHours() - 1
+  let minuteApp = startTime.getMinutes()
+ 
+  minuteApp = minuteApp < 10 ? '0' + minuteApp : minuteApp;
+  let formatedTime = hourApp + ":" + minuteApp;
+ appointmentTime.push(formatedTime) 
+
+}
+console.log("APOITNFNSKDF?SKDFSD", appointmentTime)
+
+
   for(let i = 570; i <= 1080; i+=30){
     hoursArr.push(i)
+
     hoursTab = hoursArr.map((hour, i)=>{
+        
       var color = '#FFCD41'
+
         if(chosenHour === hour){
           color = '#4280AB'
         } 
+        let interTab = []
+      
+        let isFull = 0;
+        for(let y = 0; y < appointmentTime.length; y++){
+          
+            if(appointmentTime[y] == convertMinsToTime(hour)){
+            isFull++;        
+            } 
+        }
 
-      return <TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>
-   
-  })
+         if(isFull >= props.shopDetails.shopEmployees.length){
+        
+             interTab.push(
+            <TouchableOpacity disabled={true} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: "grey", borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>)
+         } else {
+            interTab.push(<TouchableOpacity disabled={false} onPress={()=> {setChosenHour(hour)}} value={hour} key={i} style={{padding: 10, margin: 5, backgroundColor: `${color}`, borderRadius: 8, width: 70, alignItems: 'center'}} ><Text style={{fontWeight: 'bold', fontSize: 18}}>{convertMinsToTime(hour)}</Text></TouchableOpacity>)
+          }
+      return interTab
+    })
     
   }
 
-  // console.log("Hairdresser from shop screen:", props.hairdresser)
-  // console.log("Prestation from Shop Screen:", props.prestation)
-  // console.log("Experience from Shop Screen:", props.experience)
+
 
   //*DATETIME PICKER ****************************************
 
@@ -180,33 +226,30 @@ let hoursArr = [];
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-var datePhrase;
+  var datePhrase;
 // if(datePhrase === undefined){
 //   datePhrase= "Choisir une date"
 // }
   const handleConfirm = (choice) => {
-    console.log("A date has been picked: ", choice);
-    setDate(choice)
-    setIsDateSelected(true)
-    let dateToReducer = null;
-     
-    isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
+      console.log("A date has been picked: ", choice);
+      setDate(choice)
+      setIsDateSelected(true)
+      let dateToReducer = null;
+      isDateSelected ? dateToReducer = zeroDay + date.getDate() + "-" + zeroMonth + (date.getMonth() + 1) +"-"+ date.getFullYear() : null;
+      console.log("final date?:", dateToReducer)
+      datePhrase = dateToReducer
+      hideDatePicker();
+    };
 
-    console.log("final date?:", dateToReducer)
-    
-
-    datePhrase = dateToReducer
-    hideDatePicker();
-  };
   if (isDateSelected) {
-    var zeroDay = "";
-    var zeroMonth = "";
-    date.getDate() <10 ? zeroDay="0" : null;
-    date.getMonth() <10 ? zeroMonth="0" : null; 
-    datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
-  } else {
-    datePhrase = "TOUTES LES DATES"
-  }
+      var zeroDay = "";
+      var zeroMonth = "";
+      date.getDate() <10 ? zeroDay="0" : null;
+      date.getMonth() <10 ? zeroMonth="0" : null; 
+      datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
+    } else {
+      datePhrase = "TOUTES LES DATES"
+   }
 
 
 
@@ -251,6 +294,7 @@ var datePhrase;
                 tappableDots={true}
             />
             <Card.Divider/>
+           
             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>       
               <Text style={{fontSize: 24, fontFamily: "graduate-regular", textAlign: 'center'}}>{hairdresser.name}</Text>
               <FontAwesome onPress={()=> handleFavorite()}  name="heart" size={24} color={color} />
@@ -325,7 +369,7 @@ var datePhrase;
 
         <Card>
         <View style={{alignItems: "center", marginTop: 10}}>
-              {(props.chosenDate !== undefined) ?
+              {(props.chosenDate !== null) ?
               (<Text style={{fontSize: 20, fontFamily: "graduate-regular", marginBottom: 10}}>Pour le {props.chosenDate},</Text>)
                   : 
                 (  <View style={{width: 270}}>
