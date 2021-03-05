@@ -176,9 +176,10 @@ function List(props) {
             }
 
             var starsTab = [];
+            var flooredStarRating = Math.round(element.rating);
             for (let j=0; j<5; j++) {
               var color = 'black';
-              if (j<element.rating) {
+              if (j<flooredStarRating) {
                 color = 'gold'
               }
               starsTab.push(<FontAwesome key={j} style={{marginRight: 5}} name="star" size={24} color={color} />)
