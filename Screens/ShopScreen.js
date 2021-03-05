@@ -5,7 +5,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Button, Pressable
+  Button, Pressable, Alert
 } from 'react-native';
 import { globalStyles } from '../styles/Global';
 import { Card, ListItem, Overlay } from 'react-native-elements';
@@ -13,9 +13,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MapView, { Marker } from 'react-native-maps';
 import PrimaryButton from '../shared/Button';
-
-
-
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, {
   SLIDER_WIDTH,
@@ -72,6 +69,8 @@ function ChosenExperiences(element, price) {
   setExperiencePrice(price)
   setExperiencesVisible(false);
   setQuoi("Choix de la Prestation");
+  props.search.offer = undefined
+
 }
 
 function closeExperiences() {
@@ -101,7 +100,8 @@ function closeExperiences() {
     setQuoi(element)
     setPrestaPrice(price)
     setQuoiVisible(false)
-    setExperiences("Choix de l'Expérience")
+    setExperiences("Choix de l'Expérience");
+    props.search.experience = undefined
   }
 
   function closeQuoi() {
@@ -165,10 +165,21 @@ function closeExperiences() {
 
     if (
       quoi === "Choix de la Prestation" && experiences === "Choix de l'Expérience"
-      ||
-      chosenHour === undefined 
+      || chosenHour === undefined 
     ) {
       console.log('Choisir une prestation BIS');
+       const createTwoButtonAlert = () =>
+      Alert.alert(
+        "Choix Obligatoire",
+        "Choisir une Date et une Heure. Choisir Prestation ou Experience",
+
+        [
+          
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      );
+      createTwoButtonAlert();
 
     } else {
 
@@ -455,8 +466,9 @@ function closeExperiences() {
 
  
   //**************************************** */
+console.log(props.search)
 
-
+var roundedRating = Math.round(hairdresser.starRating * 10) / 10
   return (
     <View style={styles.card}>
       <Text style={[globalStyles.brand, { marginTop: -30 }]}></Text>
@@ -534,7 +546,7 @@ function closeExperiences() {
                 <View style={styles.icons2}>
                   {starTab}
 
-                  <Text>({hairdresser.starRating})</Text>
+                  <Text>({roundedRating})</Text>
                 </View>
                 <View style={[styles.avis, { marginTop: 10 }]}>
                   <TouchableOpacity
@@ -580,14 +592,21 @@ function closeExperiences() {
              
             <View style={styles.centeredView}>
               <Pressable onPress={() => setQuoiVisible(true)} style={[styles.button, styles.buttonOpen, styles.buttonW]}>
-                <Text style={styles.textStyle}>{quoi}</Text>
+                {quoi  && props.search.offer == undefined ? 
+                <Text style={styles.textStyle}>{quoi}</Text>:
+                <Text style={styles.textStyle}>{props.search.offer}</Text> 
+                  }
               </Pressable>
             </View>
 
              
             <View style={styles.centeredView}>
               <Pressable onPress={() => setExperiencesVisible(true)} style={[styles.button, styles.buttonOpen, styles.buttonW]}>
-                <Text style={styles.textStyle}>{experiences}</Text>
+              {experiences  && props.search.experience == undefined ? 
+                <Text style={styles.textStyle}>{experiences}</Text>:
+                <Text style={styles.textStyle}>{props.search.experience}</Text> 
+                  }
+                
               </Pressable>
             </View>
                       
@@ -840,6 +859,7 @@ function mapStateToProps(state) {
   return {
     shopDetails: state.shopDetails,
     chosenDate: state.search.date,
+    search: state.search,
     token: state.token,
   };
 }
