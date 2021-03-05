@@ -10,13 +10,15 @@ import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
   console.log('Details', props.appointment);
+  console.log('Token', props.token);
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
     { id: 2, value: false, name: 'Paiement sur place', selected: false },
   ]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // const [modalVisible, setModalVisible] = useState(false);
+  const [serviceChoice, setServiceChoice] = useState('');
+  const [servicePrice, setServicePrice] = useState('');
   // const [modalVisible, setModalVisible] = useState(false);
 
   const onRadioBtnClick = (item) => {
@@ -28,28 +30,53 @@ function Appointment(props) {
     setPaiement(updatedState);
   };
 
+  console.log(props.appointment.date, 'date');
+  let day = props.appointment.date.slice(0, 2);
+  let month = props.appointment.date.slice(3, 5);
+  let year = props.appointment.date.slice(6);
+  let hour = props.appointment.hour.slice(0, 2);
+  let min = props.appointment.hour.slice(3);
+  let sec = '00';
+
+  let prefixHour;
+  if (hour[0] === '8' || hour[0] === '9') {
+    prefixHour = '0' + hour;
+  } else {
+    prefixHour = hour;
+  }
+
+  let startDateAppoint = new Date(+year, +month - 1, +day, +hour, +min, +sec);
+  let endDateAppoint = new Date(+year, +month, +day, +hour, +min + 30, +sec);
+  console.log(props.appointment.shopDetailsID);
+
   const handleConfirm = async () => {
-    console.log('Confirm');
-    const data = await fetch(
-      `${IP_ADDRESS}/addappointment/3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chosenOffer: 'COUPE FEMME',
-          chosenPrice: 40,
-          chosenEmployee: 'Ivan',
-          chosenPackage: '',
-          startDate: '2021-03-06T13:00:00.000+00:00',
-          endDate: '2021-03-06T13:45:00.000+00:00',
-          chosenPayment: 'onshop',
-          appointmentStatus: 'validated',
-          shopId: '603e42b76fbccc3f40024b30',
-        }),
-      }
-    );
+    if (props.appointment.experience === "Choix de l'Expérience") {
+      setServiceChoice(props.appointment.prestation);
+      setServicePrice(props.appointment.prestationPrice);
+    } else {
+      setServiceChoice(props.appointment.experience);
+      setServicePrice(props.appointment.experiencePrice);
+    }
+
+    const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chosenOffer: serviceChoice,
+        chosenPrice: servicePrice,
+        chosenEmployee: props.appointment.hairdresser,
+        startDate: startDateAppoint.toISOString(),
+        endDate: endDateAppoint.toISOString(),
+        chosenPayment: 'onshop',
+        appointmentStatus: 'validated',
+        shop_id: props.appointment.shopDetailsID,
+      }),
+    });
     setModalVisible(true);
   };
+
+  console.log(serviceChoice);
+  console.log(servicePrice);
 
   // <Image
   //   style={styles.icon}
@@ -102,27 +129,30 @@ function Appointment(props) {
             {/* <Text>92110 Clichy</Text> */}
           </View>
         </View>
-        <Text>Professionnel : {props.appointment.hairdresser}</Text>
+        {props.appointment.hairdresser !== 'Choix du Coiffeur' ? (
+          <Text>Professionnel : {props.appointment.hairdresser}</Text>
+        ) : (
+          <Text>Professionnel : Vous n'avez pas de préférence de Coiffeur</Text>
+        )}
         <Text>
           Date et heure : {props.appointment.date} - {props.appointment.hour}
         </Text>
-        <View style={styles.appoinTService}>
-          <Text>
-            Prestation : {props.appointment.prestation.prestaName} -{' '}
-            {props.appointment.prestation.price}€
-          </Text>
 
-          <Text>
-            Autres options : {props.appointment.experience.packageName} -{' '}
-            {props.appointment.experience.price} €
-          </Text>
-        </View>
-        <Text style={styles.appointPrice}>
-          Total commande :{' '}
-          {props.appointment.prestation.price +
-            props.appointment.experience.price}
-          €
-        </Text>
+        {props.appointment.prestation !== 'Choix de la Prestation' ? (
+          <View style={styles.appoinTService}>
+            <Text>Prestation : {props.appointment.prestation}</Text>
+            <Text style={styles.appointPrice}>
+              Total : {props.appointment.prestationPrice}€
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.appoinTService}>
+            <Text>Prestation : {props.appointment.experience}</Text>
+            <Text style={styles.appointPrice}>
+              Total : {props.appointment.experiencePrice}€
+            </Text>
+          </View>
+        )}
       </Card>
       <View style={styles.paiement}>
         {paiement.map((item) => (
@@ -228,7 +258,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  return { appointment: state.details };
+  return { token: state.token, appointment: state.details };
 }
 
 export default connect(mapStateToProps, null)(Appointment);

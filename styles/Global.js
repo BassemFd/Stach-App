@@ -17,7 +17,7 @@ export const globalStyles = StyleSheet.create({
     marginVertical: 10,
   },
   titleText: {
-    // fontFamily: 'nunito-bold',
+    fontFamily: 'nunito-bold',
     fontSize: 18,
     color: '#333',
   },

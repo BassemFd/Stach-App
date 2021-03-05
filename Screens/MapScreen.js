@@ -7,8 +7,7 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
-import {connect} from 'react-redux';
-
+import { connect } from 'react-redux';
 
 // var coiffeurs = [
 //   {
@@ -58,8 +57,6 @@ import {connect} from 'react-redux';
 // ];
 
 function Map(props) {
-
-
   const [shopsList, setShopsList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [shopDetails, setShopDetails] = useState({});
@@ -67,16 +64,25 @@ function Map(props) {
   const [features, setFeatures] = useState([]);
   const [rating, setRating] = useState([]);
   const [url, setUrl] = useState('');
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude]  = useState(null)
- 
-  
-  useEffect(() => {
+  const [latitude, setLatitude] = useState(47.902964);
+  const [longitude, setLongitude] = useState(1.909251);
+  const [latitudeDelta, setLatitudeDelta] = useState(10);
+  const [longitudeDelta, setLongitudeDelta] = useState(10);
 
+  useEffect(() => {
     setShopsList(props.shopsData);
     console.log('search', props.search);
-    setLatitude(props.search.latitude);
-    setLongitude(props.search.longitude);
+
+    // console.log('lat', props.search.latitude, 'long', props.search.longitude);
+    if (
+      props.search.latitude != undefined &&
+      props.search.longitude != undefined
+    ) {
+      setLatitude(props.search.latitude);
+      setLongitude(props.search.longitude);
+      setLatitudeDelta(0.0922);
+      setLongitudeDelta(0.0421);
+    }
 
     // async function getLocation() {
     //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -93,11 +99,9 @@ function Map(props) {
     //       let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
     //       shopsTab.push(shop);
     //     }
-       
-      
+
     // }
     // getLocation();
-  
   }, []);
 
   var overlay = (element) => {
@@ -148,7 +152,7 @@ function Map(props) {
 
     // console.log('element', element)
     var image = element.shopImages[0];
-    console.log('image', image);
+    // console.log('image', image);
     setUrl(image);
   };
 
@@ -169,19 +173,31 @@ function Map(props) {
           paddingBottom: 10,
         }}
       >
-        <Button title='Filtrer' backgroundColor='#FFCD41' onPress={() => props.navigation.navigate('Filtres')}></Button>
-        
+        <Button
+          title='Filtrer'
+          backgroundColor='#FFCD41'
+          onPress={() => props.navigation.navigate('Filtres')}
+        ></Button>
       </View>
       <MapView
         style={styles.map}
-
         initialRegion={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: longitudeDelta,
+          longitudeDelta: latitudeDelta,
         }}
       >
+        {props.search.latitude ? (
+          <Marker
+            coordinate={{
+              latitude: props.search.latitude,
+              longitude: props.search.longitude,
+            }}
+            title='votre adresse'
+            pinColor='#AB4242'
+          />
+        ) : null}
         {/* {userLocation ?
            <Marker coordinate={{ latitude : userLocation.latitude, longitude : userLocation.longitude}} pinColor="#fd79a8" /> : null } */}
 
@@ -199,36 +215,45 @@ function Map(props) {
                 />
               );
             })
-          : null } 
-          
-          </MapView>
-          <Overlay isVisible={visible} >
-            <View  style={styles.card}>
-                  <View style={styles.text}>
-                    <View style={styles.div1}>
-                      <Text style={{fontWeight: 'bold'}}>{shopDetails.shopName}</Text>
-                      <FontAwesome name="heart-o" size={15} color="black" />
-                    </View>
-                    <Text style={styles.pad}>{shopDetails.shopAddress}</Text>
-                    <View style={styles.picto}>
-                      {euros}
-                    </View>
-                    <View style={styles.picto}>
-                      {features}
-                    </View>
-                    <View style={styles.picto}>
-                    {rating}
-                    </View>
-                  </View>
-                  <View style={styles.div2}>
-                    <Image source={{uri: url}} style={styles.image}></Image>
-                  </View>    
-                </View> 
-                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-                  <Button title='Choisir ce salon' color='white' backgroundColor='#4280AB' onPress={()=> navigation(shopDetails)}/>
-                  <Button title='Retour' color='white' backgroundColor='#AB4242' onPress={() => setVisible(false)}/>
-                </View>
-          </Overlay>
+          : null}
+      </MapView>
+      <Overlay isVisible={visible}>
+        <View style={styles.card}>
+          <View style={styles.text}>
+            <View style={styles.div1}>
+              <Text style={{ fontWeight: 'bold' }}>{shopDetails.shopName}</Text>
+              <FontAwesome name='heart-o' size={15} color='black' />
+            </View>
+            <Text style={styles.pad}>{shopDetails.shopAddress}</Text>
+            <View style={styles.picto}>{euros}</View>
+            <View style={styles.picto}>{features}</View>
+            <View style={styles.picto}>{rating}</View>
+          </View>
+          <View style={styles.div2}>
+            <Image source={{ uri: url }} style={styles.image}></Image>
+          </View>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}
+        >
+          <Button
+            title='Choisir ce salon'
+            color='white'
+            backgroundColor='#4280AB'
+            onPress={() => navigation(shopDetails)}
+          />
+          <Button
+            title='Retour'
+            color='white'
+            backgroundColor='#AB4242'
+            onPress={() => setVisible(false)}
+          />
+        </View>
+      </Overlay>
     </View>
   );
 }
@@ -257,34 +282,25 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: 5,
   },
-  pad: {padding: 2},
-  text: {width: '60%', padding: 10},
-  image: {height: 145, width: 140},
-  picto: {display: 'flex', flexDirection: 'row'},
-  
+  pad: { padding: 2 },
+  text: { width: '60%', padding: 10 },
+  image: { height: 145, width: 140 },
+  picto: { display: 'flex', flexDirection: 'row' },
 });
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    saveChoosenOffer: function(shopDetails){
+    saveChoosenOffer: function (shopDetails) {
       dispatch({
         type: 'selectOffer',
         shopDetails: shopDetails,
-      })
-    }
-  }
+      });
+    },
+  };
 }
 
 function mapStateToProps(state) {
-  return {shopsData: state.shopsData, search: state.search};
+  return { shopsData: state.shopsData, search: state.search };
 }
 
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-  )(Map);
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(Map);

@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FontAwesome } from '@expo/vector-icons';
 
+import Header from '../shared/Header';
 import TemporaryPage from '../Screens/TemporaryPage';
 
 import HomeScreen from '../Screens/HomeScreen';
@@ -27,9 +28,6 @@ import shopDetails from '../reducers/OfferDetails.reducer';
 import search from '../reducers/Search.reducer';
 import selectedService from '../reducers/ModalSelectedService.reducer';
 import details from '../reducers/ChosenAppointment.reducer';
-import hairdresser from '../reducers/ChosenHairdresser.reducer';
-import prestation from '../reducers/ChosenPrestation.reducer';
-import experience from '../reducers/ChosenExperience.reducer';
 import shopsData from '../reducers/shopsData.reducer';
 import token from '../reducers/token.reducer';
 
@@ -42,9 +40,6 @@ const store = createStore(
     search,
     selectedService,
     details,
-    hairdresser,
-    prestation,
-    experience,
     shopsData,
     token,
   })
@@ -109,22 +104,22 @@ function ButtonTabShop() {
 
 function NavigatorStack() {
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name='TemporaryPage' component={TemporaryPage} />
-          <Stack.Screen name='Home' component={HomeScreen} />
-          <Stack.Screen name='ButtonTabShop' component={ButtonTabShop} />
-          <Stack.Screen name='Shop' component={ShopScreen} />
-          <Stack.Screen name='ButtonTabSign' component={ButtonTabSign} />
-          <Stack.Screen name='Appointment' component={AppointmentScreen} />
-          <Stack.Screen name='Details' component={DetailsScreen} />
-          <Stack.Screen name='Profile' component={ProfileScreen} />
-          <Stack.Screen name='Contact' component={ContactScreen} />
-          <Stack.Screen name='Filtres' component={Filtres} />
+    
+   
+        <Stack.Navigator initialRouteName='TemporaryPage' screenOptions={{ headerShown: false}}>
+          <Stack.Screen name='TemporaryPage' component={TemporaryPage}/>
+          <Stack.Screen name='Home' component={HomeScreen}/>
+          <Stack.Screen name='ButtonTabShop' component={ButtonTabShop}/>
+          <Stack.Screen name='Shop' component={ShopScreen}/>
+          <Stack.Screen name='ButtonTabSign' component={ButtonTabSign}/>
+          <Stack.Screen name='Appointment' component={AppointmentScreen}/>
+          <Stack.Screen name='Details' component={DetailsScreen}/>
+          <Stack.Screen name='Profile' component={ProfileScreen}/>
+          <Stack.Screen name='Contact' component={ContactScreen}/>
+          <Stack.Screen name='Filtres' component={Filtres}/>
         </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+
+    
   );
 }
 
