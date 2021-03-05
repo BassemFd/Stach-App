@@ -23,7 +23,7 @@ function Profile({ token }) {
   const [user, setUser] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [shops, setShops] = useState([]);
-  const [shopId, setShopId] = useState('')
+  const [shopId, setShopId] = useState('');
 
   // const [comments, setComments] = useState([
   //   {
@@ -75,11 +75,10 @@ function Profile({ token }) {
 
   // Add Comment
   const addComment = async (comment) => {
-
     await fetch(`${IP_ADDRESS}/users/addcomment`, {
-      method: 'PUT',
-      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}`
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}`,
     });
 
     setModalOpen(false);
@@ -87,8 +86,8 @@ function Profile({ token }) {
 
   const openComment = (shop_id) => {
     setShopId(shop_id);
-    setModalOpen(true)
-  }
+    setModalOpen(true);
+  };
 
   let points = 562;
   let msgInfo = false;
