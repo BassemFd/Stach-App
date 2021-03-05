@@ -224,7 +224,7 @@ function HomeScreen(props) {
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
   <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
     
-    <Text style={[globalStyles.brand, {marginTop:50}]}>'Stach</Text>
+    <Text style={{marginTop:20}}></Text>
     
     <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'70%', marginTop:10}}>
     <Button

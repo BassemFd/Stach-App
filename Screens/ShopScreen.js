@@ -459,7 +459,7 @@ function closeExperiences() {
 
   return (
     <View style={styles.card}>
-      <Text style={[globalStyles.brand, { marginTop: 10 }]}>'Stach</Text>
+      <Text style={[globalStyles.brand, { marginTop: -30 }]}></Text>
       <ScrollView ref={scrollRef}>
         <View>
           <Card>
