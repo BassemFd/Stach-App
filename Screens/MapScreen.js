@@ -76,11 +76,6 @@ function Map(props) {
   useEffect(() => {
 
     setShopsList(props.shopsData);
-<<<<<<< HEAD
-    // console.log('search', props.search);
-    setLatitude(props.search.latitude);
-    setLongitude(props.search.longitude);
-=======
     console.log('search', props.search);
     
     // console.log('lat', props.search.latitude, 'long', props.search.longitude);
@@ -91,7 +86,6 @@ function Map(props) {
         setLongitudeDelta(0.0421);
     }
    
->>>>>>> 81be94bf52f1753ce6e2dbe39f71cd79d4c91dbc
 
     // async function getLocation() {
     //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
