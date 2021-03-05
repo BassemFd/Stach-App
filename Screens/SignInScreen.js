@@ -70,7 +70,7 @@ function SignIn({ navigation, onAddToken }) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={globalStyles.container}>
-        <Text style={globalStyles.brand}>'Stach</Text>
+        <Text style={globalStyles.brand}></Text>
         <View style={globalStyles.hr}></View>
         <View style={globalStyles.socialNetwork}>
           <View style={globalStyles.socialNetworkContent}>

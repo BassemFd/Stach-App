@@ -27,8 +27,8 @@ export default function Contact() {
 
   return (
     <View style={styles.container}>
-      <View style={{marginTop:500}}>
-      <Text style={globalStyles.brand}>'Stach</Text>
+      <View style={{marginTop:300}}>
+      <Text style={globalStyles.brand}></Text>
       <View style={{marginTop:50, marginBottom:50, padding:50, alignItems:'center'}}>
 
         <Text style={{marginBottom:60}}>Une équipe de passionnés à votre écoute jour et nuit pour une coiffure sereine, pour toute question, si vous ne savez pas coiffeur alors envoyez nous un e-mail</Text>

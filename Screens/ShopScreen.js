@@ -79,7 +79,7 @@ function closeExperiences() {
   setExperiences("Choix de l'Expérience");
 }
   
-  //* QUOI Prestation
+//* QUOI Prestation
    const [quoiVisible, setQuoiVisible] = useState(false);
   const [quoi, setQuoi] = useState("Choix de la Prestation");
   const [prestaPrice, setPrestaPrice] = useState()
@@ -111,6 +111,7 @@ function closeExperiences() {
 
 //*QUOI END
 
+
   const [chosenVar, setChosenVar] = useState(props.chosenDate);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(chosenVar);
@@ -118,7 +119,7 @@ function closeExperiences() {
 
   const isCarousel = useRef(null);
   const [index, setIndex] = useState(0);
-  const [visible, setVisible] = useState(false);
+  
   const [chosenHour, setChosenHour] = useState();
   const [favorite, setFavorite] = useState(false);
 
@@ -134,9 +135,6 @@ function closeExperiences() {
     color = 'black';
   }
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
 
   //* Handling data for Carousel, using reducer
   var data = [];
@@ -161,7 +159,7 @@ function closeExperiences() {
   }
 
   //* handling validation button,
-  //!! see what to send to SignIn/SignOut or Reducer
+
   function handleChoixDuSalon() {
     let convertedHour = convertMinsToTime(chosenHour);
 
@@ -230,8 +228,6 @@ function closeExperiences() {
   }
 
  
-  
-
   //* mapping to showcase different utilities/extras/ using logos, accept animals, handi access etc...
   var pictoTab = [];
   for (let z = 0; z < hairdresser.shopFeatures.length; z++) {
@@ -246,22 +242,14 @@ function closeExperiences() {
     );
   }
 
-  //! should navigate to lower screen to check comments
+ 
   const handleAvis = () => {
-    // ScrollView.scrollToEnd({animated: true})
     scrollRef.current?.scrollTo({
       y: 1200,
       animated: true,
     });
   };
 
-  const listComment = [
-    { pseudo: 'Juliette', message: "J'adore ce salon" },
-    { pseudo: 'Yaya', message: "J'adore ce salon" },
-    { pseudo: 'Raph', message: "J'adore ce salon" },
-    { pseudo: 'Bassem', message: "J'adore ce salon" },
-  ];
-console.log(props.shopDetails.comments)
   var listCommentItem = props.shopDetails.comments.map((l, i) => {
      //* mapping on stars for comments: 
   var starCommentTab = [];
@@ -299,7 +287,7 @@ console.log(props.shopDetails.comments)
     return `${hours}:${minutes}`;
   };
 
-  // const hours =  [{mon: {open: 570, close: 1080 }}]
+  
   let hoursTab;
   let hoursArr = [];
   let appointmentTime = [];
@@ -348,33 +336,12 @@ console.log(props.shopDetails.comments)
       '-' +
       choice.getFullYear();
     setChosenVar(dateToSetter);
-    // console.log("final date?:", chosenVar)
-
-    //  datePhrase = dateToReducer
-    hideDatePicker();
+     hideDatePicker();
   };
 
-  // let weeklyTab = ["Monday", "Tuesday",
-  // "Wednesday",
-  // "Thursday",
-  // "Friday",
-  // "Saturday",
-  // "Sunday",]
-  // // props.shopDetails.schedule.map((schedule)=>{
-  // //   console.log("DAY OF THE WEEK", schedule.dayOfTheWeek);
-  // //   weeklyTab.push(schedule.dayOfTheWeek)
-  // // })
-
-  // console.log(weeklyTab)
-
-  // let isOpen = false
-  // for(let dayOftheTab = 0; dayOftheTab < weeklyTab.length; dayOftheTab ++){
-  // if(weeklyTab[dayOftheTab] === props.shopDetails.schedule[dayOftheTab].dayOfTheWeek){
-  // isOpen = true
-  // }}
 
   if (chosenVar) {
-    // console.log("PROPS Schedule ", props.shopDetails.schedule)
+  
     let dateGoodFormat =
       chosenVar.split('-')[2] +
       '-' +
@@ -393,7 +360,7 @@ console.log(props.shopDetails.comments)
     let filteredSchedule = props.shopDetails.schedule.filter(
       (e) => e.dayOfTheWeek == chosenDay
     );
-    // console.log("GOOD FORMAT", dateGoodFormat)
+
     if (filteredSchedule.length !== 0) {
       for (
         let i = filteredSchedule[0].openingHours;
@@ -486,22 +453,13 @@ console.log(props.shopDetails.comments)
   };
   var datePhrase = 'Choisir une Date';
 
-  // if (isDateSelected) {
-  //
-  //     datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
-
-  //   } else {
-  //     datePhrase = "TOUTES LES DATES"
-  //  }
-
+ 
   //**************************************** */
 
 
- 
-
   return (
     <View style={styles.card}>
-      <Text style={[globalStyles.brand, { marginTop: 10 }]}>'Stach</Text>
+      <Text style={[globalStyles.brand, { marginTop: -30 }]}></Text>
       <ScrollView ref={scrollRef}>
         <View>
           <Card>
@@ -632,12 +590,7 @@ console.log(props.shopDetails.comments)
                 <Text style={styles.textStyle}>{experiences}</Text>
               </Pressable>
             </View>
-          
-        
-
-
-
-              
+                      
             </View>
           </Card>
 
