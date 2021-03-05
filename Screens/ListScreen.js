@@ -84,6 +84,8 @@ function List(props) {
       var shopsDataCopy = body.filteredDistanceShopsList
       props.saveShopsdata(shopsDataCopy);
     } 
+
+    
     getShops()
 
 
