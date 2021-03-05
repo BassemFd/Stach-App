@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { globalStyles } from '../styles/Global';
@@ -9,6 +9,12 @@ import { Overlay } from 'react-native-elements';
 
 function Details(props) {
 
+  console.log(props.communication)
+
+  useEffect(() => {
+    
+  }, []);
+
   const gender  = ['un homme', 'une femme'];
 
   const [errorText, setErrorText] = useState('');
@@ -18,8 +24,13 @@ function Details(props) {
   const [genderText, setGenderText] = useState('Choisir');
 
   const [lengthVisible, setLengthVisible] = useState(false);
-  const [lengthText, setLengthText] = useState('Choisir');
-  const [length, setLength] = useState(null)
+  //const [lengthText, setLengthText] = useState('Choisir');
+  const [length, setLength] = useState(null);
+
+  const [typeVisible, setTypeVisible] = useState(false);
+  //const [typeText, setTypeText] = useState('Choisir');
+  const [type, setType] = useState(null);
+  const [validationVisible, setValidationVisible] = useState(false);
 
   
 
@@ -37,7 +48,8 @@ function Details(props) {
     setGenderVisible(false);
     setGenderText(element);
     setLength(null);
-    setLengthText('Choisir');
+    setType(null);
+    //setLengthText('Choisir');
   }
 
   var closeGender = () => {
@@ -45,7 +57,8 @@ function Details(props) {
     setGenderChosen(null);
     setGenderText('Choisir');
     setLength(null);
-    setLengthText('Choisir');
+    setType(null)
+    //setLengthText('Choisir');
   }
 
   //LENGTH
@@ -111,29 +124,108 @@ function Details(props) {
     } else {
       setErrorText('Veuillez indiquer votre sexe')
     }
-    
   }
 
   var chosenLength = (longueur) => {
     setLength(longueur);
-    setLengthText(longueur);
+    //setLengthText(longueur);
     setLengthVisible(false);
   }
   
   var closeLength = () => {
     setLengthVisible(false);
-    setLengthText('Choisir');
+    //setLengthText('Choisir');
     setLength(null)
   };
 
+  //TYPE
+  var openType = () => {
+    if (genderText != 'Choisir') {
+      setTypeVisible(true)
+    } else {
+      setErrorText('Veuillez indiquer votre sexe')
+    }
+  }
+
+  var closeType = () => {
+    setTypeVisible(false);
+    //setTypeText('Choisir');
+    setType(null);
+  }
+
+  var chosenType = (type) => {
+    setType(type);
+    //setTypeText(type);
+    setTypeVisible(false);
+  }
+
+
+
+  var imageType;
+  if (genderChosen === 'une femme') {
+      if (type=== 'raide') {
+        imageType = 
+          <Pressable style={styles.image} onPress={() => openType()}>
+            <Image style={{width: 70, height: 90}}source={require('../assets/Wtype1.png')} />
+          </Pressable>
+      } else if (type === 'ondulé') {
+        imageType = 
+        <Pressable style={styles.image} onPress={() => openType()}>
+          <Image style={{width: 70, height: 90}}source={require('../assets/Wtype2.png')} />
+        </Pressable>
+         
+      } else if (type === 'bouclé') {
+        imageType = 
+        <Pressable style={styles.image} onPress={() => openType()}>
+          <Image style={{width: 70, height: 90}}source={require('../assets/Wtype3.png')} />
+        </Pressable>
+      } else if (type === 'frisé') {
+        imageType = 
+        <Pressable style={styles.image} onPress={() => openType()}>
+          <Image style={{width: 70, height: 90}}source={require('../assets/Wtype4.png')} />
+        </Pressable>        
+      } else if (type === 'crépu') {
+        imageType = 
+        <Pressable style={styles.image} onPress={() => openType()}>
+          <Image style={{width: 70, height: 90}}source={require('../assets/Wtype5.png')} />
+        </Pressable> 
+      }
+  } else {
+    if (type === 'raide') {
+      imageType = 
+        <Pressable style={styles.image} onPress={() => openType()}>
+          <Image style={{width: 50, height: 70}}source={require('../assets/Mtype1.png')} />
+        </Pressable>
+    } else if (type === 'ondulé') {
+      imageType = 
+      <Pressable style={styles.image} onPress={() => openType()}>
+        <Image style={{width: 50, height: 70}}source={require('../assets/Mtype2.png')} />
+      </Pressable>
+       
+    } else if (type === 'bouclé') {
+      imageType = 
+      <Pressable style={styles.image} onPress={() => openType()}>
+        <Image style={{width: 50, height: 70}}source={require('../assets/Mtype3.png')} />
+      </Pressable>
+    } else if (type === 'crépu') {
+      imageType = 
+      <Pressable style={styles.image} onPress={() => openType()}>
+        <Image style={{width: 50, height: 70}}source={require('../assets/Mtype4.png')} />
+      </Pressable>        
+    } 
+  }
+
+  var validation = () => {
+    setValidationVisible(true);
+    setTimeout(() => {
+      setValidationVisible(false);
+      props.navigation.navigate('Profile')
+    }, 3000)
+  }
 
   console.log('details', props.communication)
   return (
     <View style={globalStyles.container}>
-
-      <View style={{display: 'flex', alignItems: 'center', marginTop: 50}}>
-        <Text style={globalStyles.brand}>Envoie des infos à ton coiffeur</Text>
-      </View>
       <View style={{display: 'flex', alignItems: 'center', marginTop: 30}}>
         <Text style={styles.titleText}>Je suis:</Text>
         <Button title={genderText} color='white' backgroundColor='#4280AB' onPress={() => setGenderVisible(true)}></Button>
@@ -144,12 +236,21 @@ function Details(props) {
         <Text style={styles.titleText}>J'ai les cheveux:</Text>
         { length != null ? 
         imageLength
-        : <Button title={lengthText} onPress={() => openLength()} color='white' backgroundColor='#4280AB'/>
+        : <Button title='Choisir' onPress={() => openLength()} color='white' backgroundColor='#4280AB'/>
         }
       </View>
-        
 
-
+      <View style={{display: 'flex', alignItems: 'center', marginTop: 30}}>
+        <Text style={styles.titleText}>Et:</Text>
+        {type != null ?
+        imageType
+      : <Button title='Choisir' onPress={() => openType()} color='white' backgroundColor='#4280AB'/>
+      }
+      </View>
+      <View style={{margin: 20}}>
+        <Button title='Envoyer à mon coiffeur' backgroundColor='#AB4242' color='white' onPress={() => validation()}></Button>
+      </View>
+      
 
       <Overlay isVisible={genderVisible}>
             <View style={styles.cross}>
@@ -197,6 +298,51 @@ function Details(props) {
             </View>
             }
         </Overlay>
+
+        <Overlay isVisible={typeVisible}>
+            <View style={styles.cross}>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeType()} style={{margin: 5}}/>
+            </View>
+            {genderText === 'une femme' ? 
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Pressable style={styles.image} onPress={() => chosenType('raide')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Wtype1.png')} />
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('ondulé')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Wtype2.png')}/>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('bouclé')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Wtype3.png')}/>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('frisé')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Wtype4.png')}/>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('crépu')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Wtype5.png')}/>
+              </Pressable>
+            </View>
+            : 
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Pressable style={styles.image} onPress={() => chosenType('raide')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Mtype1.png')} />
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('ondulé')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Mtype2.png')}/>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('bouclé')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Mtype3.png')}/>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenType('crépu')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/Mtype4.png')}/>
+              </Pressable>
+            </View>
+            }
+        </Overlay>
+
+        <Overlay isVisible={validationVisible}>
+          <Text style={{textAlign: 'center', fontFamily: 'nunito-bold', fontSize: 18}}> Féliciations! Vos informations ont été envoyés à votre coiffeur !</Text>
+        </Overlay>
+
     </View>
   );
 }
