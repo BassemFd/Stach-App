@@ -32,6 +32,7 @@ import prestation from '../reducers/ChosenPrestation.reducer';
 import experience from '../reducers/ChosenExperience.reducer';
 import shopsData from '../reducers/shopsData.reducer';
 import token from '../reducers/token.reducer';
+import communication from '../reducers/Communication.reducer'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,6 +48,7 @@ const store = createStore(
     experience,
     shopsData,
     token,
+    communication,
   })
 );
 

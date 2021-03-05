@@ -17,7 +17,7 @@ import CommentFormScreen from './CommentFormScreen';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function Profile({ token, saveChoosenOffer, navigation }) {
+function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState(false);
@@ -108,6 +108,12 @@ function Profile({ token, saveChoosenOffer, navigation }) {
     navigation.navigate('Shop');
   };
 
+  const openCommunication = (shopSelected) => {
+    var communication = {shopMail: shopSelected.shopMail, shopName: shopSelected.shopName, user: user};
+    saveCommunication(communication);
+    navigation.navigate('Details')
+  }
+
   let points = 562;
   let msgInfo = false;
   const newDate = new Date();
@@ -158,9 +164,10 @@ function Profile({ token, saveChoosenOffer, navigation }) {
                     {formatAppointDate(appointment.startDate)}
                   </Text>
                   <CustomButton
-                    title='Mon coiffeur'
+                    title='Communique avec ton coiffeur'
                     color='#fff'
                     backgroundColor='#4280AB'
+                    onPress={() => openCommunication(shops[i])}
                   />
                 </Card>
               );
@@ -344,6 +351,12 @@ function mapDispatchToProps(dispatch) {
         shopDetails: shopDetails,
       });
     },
+    saveCommunication: function(communication) {
+      dispatch({
+        type: 'saveCommunication',
+        communication: communication,
+      })
+    }
   };
 }
 
