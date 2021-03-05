@@ -17,7 +17,7 @@ import CommentFormScreen from './CommentFormScreen';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function Profile({ token, saveChoosenOffer, navigation}) {
+function Profile({ token, saveChoosenOffer, navigation }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState(false);
@@ -25,8 +25,6 @@ function Profile({ token, saveChoosenOffer, navigation}) {
   const [shops, setShops] = useState([]);
   const [shopId, setShopId] = useState('');
   const [appointmentId, setAppointmentId] = useState('');
-  
-  
 
   // const [comments, setComments] = useState([
   //   {
@@ -78,14 +76,13 @@ function Profile({ token, saveChoosenOffer, navigation}) {
 
   // Add Comment
   const addComment = async (comment) => {
-
     var newComment = await fetch(`${IP_ADDRESS}/users/addcomment`, {
-      method: 'PUT',
-      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}&appointmentId=${appointmentId}`
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `comment=${comment.avis}&rating=${comment.rating}&shop_id=${shopId}&token=${token}&appointmentId=${appointmentId}`,
     });
-    await newComment.json()
-  
+    await newComment.json();
+
     const getUser = async () => {
       const data = await fetch(`${IP_ADDRESS}/users/myProfile/${token}`);
       const body = await data.json();
@@ -99,19 +96,17 @@ function Profile({ token, saveChoosenOffer, navigation}) {
   };
 
   const openComment = (shop_id, appointment_id) => {
-    setAppointmentId(appointment_id)
+    setAppointmentId(appointment_id);
     setShopId(shop_id);
     setModalOpen(true);
-  }
-
-
+  };
 
   const openShop = async (myShopId) => {
     var data = await fetch(`${IP_ADDRESS}/shop/${myShopId}`);
     var body = await data.json();
     saveChoosenOffer(body.shop);
     navigation.navigate('Shop');
-  }
+  };
 
   let points = 562;
   let msgInfo = false;
@@ -229,20 +224,21 @@ function Profile({ token, saveChoosenOffer, navigation}) {
                       </View>
                     </TouchableWithoutFeedback>
                   </Modal>
-                  {appointment.commentExists ? 
-                  <CustomButton
-                  title='Reprendre Rendez-vous'
-                  color='#fff'
-                  backgroundColor='#AB4242'
-                  onPress={() => openShop(shops[i]._id)}
-                  />
-                  : 
-                  <CustomButton
-                    title='Écrire un avis'
-                    color='#fff'
-                    backgroundColor='#4280AB'
-                    onPress={() => openComment(shops[i]._id, appointment._id)}
-                  />}
+                  {appointment.commentExists ? (
+                    <CustomButton
+                      title='Reprendre Rendez-vous'
+                      color='#fff'
+                      backgroundColor='#AB4242'
+                      onPress={() => openShop(shops[i]._id)}
+                    />
+                  ) : (
+                    <CustomButton
+                      title='Écrire un avis'
+                      color='#fff'
+                      backgroundColor='#4280AB'
+                      onPress={() => openComment(shops[i]._id, appointment._id)}
+                    />
+                  )}
                 </Card>
               );
             } else {
@@ -340,15 +336,15 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    saveChoosenOffer: function(shopDetails){
+    saveChoosenOffer: function (shopDetails) {
       dispatch({
         type: 'selectOffer',
         shopDetails: shopDetails,
-      })
-    }
-  }
+      });
+    },
+  };
 }
 
 const mapStateToProps = (state) => {
