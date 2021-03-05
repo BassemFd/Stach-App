@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   Pressable,
+  Alert,
 } from 'react-native';
 import { globalStyles } from '../styles/Global';
 import { Card, ListItem, Overlay } from 'react-native-elements';
@@ -14,7 +15,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MapView, { Marker } from 'react-native-maps';
 import PrimaryButton from '../shared/Button';
-
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, {
   SLIDER_WIDTH,
@@ -95,6 +95,7 @@ function Shop(props) {
     setExperiencePrice(price);
     setExperiencesVisible(false);
     setQuoi('Choix de la Prestation');
+    props.search.offer = undefined;
   }
 
   function closeExperiences() {
@@ -142,6 +143,7 @@ function Shop(props) {
     setPrestaPrice(price);
     setQuoiVisible(false);
     setExperiences("Choix de l'Expérience");
+    props.search.experience = undefined;
   }
 
   function closeQuoi() {
@@ -158,7 +160,7 @@ function Shop(props) {
 
   const isCarousel = useRef(null);
   const [index, setIndex] = useState(0);
-  const [visible, setVisible] = useState(false);
+
   const [chosenHour, setChosenHour] = useState();
   const [favorite, setFavorite] = useState(false);
 
@@ -173,10 +175,6 @@ function Shop(props) {
   } else {
     color = 'black';
   }
-
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
 
   //* Handling data for Carousel, using reducer
   var data = [];
@@ -201,7 +199,7 @@ function Shop(props) {
   }
 
   //* handling validation button,
-  //!! see what to send to SignIn/SignOut or Reducer
+
   function handleChoixDuSalon() {
     let convertedHour = convertMinsToTime(chosenHour);
 
@@ -211,6 +209,15 @@ function Shop(props) {
       chosenHour === undefined
     ) {
       console.log('Choisir une prestation BIS');
+      const createTwoButtonAlert = () =>
+        Alert.alert(
+          'Choix Obligatoire',
+          'Choisir une Date et une Heure. Choisir Prestation ou Experience',
+
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+          { cancelable: false }
+        );
+      createTwoButtonAlert();
     } else {
       props.chosenAppointment(
         convertedHour,
@@ -282,28 +289,39 @@ function Shop(props) {
     );
   }
 
-  //! should navigate to lower screen to check comments
   const handleAvis = () => {
-    // ScrollView.scrollToEnd({animated: true})
     scrollRef.current?.scrollTo({
       y: 1200,
       animated: true,
     });
   };
 
-  const listComment = [
-    { pseudo: 'Juliette', message: "J'adore ce salon" },
-    { pseudo: 'Yaya', message: "J'adore ce salon" },
-    { pseudo: 'Raph', message: "J'adore ce salon" },
-    { pseudo: 'Bassem', message: "J'adore ce salon" },
-  ];
-
-  var listCommentItem = listComment.map((l, i) => {
+  var listCommentItem = props.shopDetails.comments.map((l, i) => {
+    //* mapping on stars for comments:
+    var starCommentTab = [];
+    for (let i = 0; i < 5; i++) {
+      var starCommentColor = 'black';
+      if (i < l.rating) {
+        starCommentColor = 'gold';
+      }
+      starCommentTab.push(
+        <FontAwesome
+          style={{ marginRight: 5 }}
+          key={i}
+          name='star'
+          size={24}
+          color={starCommentColor}
+        />
+      );
+    }
     return (
       <ListItem key={i} bottomDivider>
         <ListItem.Content>
-          <ListItem.Title>{l.pseudo}</ListItem.Title>
-          <ListItem.Subtitle>{l.message}</ListItem.Subtitle>
+          <ListItem.Title>
+            {starCommentTab} Moyenne: {l.rating}/5{' '}
+          </ListItem.Title>
+
+          <ListItem.Subtitle>{l.comment}</ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
     );
@@ -316,7 +334,6 @@ function Shop(props) {
     return `${hours}:${minutes}`;
   };
 
-  // const hours =  [{mon: {open: 570, close: 1080 }}]
   let hoursTab;
   let hoursArr = [];
   let appointmentTime = [];
@@ -365,33 +382,10 @@ function Shop(props) {
       '-' +
       choice.getFullYear();
     setChosenVar(dateToSetter);
-    // console.log("final date?:", chosenVar)
-
-    //  datePhrase = dateToReducer
     hideDatePicker();
   };
 
-  // let weeklyTab = ["Monday", "Tuesday",
-  // "Wednesday",
-  // "Thursday",
-  // "Friday",
-  // "Saturday",
-  // "Sunday",]
-  // // props.shopDetails.schedule.map((schedule)=>{
-  // //   console.log("DAY OF THE WEEK", schedule.dayOfTheWeek);
-  // //   weeklyTab.push(schedule.dayOfTheWeek)
-  // // })
-
-  // console.log(weeklyTab)
-
-  // let isOpen = false
-  // for(let dayOftheTab = 0; dayOftheTab < weeklyTab.length; dayOftheTab ++){
-  // if(weeklyTab[dayOftheTab] === props.shopDetails.schedule[dayOftheTab].dayOfTheWeek){
-  // isOpen = true
-  // }}
-
   if (chosenVar) {
-    // console.log("PROPS Schedule ", props.shopDetails.schedule)
     let dateGoodFormat =
       chosenVar.split('-')[2] +
       '-' +
@@ -410,7 +404,7 @@ function Shop(props) {
     let filteredSchedule = props.shopDetails.schedule.filter(
       (e) => e.dayOfTheWeek == chosenDay
     );
-    // console.log("GOOD FORMAT", dateGoodFormat)
+
     if (filteredSchedule.length !== 0) {
       for (
         let i = filteredSchedule[0].openingHours;
@@ -503,19 +497,13 @@ function Shop(props) {
   };
   var datePhrase = 'Choisir une Date';
 
-  // if (isDateSelected) {
-  //
-  //     datePhrase = zeroDay + date.getDate() + "/" + zeroMonth + (date.getMonth() + 1) +"/"+ date.getFullYear();
-
-  //   } else {
-  //     datePhrase = "TOUTES LES DATES"
-  //  }
-
   //**************************************** */
+  console.log(props.search);
 
+  var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
   return (
     <View style={styles.card}>
-      <Text style={[globalStyles.brand, { marginTop: 10 }]}>'Stach</Text>
+      <Text style={[globalStyles.brand, { marginTop: -30 }]}></Text>
       <ScrollView ref={scrollRef}>
         <View>
           <Card>
@@ -590,7 +578,7 @@ function Shop(props) {
                 <View style={styles.icons2}>
                   {starTab}
 
-                  <Text>({hairdresser.starRating})</Text>
+                  <Text>({roundedRating})</Text>
                 </View>
                 <View style={[styles.avis, { marginTop: 10 }]}>
                   <TouchableOpacity
@@ -646,7 +634,11 @@ function Shop(props) {
                   onPress={() => setQuoiVisible(true)}
                   style={[styles.button, styles.buttonOpen, styles.buttonW]}
                 >
-                  <Text style={styles.textStyle}>{quoi}</Text>
+                  {quoi && props.search.offer == undefined ? (
+                    <Text style={styles.textStyle}>{quoi}</Text>
+                  ) : (
+                    <Text style={styles.textStyle}>{props.search.offer}</Text>
+                  )}
                 </Pressable>
               </View>
 
@@ -655,7 +647,13 @@ function Shop(props) {
                   onPress={() => setExperiencesVisible(true)}
                   style={[styles.button, styles.buttonOpen, styles.buttonW]}
                 >
-                  <Text style={styles.textStyle}>{experiences}</Text>
+                  {experiences && props.search.experience == undefined ? (
+                    <Text style={styles.textStyle}>{experiences}</Text>
+                  ) : (
+                    <Text style={styles.textStyle}>
+                      {props.search.experience}
+                    </Text>
+                  )}
                 </Pressable>
               </View>
             </View>
@@ -908,6 +906,7 @@ function mapStateToProps(state) {
   return {
     shopDetails: state.shopDetails,
     chosenDate: state.search.date,
+    search: state.search,
     token: state.token,
   };
 }

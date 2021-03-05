@@ -171,6 +171,7 @@ function Map(props) {
           justifyContent: 'space-between',
           paddingTop: 30,
           paddingBottom: 10,
+          marginTop: 87,
         }}
       >
         <Button

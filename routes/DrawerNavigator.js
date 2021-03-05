@@ -37,10 +37,16 @@ let conditionnalDrawer;
                   drawerLabel:'',
                   headerStyle: {
                       backgroundColor: '#FFE082',
-                      height: 70,
+                      height: 100,
                       elevation:0,
                       },
-                  headerTitle:'',
+                      headerTitle:"'Stach",
+                      headerTitleAlign:'center',
+                      headerTitleStyle: {
+                        marginTop:15,
+                        fontFamily: 'caveat-regular',
+                        fontSize: 44,
+                      },
                   
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -55,11 +61,19 @@ let conditionnalDrawer;
               component={Home}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:"Nouvelle Recherche",
-                    headerTitle:'',
-                    headerStyle: {backgroundColor: '#FFE082',
-                    height: 70,
-                    elevation:0,},
+                    drawerLabel:" Nouvelle Recherche",
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -77,10 +91,18 @@ let conditionnalDrawer;
               options={({ navigation }) => {
                 return {
                     drawerLabel:"S'inscrire",
-                    headerTitle:'',
-                    headerStyle: {backgroundColor: '#FFE082',
-                    height: 70,
-                    elevation:0,},
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -97,11 +119,19 @@ let conditionnalDrawer;
               component={SignInScreen}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:'Se connecter',
-                    headerStyle: {backgroundColor: '#FFE082',
-                    height: 70,
-                    elevation:0,},
-                    headerTitle:'',
+                    drawerLabel:'  Se connecter',
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -116,11 +146,19 @@ let conditionnalDrawer;
               component={ContactScreen}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:'Contactez-nous',
-                    headerStyle: {backgroundColor: '#FFE082',
-                      height: 70,
-                      elevation:0,},
-                    headerTitle:'',
+                    drawerLabel:' Contactez-nous',
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -149,11 +187,17 @@ let conditionnalDrawer;
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerLabel:'',
                   headerStyle: {
-                      backgroundColor: '#FFE082',
-                      height: 70,
-                      elevation:0,
-                      },
-                  headerTitle:'',
+                    backgroundColor: '#FFE082',
+                    height: 100,
+                    elevation:0,
+                    },
+                    headerTitle:"'Stach",
+                    headerTitleAlign:'center',
+                    headerTitleStyle: {
+                      marginTop:15,
+                      fontFamily: 'caveat-regular',
+                      fontSize: 44,
+                    },
                   drawerIcon: ({focused, size}) => (
                     <Icon
                       name="close"
@@ -168,10 +212,18 @@ let conditionnalDrawer;
               options={({ navigation }) => {
                 return {
                     drawerLabel:"Nouvelle Recherche",
-                    headerTitle:'',
-                    headerStyle: {backgroundColor: '#FFE082',
-                    height: 70,
-                    elevation:0,},
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -189,11 +241,19 @@ let conditionnalDrawer;
               component={ProfileScreen}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:" Mes rendez-vous",
-                    headerStyle: {backgroundColor: '#FFE082',
-                    height: 70,
-                    elevation:0,},
-                    headerTitle:'',
+                    drawerLabel:"  Mes rendez-vous",
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon
@@ -209,10 +269,18 @@ let conditionnalDrawer;
               options={({ navigation }) => {
                 return {
                     drawerLabel:'Contactez-nous',
-                    headerStyle: {backgroundColor: '#FFE082',
-                      height: 70,
-                      elevation:0,},
-                    headerTitle:'',
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
                   headerLeft: () => <Header navigation={navigation} />,
                   drawerIcon: ({focused, size}) => (
                     <Icon

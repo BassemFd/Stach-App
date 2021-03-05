@@ -120,7 +120,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   const dateNow = newDate;
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.brand}>'Stach</Text>
+      <Text style={globalStyles.brand}></Text>
       <View style={styles.userContent}>
         <Text style={styles.userName}>
           {user.firstName} {user.lastName}
