@@ -82,8 +82,8 @@ function Map(props) {
     if (props.search.latitude != undefined && props.search.longitude != undefined) {
         setLatitude(props.search.latitude);
         setLongitude(props.search.longitude);
-        setLatitudeDelta(0.0922);
-        setLongitudeDelta(0.0421);
+        setLatitudeDelta(0.17);
+        setLongitudeDelta(0.09);
     }
    
 
