@@ -157,7 +157,7 @@ function Map(props) {
 
     // console.log('element', element)
     var image = element.shopImages[0];
-    console.log('image', image);
+    // console.log('image', image);
     setUrl(image);
   };
 

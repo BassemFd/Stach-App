@@ -55,7 +55,7 @@ let conditionnalDrawer;
               component={Home}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:"Nouvelle Recherche",
+                    drawerLabel:" Nouvelle Recherche",
                     headerTitle:'',
                     headerStyle: {backgroundColor: '#FFE082',
                     height: 70,
@@ -97,7 +97,7 @@ let conditionnalDrawer;
               component={SignInScreen}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:'Se connecter',
+                    drawerLabel:'  Se connecter',
                     headerStyle: {backgroundColor: '#FFE082',
                     height: 70,
                     elevation:0,},
@@ -116,7 +116,7 @@ let conditionnalDrawer;
               component={ContactScreen}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:'Contactez-nous',
+                    drawerLabel:' Contactez-nous',
                     headerStyle: {backgroundColor: '#FFE082',
                       height: 70,
                       elevation:0,},
@@ -189,7 +189,7 @@ let conditionnalDrawer;
               component={ProfileScreen}
               options={({ navigation }) => {
                 return {
-                    drawerLabel:" Mes rendez-vous",
+                    drawerLabel:"  Mes rendez-vous",
                     headerStyle: {backgroundColor: '#FFE082',
                     height: 70,
                     elevation:0,},

@@ -21,10 +21,29 @@ import ProfileScreen from '../Screens/ProfileScreen';
 import ContactScreen from '../Screens/ContactScreen';
 import Filtres from '../Screens/FiltresScreen';
 
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+
+import shopDetails from '../reducers/OfferDetails.reducer';
+import search from '../reducers/Search.reducer';
+import selectedService from '../reducers/ModalSelectedService.reducer';
+import details from '../reducers/ChosenAppointment.reducer';
+import shopsData from '../reducers/shopsData.reducer';
+import token from '../reducers/token.reducer';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-
+const store = createStore(
+  combineReducers({
+    shopDetails,
+    search,
+    selectedService,
+    details,
+    shopsData,
+    token,
+  })
+);
 
 function ButtonTabSign() {
   return (
