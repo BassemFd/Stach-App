@@ -67,16 +67,31 @@ function Map(props) {
   const [features, setFeatures] = useState([]);
   const [rating, setRating] = useState([]);
   const [url, setUrl] = useState('');
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude]  = useState(null)
+  const [latitude, setLatitude] = useState(47.902964);
+  const [longitude, setLongitude]  = useState(1.909251);
+  const [latitudeDelta, setLatitudeDelta] = useState(10);
+  const [longitudeDelta, setLongitudeDelta] = useState(10);
  
   
   useEffect(() => {
 
     setShopsList(props.shopsData);
+<<<<<<< HEAD
     // console.log('search', props.search);
     setLatitude(props.search.latitude);
     setLongitude(props.search.longitude);
+=======
+    console.log('search', props.search);
+    
+    // console.log('lat', props.search.latitude, 'long', props.search.longitude);
+    if (props.search.latitude != undefined && props.search.longitude != undefined) {
+        setLatitude(props.search.latitude);
+        setLongitude(props.search.longitude);
+        setLatitudeDelta(0.0922);
+        setLongitudeDelta(0.0421);
+    }
+   
+>>>>>>> 81be94bf52f1753ce6e2dbe39f71cd79d4c91dbc
 
     // async function getLocation() {
     //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -178,10 +193,19 @@ function Map(props) {
         initialRegion={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: longitudeDelta,
+          longitudeDelta: latitudeDelta,
         }}
       >
+         {props.search.latitude ? 
+         <Marker
+                  coordinate={{
+                    latitude: props.search.latitude,
+                    longitude: props.search.longitude,
+                  }}
+                  title= 'votre adresse'
+                  pinColor='#AB4242'
+                /> : null }
         {/* {userLocation ?
            <Marker coordinate={{ latitude : userLocation.latitude, longitude : userLocation.longitude}} pinColor="#fd79a8" /> : null } */}
 

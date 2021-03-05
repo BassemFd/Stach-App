@@ -25,7 +25,8 @@ function List(props) {
 
   //const [shopsList, setShopsList] = useState([])
   const [shopsData, setShopsData] = useState([])
-
+  const [orderPriceSort, setOrderPriceSort] = useState(false);
+  const [orderServicesSort, setOrderServicesSort] = useState(false);
 
   // var coiffeurs = [
   //   {
@@ -83,6 +84,8 @@ function List(props) {
       var shopsDataCopy = body.filteredDistanceShopsList
       props.saveShopsdata(shopsDataCopy);
     } 
+
+    
     getShops()
 
 
@@ -120,14 +123,24 @@ function List(props) {
   }
 
   function sortByPrice() {
+    setOrderPriceSort(!orderPriceSort);
     var shopListCopy = [...shopsData];
-    var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork > b.priceFork))
+    if (orderPriceSort === false) {
+      var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork > b.priceFork))
+    } else {
+      var sortByPrice = shopListCopy.sort((a, b) => (a.priceFork < b.priceFork))
+    }
     setShopsData(sortByPrice);
   }
 
   function sortByNote() {
+    setOrderServicesSort(!orderServicesSort)
     var shopListCopy = [...shopsData]
-    var sortByNote = shopListCopy.sort((a, b) => (a.rating < b.rating))
+    if (orderServicesSort === false) {
+      var sortByNote = shopListCopy.sort((a, b) => (a.rating < b.rating))
+    } else {
+      var sortByNote = shopListCopy.sort((a, b) => (a.rating > b.rating))
+    }
     setShopsData(sortByNote)
   }
 
