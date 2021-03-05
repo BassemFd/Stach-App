@@ -27,7 +27,7 @@ export default function Contact() {
 
   return (
     <View style={styles.container}>
-      <View style={{marginTop:620}}>
+      <View style={{marginTop:500}}>
       <Text style={globalStyles.brand}>'Stach</Text>
       <View style={{marginTop:50, marginBottom:50, padding:50, alignItems:'center'}}>
 

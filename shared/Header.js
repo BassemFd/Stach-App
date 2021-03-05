@@ -8,11 +8,11 @@ const Header = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.headerTitle}>
+    <SafeAreaView style={{}}>
       <MaterialIcons
-        style={styles.icon}
+        style={{marginLeft:16, marginTop:16}}
         name='menu'
-        size={28}
+        size={42}
         onPress={() => openMenu()}
       />
     </SafeAreaView>

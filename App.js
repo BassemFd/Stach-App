@@ -8,7 +8,35 @@ import React from 'react';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
-import Navigator from './routes/NavigatorStack';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
+
+import shopDetails from './reducers/OfferDetails.reducer';
+import search from './reducers/Search.reducer';
+import selectedService from './reducers/ModalSelectedService.reducer';
+import details from './reducers/ChosenAppointment.reducer';
+import hairdresser from './reducers/ChosenHairdresser.reducer';
+import prestation from './reducers/ChosenPrestation.reducer';
+import experience from './reducers/ChosenExperience.reducer';
+import shopsData from './reducers/shopsData.reducer';
+import token from './reducers/token.reducer';
+
+
+import DrawerNavigator from './routes/DrawerNavigator';
+
+const store = createStore(
+  combineReducers({
+    shopDetails,
+    search,
+    selectedService,
+    details,
+    hairdresser,
+    prestation,
+    experience,
+    shopsData,
+    token,
+  })
+);
 
 export default function App() {
   let [fonstLoaded] = useFonts({
@@ -22,6 +50,6 @@ export default function App() {
   if (!fonstLoaded) {
     return <AppLoading />;
   } else {
-    return <Navigator />;
+    return <Provider store={store}><DrawerNavigator /></Provider>;
   }
 }
