@@ -81,7 +81,7 @@ function Shop(props) {
       props.prestation === 'Aucune' ||
       props.prestation === 'Aucune Prestation'
     ) {
-      console.log('Choisir une prestation');
+      // console.log('Choisir une prestation');
     }
 
     let convertedHour = convertMinsToTime(chosenHour);

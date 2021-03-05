@@ -5,15 +5,19 @@ import { globalStyles } from '../styles/Global';
 import Card from '../shared/Card';
 import RadioButton from '../shared/RadioButton';
 import CustomButton from '../shared/Button';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
-  console.log("Details", props.appointment)
+  console.log('Details', props.appointment);
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
     { id: 2, value: false, name: 'Paiement sur place', selected: false },
   ]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
 
   const onRadioBtnClick = (item) => {
     let updatedState = paiement.map((paiement) =>
@@ -22,6 +26,29 @@ function Appointment(props) {
         : { ...paiement, selected: false }
     );
     setPaiement(updatedState);
+  };
+
+  const handleConfirm = async () => {
+    console.log('Confirm');
+    const data = await fetch(
+      `${IP_ADDRESS}/addappointment/3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chosenOffer: 'COUPE FEMME',
+          chosenPrice: 40,
+          chosenEmployee: 'Ivan',
+          chosenPackage: '',
+          startDate: '2021-03-06T13:00:00.000+00:00',
+          endDate: '2021-03-06T13:45:00.000+00:00',
+          chosenPayment: 'onshop',
+          appointmentStatus: 'validated',
+          shopId: '603e42b76fbccc3f40024b30',
+        }),
+      }
+    );
+    setModalVisible(true);
   };
 
   // <Image
@@ -68,19 +95,34 @@ function Appointment(props) {
             color='#333'
           />
           <View>
-            <Text style={styles.appointmentShop}>{props.appointment.shopDetailsName}</Text>
+            <Text style={styles.appointmentShop}>
+              {props.appointment.shopDetailsName}
+            </Text>
             <Text>{props.appointment.shopDetailsAddress}</Text>
             {/* <Text>92110 Clichy</Text> */}
           </View>
         </View>
         <Text>Professionnel : {props.appointment.hairdresser}</Text>
-        <Text>Date et heure : {props.appointment.date} - {props.appointment.hour}</Text>
+        <Text>
+          Date et heure : {props.appointment.date} - {props.appointment.hour}
+        </Text>
         <View style={styles.appoinTService}>
-          <Text>Prestation : {props.appointment.prestation.prestaName} - {props.appointment.prestation.price}€</Text>
-         
-          <Text>Autres options : {props.appointment.experience.packageName} - {props.appointment.experience.price} €</Text>
+          <Text>
+            Prestation : {props.appointment.prestation.prestaName} -{' '}
+            {props.appointment.prestation.price}€
+          </Text>
+
+          <Text>
+            Autres options : {props.appointment.experience.packageName} -{' '}
+            {props.appointment.experience.price} €
+          </Text>
         </View>
-        <Text style={styles.appointPrice}>Total commande : {props.appointment.prestation.price + props.appointment.experience.price}€</Text>
+        <Text style={styles.appointPrice}>
+          Total commande :{' '}
+          {props.appointment.prestation.price +
+            props.appointment.experience.price}
+          €
+        </Text>
       </Card>
       <View style={styles.paiement}>
         {paiement.map((item) => (
@@ -98,7 +140,7 @@ function Appointment(props) {
         title='Valider'
         color='#fff'
         backgroundColor='#4280AB'
-        onPress={() => setModalVisible(true)}
+        onPress={() => handleConfirm()}
       />
     </View>
   );
@@ -185,15 +227,8 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-
-
 function mapStateToProps(state) {
-  return {appointment: state.details};
+  return { appointment: state.details };
 }
 
-export default connect(
-    mapStateToProps, 
-    null
-)(Appointment);
+export default connect(mapStateToProps, null)(Appointment);

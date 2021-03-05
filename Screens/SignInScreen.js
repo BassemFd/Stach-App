@@ -21,7 +21,7 @@ function SignIn({ navigation, onAddToken }) {
   const [emailError, setEmailError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    console.log(IP_ADDRESS);
+    // console.log(config.IP_ADDRESS);
     const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
