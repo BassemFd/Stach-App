@@ -74,7 +74,7 @@ function Map(props) {
   useEffect(() => {
 
     setShopsList(props.shopsData);
-    console.log('search', props.search);
+    // console.log('search', props.search);
     setLatitude(props.search.latitude);
     setLongitude(props.search.longitude);
 
@@ -148,7 +148,7 @@ function Map(props) {
 
     // console.log('element', element)
     var image = element.shopImages[0];
-    console.log('image', image);
+    // console.log('image', image);
     setUrl(image);
   };
 

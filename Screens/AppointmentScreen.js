@@ -8,7 +8,7 @@ import CustomButton from '../shared/Button';
 import {connect} from 'react-redux';
 
 function Appointment(props) {
-  console.log("Details", props.appointment)
+  // console.log("Details", props.appointment)
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
     { id: 2, value: false, name: 'Paiement sur place', selected: false },
@@ -73,14 +73,30 @@ function Appointment(props) {
             {/* <Text>92110 Clichy</Text> */}
           </View>
         </View>
+        {props.appointment.hairdresser !== "Choix du Coiffeur" ?
         <Text>Professionnel : {props.appointment.hairdresser}</Text>
+        :
+        <Text>Professionnel : Vous n'avez pas de préférence de Coiffeur</Text>
+}
         <Text>Date et heure : {props.appointment.date} - {props.appointment.hour}</Text>
-        <View style={styles.appoinTService}>
-          <Text>Prestation : {props.appointment.prestation.prestaName} - {props.appointment.prestation.price}€</Text>
+     
+          {props.appointment.prestation !== "Choix de la Prestation" ?
+          <View style={styles.appoinTService}>
+          <Text>Prestation : {props.appointment.prestation}</Text>
+          <Text style={styles.appointPrice}>Total :  {props.appointment.prestationPrice}€</Text>
+          </View>
+          :
+          <View style={styles.appoinTService}>
+
+          <Text>Prestation : {props.appointment.experience}</Text>
+          <Text style={styles.appointPrice}>Total :  {props.appointment.experiencePrice}€</Text>
+          </View>
+}
+
          
-          <Text>Autres options : {props.appointment.experience.packageName} - {props.appointment.experience.price} €</Text>
-        </View>
-        <Text style={styles.appointPrice}>Total commande : {props.appointment.prestation.price + props.appointment.experience.price}€</Text>
+          
+      
+       
       </Card>
       <View style={styles.paiement}>
         {paiement.map((item) => (

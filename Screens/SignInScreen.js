@@ -21,7 +21,7 @@ function SignIn({ navigation, onAddToken }) {
   const [emailError, setEmailError] = useState(null);
 
   const handleSubmitSignin = async () => {
-    console.log(IP_ADDRESS);
+    // console.log(IP_ADDRESS);
     const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,7 +39,7 @@ function SignIn({ navigation, onAddToken }) {
     } else {
       onAddToken(body.token);
       navigation.navigate('Profile');
-      console.log('True');
+      // console.log('True');
     }
 
     switch (body.error) {

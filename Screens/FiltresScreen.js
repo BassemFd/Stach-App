@@ -168,7 +168,7 @@ function Filtres(props) {
 
   //USE EFFECT ENTREE
   useEffect( () => {
-    console.log('RECHERCHE', props.search);
+    // console.log('RECHERCHE', props.search);
     setDate(props.search.date);
     setHour(props.search.hour);
     setCompleteDate(props.search.completeDate);

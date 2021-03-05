@@ -67,7 +67,7 @@ function List(props) {
   // ]  
 
   
-
+  // console.log("IPADDRESSS", `${IP_ADDRESS}/search`)
   useEffect(() => {
 
     // Fetch request from search to BDD
@@ -174,7 +174,7 @@ function List(props) {
             
             return (
 
-              <TouchableOpacity onPress={()=>navigation(element)}>
+              <TouchableOpacity key={i} onPress={()=>navigation(element)}>
                 <View key={i} style={styles.card} onPress={()=>navigation(element)}>
                   <View style={styles.text}>
                     <View style={styles.div1}>
