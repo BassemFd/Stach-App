@@ -15,9 +15,7 @@ import shopDetails from './reducers/OfferDetails.reducer';
 import search from './reducers/Search.reducer';
 import selectedService from './reducers/ModalSelectedService.reducer';
 import details from './reducers/ChosenAppointment.reducer';
-import hairdresser from './reducers/ChosenHairdresser.reducer';
-import prestation from './reducers/ChosenPrestation.reducer';
-import experience from './reducers/ChosenExperience.reducer';
+
 import shopsData from './reducers/shopsData.reducer';
 import token from './reducers/token.reducer';
 import communication from './reducers/Communication.reducer'
@@ -30,9 +28,6 @@ const store = createStore(
     search,
     selectedService,
     details,
-    hairdresser,
-    prestation,
-    experience,
     shopsData,
     token,
     communication

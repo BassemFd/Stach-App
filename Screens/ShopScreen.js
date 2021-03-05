@@ -229,6 +229,9 @@ function closeExperiences() {
     );
   }
 
+ 
+  
+
   //* mapping to showcase different utilities/extras/ using logos, accept animals, handi access etc...
   var pictoTab = [];
   for (let z = 0; z < hairdresser.shopFeatures.length; z++) {
@@ -258,15 +261,34 @@ function closeExperiences() {
     { pseudo: 'Raph', message: "J'adore ce salon" },
     { pseudo: 'Bassem', message: "J'adore ce salon" },
   ];
-
-  var listCommentItem = listComment.map((l, i) => {
+console.log(props.shopDetails.comments)
+  var listCommentItem = props.shopDetails.comments.map((l, i) => {
+     //* mapping on stars for comments: 
+  var starCommentTab = [];
+  for(let i = 0; i<5; i++){
+    var starCommentColor = 'black';
+    if(i<l.rating){
+      starCommentColor = 'gold';
+    }
+      starCommentTab.push(  
+      <FontAwesome style={{ marginRight: 5 }}
+        key={i}
+        name='star'
+        size={24}
+        color={starCommentColor}
+      />
+      );
+    }
     return (
-      <ListItem key={i} bottomDivider>
+   
+      <ListItem  key={i} bottomDivider>
         <ListItem.Content>
-          <ListItem.Title>{l.pseudo}</ListItem.Title>
-          <ListItem.Subtitle>{l.message}</ListItem.Subtitle>
+          <ListItem.Title>{starCommentTab} Moyenne: {l.rating}/5 </ListItem.Title>
+          
+          <ListItem.Subtitle>{l.comment}</ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
+   
     );
   });
 
