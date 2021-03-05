@@ -29,7 +29,6 @@ function SignIn({ navigation, onAddToken }) {
         password: signInPassword,
       }),
     });
-
     const body = await data.json();
 
     if (!body.result) {
