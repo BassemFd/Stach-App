@@ -66,6 +66,7 @@ function SignUp({ navigation, onAddToken }) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={globalStyles.container}
       >
+        <ScrollView>
         <Text style={globalStyles.brand}></Text>
         <View style={globalStyles.hr}></View>
         <View style={globalStyles.socialNetwork}>
@@ -88,7 +89,7 @@ function SignUp({ navigation, onAddToken }) {
             </Text>
           </View>
         </View>
-        <ScrollView>
+        
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
           </View>

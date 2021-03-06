@@ -61,13 +61,13 @@ function Shop(props) {
    
 useEffect(() => {
   
-  if(props.search.experience){
+  if(props.search.experience && experiences == null && quoi == null){
     setExperiences(props.search.experience)
   } else if(experiences == null){
   setExperiences("Choisir une Expérience")
 }
  
-}, [])
+}, [experiences])
  
 
 
@@ -109,7 +109,7 @@ useEffect(() => {
     setExperiencePrice(price);
     setExperiencesVisible(false);
     setQuoi(null);
-    props.search.offer = null;
+    
   }
 
   function closeExperiences() {
@@ -119,19 +119,19 @@ useEffect(() => {
 
   //* QUOI Prestation
   const [quoiVisible, setQuoiVisible] = useState(false);
-  const [quoi, setQuoi] = useState('Choix de la Prestation');
+  const [quoi, setQuoi] = useState(null);
   const [prestaPrice, setPrestaPrice] = useState();
 
    
   useEffect(() => {
   
-    if(props.search.offer){
+    if(props.search.offer && experiences == null && quoi == null){
       setQuoi(props.search.offer)
     } else if(quoi == null){
-    setQuoi("Choisir un Coiffeur****")
+    setQuoi('Choix de la Prestation')
   }
    
-  }, [])
+  }, [quoi])
 
 
   const prestationTab = props.shopDetails.offers.map((choix, i) => {
@@ -169,7 +169,7 @@ useEffect(() => {
     setPrestaPrice(price);
     setQuoiVisible(false);
     setExperiences(null);
-    props.search.experience = null;
+    
  
   }
 
@@ -257,7 +257,8 @@ useEffect(() => {
         date == null ? chosenVar : chosenVar,
         props.shopDetails.shopName,
         props.shopDetails.shopAddress,
-        props.shopDetails._id
+        props.shopDetails._id,
+        props.shopDetails.shopImages[0]
       );
 
       props.token === ''
@@ -526,7 +527,7 @@ useEffect(() => {
   var datePhrase = 'Choisir une Date';
 
   //**************************************** */
-  console.log(props.search);
+  
 
   var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
   return (
@@ -662,11 +663,9 @@ useEffect(() => {
                   onPress={() => setQuoiVisible(true)}
                   style={[styles.button, styles.buttonOpen, styles.buttonW]}
                 >
-                  {quoi && props.search.offer == null ? (
+                  
                     <Text style={styles.textStyle}>{quoi}</Text>
-                  ) : (
-                    <Text style={styles.textStyle}>{props.search.offer}</Text>
-                  )}
+                 
                 </Pressable>
               </View>
 
@@ -907,7 +906,8 @@ function mapDispatchToProps(dispatch) {
       date,
       shopDetailsName,
       shopDetailsAddress,
-      shopDetailsID
+      shopDetailsID,
+      shopDetailsImage
     ) {
       dispatch({
         type: 'finalAppointment',
@@ -921,6 +921,7 @@ function mapDispatchToProps(dispatch) {
         shopDetailsName: shopDetailsName,
         shopDetailsAddress: shopDetailsAddress,
         shopDetailsID: shopDetailsID,
+        shopDetailsImage: shopDetailsImage
       });
     },
   };
