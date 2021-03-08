@@ -21,8 +21,93 @@ import CarouselCardItem, {
   ITEM_WIDTH,
 } from '../shared/cardCarousel';
 import { connect } from 'react-redux';
+import {IP_ADDRESS} from '@env';
+
+
+
+
+
+
 
 function Shop(props) {
+  
+
+const [favorite, setFavorite] = useState(false);
+
+  //**Favorite Saloon Press ASYNC storage Local Storage********** */
+
+  useEffect( () => {
+    async function getResponse(){
+      if(props.token){
+          let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
+            let body = await shopsFetch.json();
+            console.log("BODY", body.favoriteShops)
+            for(let i = 0; i < body.favoriteShops.length; i++){
+              if(body.favoriteShops[i]._id === props.shopDetails._id){
+                setFavorite(true)
+              }
+            }
+      }
+    }
+    getResponse()
+      return () => {
+        console.log("This will be logged on unmount");
+      }
+    
+    }, [favorite])
+
+
+
+
+
+  var handleFavorite = async () => {
+   
+    console.log("TOKEN",props.token)
+
+   if(props.token){
+    
+     if(favorite === false){
+   
+    props.favoriteShops(props.shopDetails._id);
+    
+   const FavoritePost =  await fetch(`${IP_ADDRESS}/favorites`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `token=${props.token}&id=${props.shopDetails._id}`
+        }); 
+ 
+
+    setFavorite(true)
+
+      } else {
+        
+      const FavoriteDelete =   await fetch(`${IP_ADDRESS}/deleteFavorites`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/x-www-form-urlencoded'},
+          body: `token=${props.token}&id=${props.shopDetails._id}`
+          }); 
+          setFavorite(false)
+       
+
+      }
+       
+
+   } else {
+
+    const NotConnectedAlert = () =>
+    Alert.alert(
+      'Connection Requise',
+      'Connectez-vous ou Créez un compte pour rajouter des favoris',
+
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      { cancelable: false }
+    );
+  NotConnectedAlert();
+   }
+  
+    
+  };
+
   //* Coiffeur
 
   const [coiffeurVisible, setCoiffeurVisible] = useState(false);
@@ -43,6 +128,8 @@ function Shop(props) {
       </View>
     );
   });
+
+
   function ChosenCoiffeur(element) {
     setCoiffeurs(element);
     setCoiffeurVisible(false);
@@ -59,7 +146,7 @@ function Shop(props) {
   const [experiencePrice, setExperiencePrice] = useState();
 
    
-useEffect(() => {
+  useEffect(() => {
   
   if(props.search.experience && experiences == null && quoi == null){
     setExperiences(props.search.experience);
@@ -71,10 +158,10 @@ useEffect(() => {
     }
   } else if(experiences == null){
   setExperiences("Choisir une Expérience")
-}
- 
-}, [experiences])
- 
+  }
+  
+  }, [experiences])
+  
 
 
 
@@ -202,15 +289,11 @@ useEffect(() => {
   const [index, setIndex] = useState(0);
 
   const [chosenHour, setChosenHour] = useState();
-  const [favorite, setFavorite] = useState(false);
+  
 
   const scrollRef = useRef(null);
 
-  var handleFavorite = () => {
-    // props.shopDetails._id
-    
-    setFavorite(!favorite);
-  };
+  
   var color;
   if (favorite === true) {
     color = '#e74c3c';
@@ -541,7 +624,6 @@ useEffect(() => {
   };
   var datePhrase = 'Choisir une Date';
 
-  //**************************************** */
   
 
   var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
@@ -939,6 +1021,14 @@ function mapDispatchToProps(dispatch) {
         shopDetailsImage: shopDetailsImage
       });
     },
+
+    favoriteShops: function(shopID){
+      dispatch({
+        type: 'favoriteShop',
+        shopID: shopID
+      })
+      
+    }
   };
 }
 
