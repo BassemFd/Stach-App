@@ -37,7 +37,7 @@ function SignIn({ navigation, onAddToken }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      navigation.navigate('Profile');
+      navigation.navigate('Appointment');
       // console.log('True');
     }
 
