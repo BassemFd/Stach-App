@@ -5,7 +5,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Button, Pressable
+  Button,
+  Pressable,
+  Alert,
 } from 'react-native';
 import { globalStyles } from '../styles/Global';
 import { Card, ListItem, Overlay } from 'react-native-elements';
@@ -13,9 +15,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MapView, { Marker } from 'react-native-maps';
 import PrimaryButton from '../shared/Button';
-
-
-
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, {
   SLIDER_WIDTH,
@@ -24,93 +23,162 @@ import CarouselCardItem, {
 import { connect } from 'react-redux';
 
 function Shop(props) {
-  
   //* Coiffeur
 
   const [coiffeurVisible, setCoiffeurVisible] = useState(false);
-  const [coiffeurs, setCoiffeurs] = useState ('Choix du Coiffeur');
+  const [coiffeurs, setCoiffeurs] = useState('Choix du Coiffeur');
 
-  const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i)=> {
-    return (<View style={{ flexDirection: 'row'}}>
-    <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} 
-  onPress={()=> {
-    ChosenCoiffeur(choix)
-    }}>
-  <Text style={styles.textStyle}>{choix}</Text>
-</Pressable>
-</View>)
-  })
+  const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i) => {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <Pressable
+          key={i}
+          style={[styles.button, styles.buttonOpen, styles.buttonZ]}
+          onPress={() => {
+            ChosenCoiffeur(choix);
+          }}
+        >
+          <Text style={styles.textStyle}>{choix}</Text>
+        </Pressable>
+      </View>
+    );
+  });
   function ChosenCoiffeur(element) {
     setCoiffeurs(element);
     setCoiffeurVisible(false);
   }
-  
+
   function closeCoiffeurs() {
-    setCoiffeurs("Choix du Coiffeur");
+    setCoiffeurs('Choix du Coiffeur');
     setCoiffeurVisible(false);
   }
 
-
   //* Experiences
   const [experiencesVisible, setExperiencesVisible] = useState(false);
-  const [experiences, setExperiences] = useState("Choix de l'Expérience");
+  const [experiences, setExperiences] = useState(null);
   const [experiencePrice, setExperiencePrice] = useState();
 
-  const experienceTab = props.shopDetails.packages.map((choix, i)=>{
-    return (<View style={{ flexDirection: 'row'}}>
-      <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]} 
-    onPress={()=> {
-      ChosenExperiences(choix.type, choix.price)
-      }}>
-    <Text style={styles.textStyle}>{choix.type}</Text>
-</Pressable>
-<Pressable key={i} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>{choix.price}€</Text></Pressable></View>)
-})
-
-function ChosenExperiences(element, price) {
-  setExperiences(element);
-  setExperiencePrice(price)
-  setExperiencesVisible(false);
-  setQuoi("Choix de la Prestation");
-}
-
-function closeExperiences() {
-  setExperiencesVisible(false);
-  setExperiences("Choix de l'Expérience");
-}
+   
+useEffect(() => {
   
-//* QUOI Prestation
-   const [quoiVisible, setQuoiVisible] = useState(false);
-  const [quoi, setQuoi] = useState("Choix de la Prestation");
-  const [prestaPrice, setPrestaPrice] = useState()
+  if(props.search.experience && experiences == null && quoi == null){
+    setExperiences(props.search.experience)
+  } else if(experiences == null){
+  setExperiences("Choisir une Expérience")
+}
+ 
+}, [experiences])
+ 
 
-   const prestationTab = props.shopDetails.offers.map((choix, i)=>{
-  
+
+
+  const experienceTab = props.shopDetails.packages.map((choix, i) => {
     return (
-    <View style={{ flexDirection: 'row'}}>
-    <Pressable key={i} style={[styles.button, styles.buttonOpen, styles.buttonZ]}
-     onPress={() => ChosenQuoi(choix.type, choix.price)}>
-      <Text style={styles.textStyle}>{choix.type}</Text>
-    </Pressable>
-    <Pressable key={i} style={{padding: 10, marginBottom: 10, marginLeft:10, backgroundColor: '#58a2d6', borderRadius: 20, width: 70, alignItems: 'center'}}><Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>{choix.price}€</Text></Pressable>
-    </View>)
-})
+      <View style={{ flexDirection: 'row' }}>
+        <Pressable
+          key={i}
+          style={[styles.button, styles.buttonOpen, styles.buttonZ]}
+          onPress={() => {
+            ChosenExperiences(choix.type, choix.price);
+          }}
+        >
+          <Text style={styles.textStyle}>{choix.type}</Text>
+        </Pressable>
+        <Pressable
+          key={i}
+          style={{
+            padding: 10,
+            marginBottom: 10,
+            marginLeft: 10,
+            backgroundColor: '#58a2d6',
+            borderRadius: 20,
+            width: 70,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>
+            {choix.price}€
+          </Text>
+        </Pressable>
+      </View>
+    );
+  });
 
+  function ChosenExperiences(element, price) {
+    setExperiences(element);
+    setExperiencePrice(price);
+    setExperiencesVisible(false);
+    setQuoi(null);
+    
+  }
+
+  function closeExperiences() {
+    setExperiencesVisible(false);
+    setExperiences(null);
+  }
+
+  //* QUOI Prestation
+  const [quoiVisible, setQuoiVisible] = useState(false);
+  const [quoi, setQuoi] = useState(null);
+  const [prestaPrice, setPrestaPrice] = useState();
+
+   
+  useEffect(() => {
   
+    if(props.search.offer && experiences == null && quoi == null){
+      setQuoi(props.search.offer)
+    } else if(quoi == null){
+    setQuoi('Choix de la Prestation')
+  }
+   
+  }, [quoi])
+
+
+  const prestationTab = props.shopDetails.offers.map((choix, i) => {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <Pressable
+          key={i}
+          style={[styles.button, styles.buttonOpen, styles.buttonZ]}
+          onPress={() => ChosenQuoi(choix.type, choix.price)}
+        >
+          <Text style={styles.textStyle}>{choix.type}</Text>
+        </Pressable>
+        <Pressable
+          key={i}
+          style={{
+            padding: 10,
+            marginBottom: 10,
+            marginLeft: 10,
+            backgroundColor: '#58a2d6',
+            borderRadius: 20,
+            width: 70,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>
+            {choix.price}€
+          </Text>
+        </Pressable>
+      </View>
+    );
+  });
+
   function ChosenQuoi(element, price) {
-    setQuoi(element)
-    setPrestaPrice(price)
-    setQuoiVisible(false)
-    setExperiences("Choix de l'Expérience")
+    setQuoi(element);
+    setPrestaPrice(price);
+    setQuoiVisible(false);
+    setExperiences(null);
+    
+ 
   }
 
   function closeQuoi() {
     setQuoiVisible(false);
-    setQuoi("Choix de la Prestation");
+    setQuoi(null);
   }
 
-//*QUOI END
-
+  //*QUOI END
 
   const [chosenVar, setChosenVar] = useState(props.chosenDate);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -119,7 +187,7 @@ function closeExperiences() {
 
   const isCarousel = useRef(null);
   const [index, setIndex] = useState(0);
-  
+
   const [chosenHour, setChosenHour] = useState();
   const [favorite, setFavorite] = useState(false);
 
@@ -136,7 +204,6 @@ function closeExperiences() {
   } else {
     color = 'black';
   }
-
 
   //* Handling data for Carousel, using reducer
   var data = [];
@@ -161,36 +228,46 @@ function closeExperiences() {
   }
 
   //* handling validation button,
+  
 
   function handleChoixDuSalon() {
     let convertedHour = convertMinsToTime(chosenHour);
-
-    if (
-      quoi === "Choix de la Prestation" && experiences === "Choix de l'Expérience"
-      ||
+  
+    if ((quoi === 'Choix de la Prestation' && experiences === "Choix de l'Expérience") 
+          ||
       chosenHour === undefined 
-    ) {
-      console.log('Choisir une prestation BIS');
+          ) {
+            console.log('Choisir une prestation BIS');
+            const createTwoButtonAlert = () =>
+              Alert.alert(
+                'Choix Obligatoire',
+                'Choix Prestation ou Experience Obligatoire. Choix Date et Heure Obligatoire.',
 
+                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                { cancelable: false }
+              );
+            createTwoButtonAlert();
     } else {
+    
+      props.chosenAppointment(
+        convertedHour,
+        coiffeurs,
+        quoi,
+        prestaPrice,
+        experiences,
+        experiencePrice,
+        date == null ? chosenVar : chosenVar,
+        props.shopDetails.shopName,
+        props.shopDetails.shopAddress,
+        props.shopDetails._id,
+        props.shopDetails.shopImages[0]
+      );
 
-    props.chosenAppointment(
-      convertedHour,
-      coiffeurs,
-      quoi,
-      prestaPrice,
-      experiences,
-      experiencePrice,
-      date == null ? chosenVar : chosenVar,
-      props.shopDetails.shopName,
-      props.shopDetails.shopAddress,
-      props.shopDetails._id
-    );
-
-    props.token === ''
-      ? props.navigation.navigate('ButtonTabSign')
-      : props.navigation.navigate('Appointment');
-  } }
+      props.token === ''
+        ? props.navigation.navigate('ButtonTabSign')
+        : props.navigation.navigate('Appointment');
+    }
+  }
 
   // * mapping on euro logo to showcase price range of saloon
   var priceTab = [];
@@ -229,7 +306,6 @@ function closeExperiences() {
     );
   }
 
- 
   //* mapping to showcase different utilities/extras/ using logos, accept animals, handi access etc...
   var pictoTab = [];
   for (let z = 0; z < hairdresser.shopFeatures.length; z++) {
@@ -244,7 +320,6 @@ function closeExperiences() {
     );
   }
 
- 
   const handleAvis = () => {
     scrollRef.current?.scrollTo({
       y: 1200,
@@ -253,32 +328,33 @@ function closeExperiences() {
   };
 
   var listCommentItem = props.shopDetails.comments.map((l, i) => {
-     //* mapping on stars for comments: 
-  var starCommentTab = [];
-  for(let i = 0; i<5; i++){
-    var starCommentColor = 'black';
-    if(i<l.rating){
-      starCommentColor = 'gold';
-    }
-      starCommentTab.push(  
-      <FontAwesome style={{ marginRight: 5 }}
-        key={i}
-        name='star'
-        size={24}
-        color={starCommentColor}
-      />
+    //* mapping on stars for comments:
+    var starCommentTab = [];
+    for (let i = 0; i < 5; i++) {
+      var starCommentColor = 'black';
+      if (i < l.rating) {
+        starCommentColor = 'gold';
+      }
+      starCommentTab.push(
+        <FontAwesome
+          style={{ marginRight: 5 }}
+          key={i}
+          name='star'
+          size={24}
+          color={starCommentColor}
+        />
       );
     }
     return (
-   
-      <ListItem  key={i} bottomDivider>
+      <ListItem key={i} bottomDivider>
         <ListItem.Content>
-          <ListItem.Title>{starCommentTab} Moyenne: {l.rating}/5 </ListItem.Title>
-          
+          <ListItem.Title>
+            {starCommentTab} Moyenne: {l.rating}/5{' '}
+          </ListItem.Title>
+
           <ListItem.Subtitle>{l.comment}</ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
-   
     );
   });
 
@@ -289,7 +365,6 @@ function closeExperiences() {
     return `${hours}:${minutes}`;
   };
 
-  
   let hoursTab;
   let hoursArr = [];
   let appointmentTime = [];
@@ -338,12 +413,10 @@ function closeExperiences() {
       '-' +
       choice.getFullYear();
     setChosenVar(dateToSetter);
-     hideDatePicker();
+    hideDatePicker();
   };
 
-
   if (chosenVar) {
-  
     let dateGoodFormat =
       chosenVar.split('-')[2] +
       '-' +
@@ -455,10 +528,10 @@ function closeExperiences() {
   };
   var datePhrase = 'Choisir une Date';
 
- 
   //**************************************** */
+  
 
-
+  var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
   return (
     <View style={styles.card}>
       <Text style={[globalStyles.brand, { marginTop: -30 }]}></Text>
@@ -536,7 +609,7 @@ function closeExperiences() {
                 <View style={styles.icons2}>
                   {starTab}
 
-                  <Text>({hairdresser.starRating})</Text>
+                  <Text>({roundedRating})</Text>
                 </View>
                 <View style={[styles.avis, { marginTop: 10 }]}>
                   <TouchableOpacity
@@ -573,26 +646,41 @@ function closeExperiences() {
             <Card.Divider></Card.Divider>
 
             <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View style={styles.centeredView}>
+                <Pressable
+                  onPress={() => setCoiffeurVisible(true)}
+                  style={[
+                    styles.button,
+                    styles.buttonOpen,
+                    styles.buttonW,
+                    { width: 100 },
+                  ]}
+                >
+                  <Text style={styles.textStyle}>{coiffeurs}</Text>
+                </Pressable>
+              </View>
 
               <View style={styles.centeredView}>
-              <Pressable onPress={() => setCoiffeurVisible(true)} style={[styles.button, styles.buttonOpen, styles.buttonW, {width : 100}]}>
-                <Text style={styles.textStyle}>{coiffeurs}</Text>
-              </Pressable>
+                <Pressable
+                  onPress={() => setQuoiVisible(true)}
+                  style={[styles.button, styles.buttonOpen, styles.buttonW]}
+                >
+                  
+                    <Text style={styles.textStyle}>{quoi}</Text>
+                 
+                </Pressable>
               </View>
-             
-            <View style={styles.centeredView}>
-              <Pressable onPress={() => setQuoiVisible(true)} style={[styles.button, styles.buttonOpen, styles.buttonW]}>
-                <Text style={styles.textStyle}>{quoi}</Text>
-              </Pressable>
-            </View>
 
-             
-            <View style={styles.centeredView}>
-              <Pressable onPress={() => setExperiencesVisible(true)} style={[styles.button, styles.buttonOpen, styles.buttonW]}>
-                <Text style={styles.textStyle}>{experiences}</Text>
-              </Pressable>
-            </View>
-                      
+              <View style={styles.centeredView}>
+                <Pressable
+                  onPress={() => setExperiencesVisible(true)}
+                  style={[styles.button, styles.buttonOpen, styles.buttonW]}
+                >
+                 
+                    <Text style={styles.textStyle}>{experiences}</Text>
+                  
+                </Pressable>
+              </View>
             </View>
           </Card>
 
@@ -667,14 +755,13 @@ function closeExperiences() {
             margin: 30,
           }}
         >
-         
           <PrimaryButton
             title='retour'
             backgroundColor='#AB4242'
             color='white'
             onPress={() => handleReturnButton()}
           />
-           <PrimaryButton
+          <PrimaryButton
             title='Valider'
             backgroundColor='#4280AB'
             color='white'
@@ -697,34 +784,36 @@ function closeExperiences() {
         {listCommentItem}
       </ScrollView>
 
-
       <Overlay isVisible={quoiVisible}>
-            {prestationTab}
-            <Pressable    style={[styles.button, styles.buttonClose, styles.buttonW]}
-              onPress={() => closeQuoi()}>
-            <Text style={styles.textStyle}>Aucune</Text>
-            </Pressable>
-        </Overlay>
-    
+        {prestationTab}
+        <Pressable
+          style={[styles.button, styles.buttonClose, styles.buttonW]}
+          onPress={() => closeQuoi()}
+        >
+          <Text style={styles.textStyle}>Aucune</Text>
+        </Pressable>
+      </Overlay>
 
       <Overlay isVisible={experiencesVisible}>
-            {experienceTab}
-            <Pressable    style={[styles.button, styles.buttonClose, styles.buttonW]}
-            onPress={()=>closeExperiences()}>
-              <Text style={styles.textStyle}>Aucune</Text>
-            </Pressable>
+        {experienceTab}
+        <Pressable
+          style={[styles.button, styles.buttonClose, styles.buttonW]}
+          onPress={() => closeExperiences()}
+        >
+          <Text style={styles.textStyle}>Aucune</Text>
+        </Pressable>
       </Overlay>
-
 
       <Overlay isVisible={coiffeurVisible}>
-            {coiffeurTab}
-            <Pressable    style={[styles.button, styles.buttonClose, styles.buttonW]}
-            onPress={()=> closeCoiffeurs()}>
-              <Text style={styles.textStyle}>Aucun</Text>
-            </Pressable>
+        {coiffeurTab}
+        <Pressable
+          style={[styles.button, styles.buttonClose, styles.buttonW]}
+          onPress={() => closeCoiffeurs()}
+        >
+          <Text style={styles.textStyle}>Aucun</Text>
+        </Pressable>
       </Overlay>
-
-</View>
+    </View>
   );
 }
 
@@ -776,35 +865,35 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: "#4280AB",
+    backgroundColor: '#4280AB',
   },
   buttonClose: {
-    backgroundColor: "#AB4242",
+    backgroundColor: '#AB4242',
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
   button: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    margin: 4
+    margin: 4,
   },
   buttonZ: {
     width: 200,
-    marginBottom: 10    
-}
+    marginBottom: 10,
+  },
 });
 
 function mapDispatchToProps(dispatch) {
@@ -819,7 +908,8 @@ function mapDispatchToProps(dispatch) {
       date,
       shopDetailsName,
       shopDetailsAddress,
-      shopDetailsID
+      shopDetailsID,
+      shopDetailsImage
     ) {
       dispatch({
         type: 'finalAppointment',
@@ -833,6 +923,7 @@ function mapDispatchToProps(dispatch) {
         shopDetailsName: shopDetailsName,
         shopDetailsAddress: shopDetailsAddress,
         shopDetailsID: shopDetailsID,
+        shopDetailsImage: shopDetailsImage
       });
     },
   };
@@ -842,6 +933,7 @@ function mapStateToProps(state) {
   return {
     shopDetails: state.shopDetails,
     chosenDate: state.search.date,
+    search: state.search,
     token: state.token,
   };
 }

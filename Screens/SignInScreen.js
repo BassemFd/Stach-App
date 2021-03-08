@@ -69,7 +69,9 @@ function SignIn({ navigation, onAddToken }) {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+       
       <View style={globalStyles.container}>
+      <ScrollView>
         <Text style={globalStyles.brand}></Text>
         <View style={globalStyles.hr}></View>
         <View style={globalStyles.socialNetwork}>
@@ -92,7 +94,7 @@ function SignIn({ navigation, onAddToken }) {
             </Text>
           </View>
         </View>
-        <ScrollView>
+      
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
           </View>
