@@ -126,6 +126,8 @@ function closeExperiences() {
   const scrollRef = useRef(null);
 
   var handleFavorite = () => {
+    // props.shopDetails._id
+    
     setFavorite(!favorite);
   };
   var color;
