@@ -178,7 +178,8 @@ function HomeScreen(props) {
     // Validation button -> sending info to reducer
 
     function validationButton(){
-      
+      setDataOverlay({});
+
       if (ref.current.getAddressText() != "" && ref.current.getAddressText() != address) {
         setErrorMessage("Veuillez resaisir votre addresse")
       } else {
@@ -202,7 +203,9 @@ function HomeScreen(props) {
       isTimeSelected ? timeToReducer = "" + zeroHour + (date.getHours()-1) +":"+ zeroMinute + date.getMinutes() : null;
 
       let serviceToReducer = null;
-      props.selectedService != "TOUTES LES PRESTATIONS" ? serviceToReducer = props.selectedService : null;
+      if (props.selectedService != "TOUTES LES PRESTATIONS"){
+        serviceToReducer = props.selectedService 
+      }
 
       let experienceToReducer = null;
       if (dataOverlay.title != undefined) {
@@ -395,7 +398,7 @@ function HomeScreen(props) {
     (<Card key={i} containerStyle={{ padding : 0, width : "20%", marginBottom:20, backgroundColor : "#4280AB", borderRadius:20, borderColor:"transparent"}} >
       <Card.Image style={{width : "100%", borderTopLeftRadius:20, borderTopRightRadius:20}} source={experience.image_url} onPress={() => toggleOverlay(experience)}/>
       <Card.Divider/>
-      <Text style={{marginBottom: 10, textAlign:"center", color:'white', fontWeight:'bold'}}>{experience.title}</Text>
+      <Text onPress={() => toggleOverlay(experience)} style={{marginBottom: 10, textAlign:"center", color:'white', fontWeight:'bold'}}>{experience.title}</Text>
     </Card>)
 )} 
       <Overlay isVisible={isOverlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{padding:0, margin:0, height:"60%", borderRadius:25, borderColor:"transparent"}} backdropStyle={{backgroundColor:'transparent', borderColor:"transparent"}}>
