@@ -29,16 +29,18 @@ function Details(props) {
 
     
   useEffect(() => {
-  
+    if (props.communication.user.gender) {
       setGenderText(props.communication.user.gender);
-    
+    } else {
+      setGenderText('Choisir')
+    }
     setGenderChosen(props.communication.user.gender);
-    setGenderText(props.communication.user.gender);
     setLength(props.communication.user.hairLength);
-    setType(props.communication.user.hairType)
+    setType(props.communication.user.hairType);
   }, []);
 
-  
+
+
   //GENDER
   var genderTab = gender.map((element, i) => {
     return(
@@ -218,17 +220,64 @@ function Details(props) {
     } 
   }
 
+  
+
   var validation = async () => {
-    await fetch(`${IP_ADDRESS}/users/myDetails`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `token=${props.token}&gender=${genderChosen}&hairType=${type}&hairLength=${length}`
-    });
-    setValidationVisible(true);
-    setTimeout(() => {
-      setValidationVisible(false);
-      props.navigation.navigate('Profile')
-    }, 3000);
+    var newCommunication = props.communication;
+    if (genderChosen) {
+      newCommunication.user.gender = genderChosen;
+      newCommunication.user.hairLength = length;
+      newCommunication.user.hairType = type; 
+      props.saveCommunication(newCommunication);
+      if (type && length) {
+          await fetch(`${IP_ADDRESS}/users/myDetails`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `token=${props.token}&gender=${genderChosen}&hairType=${type}&hairLength=${length}`
+          });
+          setValidationVisible(true);
+          setTimeout(() => {
+            setValidationVisible(false);
+            props.navigation.navigate('Profile')
+          }, 3000);
+        
+      } else if (type) {
+          await fetch(`${IP_ADDRESS}/users/myDetails`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `token=${props.token}&gender=${genderChosen}&hairType=${type}`
+          });
+          setValidationVisible(true);
+          setTimeout(() => {
+          setValidationVisible(false);
+          props.navigation.navigate('Profile')
+          }, 3000);
+      } else if (length) {
+        await fetch(`${IP_ADDRESS}/users/myDetails`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `token=${props.token}&gender=${genderChosen}&hairLength=${length}`
+          });
+          setValidationVisible(true);
+          setTimeout(() => {
+          setValidationVisible(false);
+          props.navigation.navigate('Profile')
+          }, 3000);
+      } else {
+        await fetch(`${IP_ADDRESS}/users/myDetails`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `token=${props.token}&gender=${genderChosen}`
+          });
+          setValidationVisible(true);
+          setTimeout(() => {
+          setValidationVisible(false);
+          props.navigation.navigate('Profile')
+          }, 3000);
+      }
+    } else {
+      setErrorText('Veuillez indiquer votre sexe')
+    }
   }
 
   return (
@@ -241,7 +290,7 @@ function Details(props) {
 
       <View style={{display: 'flex', alignItems: 'center', marginTop: 30}}>
         <Text style={styles.titleText}>J'ai les cheveux:</Text>
-        { length != null ? 
+        {length != null ? 
         imageLength
         : <Button title='Choisir' onPress={() => openLength()} color='white' backgroundColor='#4280AB'/>
         }
@@ -256,6 +305,9 @@ function Details(props) {
       </View>
       <View style={{margin: 20}}>
         <Button title='Envoyer à mon coiffeur' backgroundColor='#AB4242' color='white' onPress={() => validation()}></Button>
+      </View>
+      <View style={{margin: 20}}>
+        <Button title='Retour' backgroundColor='#AB4242' color='white' onPress={() => props.navigation.navigate('Profile')}></Button>
       </View>
       
 
@@ -347,7 +399,7 @@ function Details(props) {
         </Overlay>
 
         <Overlay isVisible={validationVisible}>
-          <Text style={{textAlign: 'center', fontFamily: 'nunito-bold', fontSize: 18}}> Féliciations! Vos informations ont été envoyées à votre coiffeur !</Text>
+          <Text style={{textAlign: 'center', fontFamily: 'nunito-bold', fontSize: 18}}> Félicitations! Vos informations ont été envoyées à votre coiffeur !</Text>
         </Overlay>
 
     </View>
@@ -388,4 +440,15 @@ const mapStateToProps = (state) => {
   return { token: state.token, communication: state.communication };
 };
 
-export default connect(mapStateToProps, null)(Details);
+function mapDispatchToProps(dispatch) {
+  return {
+    saveCommunication: function(communication) {
+      dispatch({
+        type: 'saveCommunication',
+        communication: communication,
+      })
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details);
