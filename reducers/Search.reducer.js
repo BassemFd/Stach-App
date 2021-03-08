@@ -4,6 +4,7 @@ export default function(search = {}, action) {
         
         return newSearch;
     } else {
+        
         return search;
     }
 }
