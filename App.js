@@ -17,7 +17,7 @@ import selectedService from './reducers/ModalSelectedService.reducer';
 import details from './reducers/ChosenAppointment.reducer';
 import shopsData from './reducers/shopsData.reducer';
 import token from './reducers/token.reducer';
-import communication from './reducers/Communication.reducer'
+import communication from './reducers/Communication.reducer';
 
 import DrawerNavigator from './routes/DrawerNavigator';
 
@@ -29,7 +29,7 @@ const store = createStore(
     details,
     shopsData,
     token,
-    communication
+    communication,
   })
 );
 
@@ -45,6 +45,10 @@ export default function App() {
   if (!fonstLoaded) {
     return <AppLoading />;
   } else {
-    return <Provider store={store}><DrawerNavigator /></Provider>;
+    return (
+      <Provider store={store}>
+        <DrawerNavigator />
+      </Provider>
+    );
   }
 }
