@@ -33,6 +33,7 @@ const store = createStore(
   })
 );
 
+
 export default function App() {
   let [fonstLoaded] = useFonts({
     'nunito-regular': require('./assets/fonts/NunitoSans-Regular.ttf'),

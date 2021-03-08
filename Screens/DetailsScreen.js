@@ -340,7 +340,7 @@ function Details(props) {
         </Overlay>
 
         <Overlay isVisible={validationVisible}>
-          <Text style={{textAlign: 'center', fontFamily: 'nunito-bold', fontSize: 18}}> Féliciations! Vos informations ont été envoyés à votre coiffeur !</Text>
+          <Text style={{textAlign: 'center', fontFamily: 'nunito-bold', fontSize: 18}}> Féliciations! Vos informations ont été envoyées à votre coiffeur !</Text>
         </Overlay>
 
     </View>

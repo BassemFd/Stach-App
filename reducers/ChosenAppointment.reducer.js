@@ -11,7 +11,8 @@ export default function(details = {}, action){
             date: action.date,
             shopDetailsName: action.shopDetailsName,
             shopDetailsAddress: action.shopDetailsAddress,
-            shopDetailsID: action.shopDetailsID
+            shopDetailsID: action.shopDetailsID,
+            shopDetailsImage: action.shopDetailsImage
         }
         // console.log("HOUR", finalAppointment.shopDetails)
         return finalAppointment

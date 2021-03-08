@@ -115,24 +115,27 @@ function Appointment(props) {
       <View style={globalStyles.hr}></View>
       <Card>
         <View style={styles.cardHeader}>
-          <FontAwesome
-            style={styles.icon}
-            name='institution'
-            size={45}
-            color='#333'
-          />
+          <Image
+            style={styles.tinyLogo}
+            source={{ uri: props.appointment.shopDetailsImage }}
+          ></Image>
+
+          {/* source={{uri: element.shopImages[0]}} */}
+
           <View>
             <Text style={styles.appointmentShop}>
               {props.appointment.shopDetailsName}
             </Text>
-            <Text>{props.appointment.shopDetailsAddress}</Text>
+            <Text style={{ marginLeft: 10, width: 200 }}>
+              {props.appointment.shopDetailsAddress}
+            </Text>
             {/* <Text>92110 Clichy</Text> */}
           </View>
         </View>
         {props.appointment.hairdresser !== 'Choix du Coiffeur' ? (
           <Text>Professionnel : {props.appointment.hairdresser}</Text>
         ) : (
-          <Text>Professionnel : Vous n'avez pas de préférence de Coiffeur</Text>
+          <Text>Professionnel : Aucun Coiffeur Choisi</Text>
         )}
         <Text>
           Date et heure : {props.appointment.date} - {props.appointment.hour}
@@ -198,14 +201,16 @@ const styles = StyleSheet.create({
   appointmentShop: {
     fontSize: 18,
     fontFamily: 'nunito-bold',
+    marginLeft: 10,
   },
   appoinTService: {
     marginVertical: 12,
   },
   appointPrice: {
-    textAlign: 'center',
+    textAlign: 'right',
     fontFamily: 'nunito-bold',
     fontSize: 20,
+    margin: 10,
   },
   radioItem: {
     paddingVertical: 18,
@@ -254,6 +259,10 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  tinyLogo: {
+    width: 100,
+    height: 100,
   },
 });
 
