@@ -10,7 +10,7 @@ import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
   useEffect(() => {
-    if (props.appointment.experience === "Choix de l'Expérience") {
+    if (props.appointment.experience === 'Choisir une Expérience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
     } else {
@@ -18,6 +18,8 @@ function Appointment(props) {
       setServicePrice(props.appointment.experiencePrice);
     }
   }, []);
+
+  console.log(props.appointment.prestationPrice, 'Press price');
 
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
@@ -51,9 +53,23 @@ function Appointment(props) {
     prefixHour = hour;
   }
 
-  let startDateAppoint = new Date(+year, +month - 1, +day, +hour, +min, +sec);
-  let endDateAppoint = new Date(+year, +month, +day, +hour, +min + 30, +sec);
-  console.log(props.appointment.shopDetailsID, '1');
+  let startDateAppoint = new Date(
+    +year,
+    +month - 1,
+    +day,
+    +hour + 1,
+    +min,
+    +sec
+  );
+  let endDateAppoint = new Date(
+    +year,
+    +month - 1,
+    +day,
+    +hour + 1,
+    +min + 30,
+    +sec
+  );
+  // console.log(props.appointment.shopDetailsID, '1');
 
   const handleConfirm = async () => {
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
@@ -71,12 +87,16 @@ function Appointment(props) {
       }),
     });
     setModalVisible(true);
-    props.navigation.navigate('Profile');
   };
 
   console.log(serviceChoice, 'Service');
   console.log(servicePrice, 'price');
   console.log(props.appointment.shopDetailsID, 'ID S');
+
+  const handleHideModal = () => {
+    setModalVisible(!modalVisible);
+    props.navigation.navigate('Profile');
+  };
 
   // <Image
   //   style={styles.icon}
