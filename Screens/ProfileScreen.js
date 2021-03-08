@@ -26,17 +26,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   const [shopId, setShopId] = useState('');
   const [appointmentId, setAppointmentId] = useState('');
 
-  // const [comments, setComments] = useState([
-  //   {
-  //     id: 1,
-  //     comment: 'Zelda, Breach of Fresh Air',
-  //     rating: 5,
-  //     date: '04/03/2021-21:32pm',
-  //   },
-  // ]);
-
-  // This token will come from the Reducer
-  // let token = '3OwxOaPpQyh3lM6FrrVWJdGlUfXKUIUa';
+  // ADRESSE INVERSÉES SUR LES RDV À RÉGLER
 
   useEffect(() => {
     setLoading(true);
@@ -109,10 +99,14 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   };
 
   const openCommunication = (shopSelected) => {
-    var communication = {shopMail: shopSelected.shopMail, shopName: shopSelected.shopName, user: user};
+    var communication = {
+      shopMail: shopSelected.shopMail,
+      shopName: shopSelected.shopName,
+      user: user,
+    };
     saveCommunication(communication);
-    navigation.navigate('Details')
-  }
+    navigation.navigate('Details');
+  };
 
   let points = 562;
   let msgInfo = false;
@@ -351,12 +345,12 @@ function mapDispatchToProps(dispatch) {
         shopDetails: shopDetails,
       });
     },
-    saveCommunication: function(communication) {
+    saveCommunication: function (communication) {
       dispatch({
         type: 'saveCommunication',
         communication: communication,
-      })
-    }
+      });
+    },
   };
 }
 
