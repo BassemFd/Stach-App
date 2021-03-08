@@ -55,8 +55,22 @@ function Shop(props) {
 
   //* Experiences
   const [experiencesVisible, setExperiencesVisible] = useState(false);
-  const [experiences, setExperiences] = useState("Choix de l'Expérience");
+  const [experiences, setExperiences] = useState(null);
   const [experiencePrice, setExperiencePrice] = useState();
+
+   
+useEffect(() => {
+  
+  if(props.search.experience && experiences == null && quoi == null){
+    setExperiences(props.search.experience)
+  } else if(experiences == null){
+  setExperiences("Choisir une Expérience")
+}
+ 
+}, [experiences])
+ 
+
+
 
   const experienceTab = props.shopDetails.packages.map((choix, i) => {
     return (
@@ -94,19 +108,31 @@ function Shop(props) {
     setExperiences(element);
     setExperiencePrice(price);
     setExperiencesVisible(false);
-    setQuoi('Choix de la Prestation');
-    props.search.offer = undefined;
+    setQuoi(null);
+    
   }
 
   function closeExperiences() {
     setExperiencesVisible(false);
-    setExperiences("Choix de l'Expérience");
+    setExperiences(null);
   }
 
   //* QUOI Prestation
   const [quoiVisible, setQuoiVisible] = useState(false);
-  const [quoi, setQuoi] = useState('Choix de la Prestation');
+  const [quoi, setQuoi] = useState(null);
   const [prestaPrice, setPrestaPrice] = useState();
+
+   
+  useEffect(() => {
+  
+    if(props.search.offer && experiences == null && quoi == null){
+      setQuoi(props.search.offer)
+    } else if(quoi == null){
+    setQuoi('Choix de la Prestation')
+  }
+   
+  }, [quoi])
+
 
   const prestationTab = props.shopDetails.offers.map((choix, i) => {
     return (
@@ -142,13 +168,14 @@ function Shop(props) {
     setQuoi(element);
     setPrestaPrice(price);
     setQuoiVisible(false);
-    setExperiences("Choix de l'Expérience");
-    props.search.experience = undefined;
+    setExperiences(null);
+    
+ 
   }
 
   function closeQuoi() {
     setQuoiVisible(false);
-    setQuoi('Choix de la Prestation');
+    setQuoi(null);
   }
 
   //*QUOI END
@@ -199,26 +226,27 @@ function Shop(props) {
   }
 
   //* handling validation button,
+  
 
   function handleChoixDuSalon() {
     let convertedHour = convertMinsToTime(chosenHour);
+  
+    if ((quoi === 'Choix de la Prestation' && experiences === "Choix de l'Expérience") 
+          ||
+      chosenHour === undefined 
+          ) {
+            console.log('Choisir une prestation BIS');
+            const createTwoButtonAlert = () =>
+              Alert.alert(
+                'Choix Obligatoire',
+                'Choix Prestation ou Experience Obligatoire. Choix Date et Heure Obligatoire.',
 
-    if (
-      (quoi === 'Choix de la Prestation' &&
-        experiences === "Choix de l'Expérience") ||
-      chosenHour === undefined
-    ) {
-      console.log('Choisir une prestation BIS');
-      const createTwoButtonAlert = () =>
-        Alert.alert(
-          'Choix Obligatoire',
-          'Choisir une Date et une Heure. Choisir Prestation ou Experience',
-
-          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-          { cancelable: false }
-        );
-      createTwoButtonAlert();
+                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                { cancelable: false }
+              );
+            createTwoButtonAlert();
     } else {
+    
       props.chosenAppointment(
         convertedHour,
         coiffeurs,
@@ -229,7 +257,8 @@ function Shop(props) {
         date == null ? chosenVar : chosenVar,
         props.shopDetails.shopName,
         props.shopDetails.shopAddress,
-        props.shopDetails._id
+        props.shopDetails._id,
+        props.shopDetails.shopImages[0]
       );
 
       props.token === ''
@@ -498,7 +527,7 @@ function Shop(props) {
   var datePhrase = 'Choisir une Date';
 
   //**************************************** */
-  console.log(props.search);
+  
 
   var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
   return (
@@ -634,11 +663,9 @@ function Shop(props) {
                   onPress={() => setQuoiVisible(true)}
                   style={[styles.button, styles.buttonOpen, styles.buttonW]}
                 >
-                  {quoi && props.search.offer == undefined ? (
+                  
                     <Text style={styles.textStyle}>{quoi}</Text>
-                  ) : (
-                    <Text style={styles.textStyle}>{props.search.offer}</Text>
-                  )}
+                 
                 </Pressable>
               </View>
 
@@ -647,13 +674,9 @@ function Shop(props) {
                   onPress={() => setExperiencesVisible(true)}
                   style={[styles.button, styles.buttonOpen, styles.buttonW]}
                 >
-                  {experiences && props.search.experience == undefined ? (
+                 
                     <Text style={styles.textStyle}>{experiences}</Text>
-                  ) : (
-                    <Text style={styles.textStyle}>
-                      {props.search.experience}
-                    </Text>
-                  )}
+                  
                 </Pressable>
               </View>
             </View>
@@ -883,7 +906,8 @@ function mapDispatchToProps(dispatch) {
       date,
       shopDetailsName,
       shopDetailsAddress,
-      shopDetailsID
+      shopDetailsID,
+      shopDetailsImage
     ) {
       dispatch({
         type: 'finalAppointment',
@@ -897,6 +921,7 @@ function mapDispatchToProps(dispatch) {
         shopDetailsName: shopDetailsName,
         shopDetailsAddress: shopDetailsAddress,
         shopDetailsID: shopDetailsID,
+        shopDetailsImage: shopDetailsImage
       });
     },
   };
