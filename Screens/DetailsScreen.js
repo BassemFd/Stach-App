@@ -16,7 +16,7 @@ function Details(props) {
 
   const [genderChosen, setGenderChosen] = useState(null);
   const [genderVisible, setGenderVisible] = useState(false);
-  const [genderText, setGenderText] = useState('Choisir');
+  //const [genderText, setGenderText] = useState('Choisir');
 
   const [lengthVisible, setLengthVisible] = useState(false);
   //const [lengthText, setLengthText] = useState('Choisir');
@@ -29,11 +29,11 @@ function Details(props) {
 
     
   useEffect(() => {
-    if (props.communication.user.gender) {
-      setGenderText(props.communication.user.gender);
-    } else {
-      setGenderText('Choisir')
-    }
+    // if (props.communication.user.gender) {
+    //   setGenderText(props.communication.user.gender);
+    // } else {
+    //   setGenderText('Choisir')
+    // }
     setGenderChosen(props.communication.user.gender);
     setLength(props.communication.user.hairLength);
     setType(props.communication.user.hairType);
@@ -53,7 +53,7 @@ function Details(props) {
   const chosenGender = (element) => {
     setGenderChosen(element);
     setGenderVisible(false);
-    setGenderText(element);
+    //setGenderText(element);
     setLength(null);
     setType(null);
     //setLengthText('Choisir');
@@ -62,7 +62,7 @@ function Details(props) {
   var closeGender = () => {
     setGenderVisible(false);
     setGenderChosen(null);
-    setGenderText('Choisir');
+    //setGenderText('Choisir');
     setLength(null);
     setType(null)
     //setLengthText('Choisir');
@@ -124,7 +124,7 @@ function Details(props) {
   }
 
   var openLength = () => {
-    if (genderText != 'Choisir') {
+    if (genderChosen != null) {
       setLengthVisible(true)
     } else {
       setErrorText('Veuillez indiquer votre sexe')
@@ -145,7 +145,7 @@ function Details(props) {
 
   //TYPE
   var openType = () => {
-    if (genderText != 'Choisir') {
+    if (genderChosen != null) {
       setTypeVisible(true)
     } else {
       setErrorText('Veuillez indiquer votre sexe')
@@ -357,7 +357,7 @@ function Details(props) {
             <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeLength()} style={{margin: 5}}/>
             </View>
-            {genderText === 'une femme' ? 
+            {genderChosen === 'une femme' ? 
             <View style={{display: 'flex', flexDirection: 'row'}}>
               <Pressable style={styles.image} onPress={() => chosenLength('très court')}>
                 <Image style={{width: 50, height: 70}}source={require('../assets/Wlength1.png')} />
@@ -397,7 +397,7 @@ function Details(props) {
             <View style={styles.cross}>
               <EvilIcons name="close" size={24} color="black" onPress={() => closeType()} style={{margin: 5}}/>
             </View>
-            {genderText === 'une femme' ? 
+            {genderChosen === 'une femme' ? 
             <View style={{display: 'flex', flexDirection: 'row'}}>
               <Pressable style={styles.image} onPress={() => chosenType('raide')}>
                 <Image style={{width: 50, height: 70}}source={require('../assets/Wtype1.png')} />
