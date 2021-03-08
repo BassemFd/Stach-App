@@ -8,7 +8,7 @@ import {IP_ADDRESS} from '@env';
 
 import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
-import Card from '../shared/Card'
+import Card from '../shared/Card';
 import ButtonYaya from '../shared/Button';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
 import * as Location from 'expo-location';
