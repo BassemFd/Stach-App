@@ -5,15 +5,10 @@ import { globalStyles } from '../styles/Global';
 import Button from '../shared/Button';
 import { EvilIcons } from '@expo/vector-icons';
 import { Overlay } from 'react-native-elements';
+import {IP_ADDRESS} from '@env';
 
 
-function Details(props) {
-
-  console.log(props.communication)
-
-  useEffect(() => {
-    
-  }, []);
+function Details(props) {  
 
   const gender  = ['un homme', 'une femme'];
 
@@ -32,8 +27,18 @@ function Details(props) {
   const [type, setType] = useState(null);
   const [validationVisible, setValidationVisible] = useState(false);
 
+    
+  useEffect(() => {
   
+      setGenderText(props.communication.user.gender);
+    
+    setGenderChosen(props.communication.user.gender);
+    setGenderText(props.communication.user.gender);
+    setLength(props.communication.user.hairLength);
+    setType(props.communication.user.hairType)
+  }, []);
 
+  
   //GENDER
   var genderTab = gender.map((element, i) => {
     return(
@@ -115,8 +120,6 @@ function Details(props) {
       </Pressable>        
     } 
   }
-
-
 
   var openLength = () => {
     if (genderText != 'Choisir') {
@@ -215,15 +218,19 @@ function Details(props) {
     } 
   }
 
-  var validation = () => {
+  var validation = async () => {
+    await fetch(`${IP_ADDRESS}/users/myDetails`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `token=${props.token}&gender=${genderChosen}&hairType=${type}&hairLength=${length}`
+    });
     setValidationVisible(true);
     setTimeout(() => {
       setValidationVisible(false);
       props.navigation.navigate('Profile')
-    }, 3000)
+    }, 3000);
   }
 
-  console.log('details', props.communication)
   return (
     <View style={globalStyles.container}>
       <View style={{display: 'flex', alignItems: 'center', marginTop: 30}}>
