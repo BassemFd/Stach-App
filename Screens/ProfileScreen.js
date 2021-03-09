@@ -113,7 +113,6 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   let msgInfo = false;
   const newDate = new Date();
   const dateNow = newDate;
-  console.log(dateNow, 'dd');
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.brand}></Text>
@@ -135,9 +134,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
           <View style={styles.bottomTitle}></View>
 
           {appointments.map((appointment, i) => {
-            console.log(appointment.startDate, 'Start');
             if (new Date(appointment.startDate) > dateNow) {
-              console.log(dateNow, 'Date');
               return (
                 <Card key={appointment._id}>
                   <View style={styles.cardHeader}>
