@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { globalStyles } from '../styles/Global';
 import Button from '../shared/Button';
@@ -55,6 +55,7 @@ function Details(props) {
     setLength(null);
     setType(null);
     setHairCut(null);
+    setErrorText("")
   }
 
   var closeGender = () => {
@@ -285,17 +286,20 @@ function Details(props) {
   }
 
   return (
+    <ScrollView>
     <View style={globalStyles.container}>
-
+      <Text style={[{textAlign: 'center', padding: 10, margin: 10, fontFamily: "graduate-regular", color: 'black', fontSize: 30}]}>Je communique mes préférences:</Text>
+      <View style={{backgroundColor: 'white',padding: 20, borderRadius: 20}}>
       <View>
-          <Pressable onPress={() => setGenderVisible(true)}>
+          <Pressable  onPress={() => setGenderVisible(true)}>
             <Text style={styles.title}>JE SUIS: </Text>
+            <View style={{padding: 10}}>
             {genderChosen != null ?
             <Text style={ {textAlign: 'center', fontSize: 20}}>{genderChosen}</Text>
-            : <Text>Choisir</Text>
+            : <Text >Choisir</Text>
             }
-            
-            <Card.Divider></Card.Divider>
+            </View>
+            <Card.Divider style={{backgroundColor: '#4280AB', height: 1}}></Card.Divider>
             <Text style={{color: 'red'}}>{errorText}</Text>
           </Pressable>
       </View>
@@ -303,39 +307,45 @@ function Details(props) {
       <View>
             <Pressable onPress={() => openLength()}>
               <Text style={styles.title}>J'AI LES CHEVEUX: </Text>
+              <View style={{padding: 10}}>
               {length != null ? 
               <View style={{display: 'flex', alignItems: 'center'}}>{imageLength}<Text>{length}</Text></View>
               : 
               <Text>Choisir</Text>
               }
-              <Card.Divider></Card.Divider>
+              </View>
+              <Card.Divider style={{backgroundColor: '#4280AB', height: 1}}></Card.Divider>
             </Pressable>
       </View>
 
       <View>
             <Pressable onPress={() => openType()}>
               <Text style={styles.title}>ET: </Text>
+              <View style={{padding: 10}}>
               {type != null ? 
               <View style={{display: 'flex', alignItems: 'center'}}>{imageType}<Text>{type}</Text></View>
               : 
               <Text>Choisir</Text>
               }
-              <Card.Divider></Card.Divider>
+              </View>
+              <Card.Divider style={{backgroundColor: '#4280AB', height: 1}}></Card.Divider>
             </Pressable>
       </View>
 
       <View>
             <Pressable onPress={() => openHairCut()}>
               <Text style={styles.title}>JE VOUDRAIS UNE COUPE: </Text>
+              <View style={{padding: 10}}>
               {hairCut != null ? 
               <View style={{display: 'flex', alignItems: 'center'}}>{imageHairCut}<Text>{hairCut}</Text></View>
               : 
               <Text>Choisir</Text>
               }
-              <Card.Divider></Card.Divider>
+              </View>
+              <Card.Divider style={{backgroundColor: '#4280AB', height: 1}}></Card.Divider>
             </Pressable>
       </View>
-
+      </View>
       <View style={{margin: 20, alignItems: 'center'}}>
         <Button  title='Envoyer à mon coiffeur' backgroundColor='#4280AB' color='white' onPress={() => validation()}></Button>
       </View>
@@ -504,6 +514,7 @@ function Details(props) {
         </Overlay>
 
     </View>
+    </ScrollView>
   );
 }
 
@@ -514,7 +525,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {fontFamily: 'caveat-regular', fontSize: 30, marginTop:10, textAlign: 'center'},
+
   titleText: {fontFamily: 'nunito-bold', fontSize: 22, color: '#333', marginTop: 5},
   cross: {display: 'flex', alignItems: 'flex-end'}, 
   button: {
@@ -535,7 +546,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   image: {padding: 5},
-  title: {fontWeight : "bold", fontSize: 20, marginTop:10,},
+  title: {fontWeight : "bold", fontSize: 18, marginTop:10, color: 'black', fontFamily: 'graduate-regular'},
   miniText: {fontSize: 10, textAlign: 'center'}
 });
 
