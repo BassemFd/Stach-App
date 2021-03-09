@@ -9,8 +9,19 @@ import { connect } from 'react-redux';
 import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
+  const [paiement, setPaiement] = useState([
+    { id: 1, value: true, name: 'Paiement en ligne', selected: true },
+    { id: 2, value: false, name: 'Paiement sur place', selected: false },
+  ]);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [serviceChoice, setServiceChoice] = useState('');
+  const [servicePrice, setServicePrice] = useState('');
+  const [serviceDuration, setServiceDuration] = useState(0);
+  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+
   useEffect(() => {
-    if (props.appointment.experience === 'Choisir une Expérience') {
+    if (props.appointment.experience === 'Choisir une Experience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
       setServiceDuration(props.appointment.prestationDuration);
@@ -22,17 +33,6 @@ function Appointment(props) {
       setLoyaltyPoints(100);
     }
   }, []);
-
-  const [paiement, setPaiement] = useState([
-    { id: 1, value: true, name: 'Paiement en ligne', selected: true },
-    { id: 2, value: false, name: 'Paiement sur place', selected: false },
-  ]);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [serviceChoice, setServiceChoice] = useState('');
-  const [servicePrice, setServicePrice] = useState('');
-  const [serviceDuration, setServiceDuration] = useState();
-  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
 
   const onRadioBtnClick = (item) => {
     let updatedState = paiement.map((paiement) =>
@@ -65,6 +65,7 @@ function Appointment(props) {
     +min,
     +sec
   );
+
   let endDateAppoint = new Date(
     +year,
     +month - 1,
@@ -73,9 +74,9 @@ function Appointment(props) {
     +min + serviceDuration,
     +sec
   );
-  // console.log(props.appointment.shopDetailsID, '1');
 
   const handleConfirm = async () => {
+    console.log(props.appointment, 'Appoint 2');
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -92,15 +93,6 @@ function Appointment(props) {
       }),
     });
     setModalVisible(true);
-    props.navigation.navigate('Profile');
-  };
-
-  // console.log(serviceChoice, 'Service');
-  // console.log(servicePrice, 'price');
-  // console.log(props.appointment.shopDetailsID, 'ID S');
-
-  const handleHideModal = () => {
-    setModalVisible(!modalVisible);
     props.navigation.navigate('Profile');
   };
 

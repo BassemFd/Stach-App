@@ -56,7 +56,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      timeZone: 'Africa/Dakar', // Pck UTC de Dakar == UTC+0 idem que ce qu'on enregistre en BDD
+      // timeZone: 'Africa/Dakar', // Pck UTC de Dakar == UTC+0 idem que ce qu'on enregistre en BDD
     };
 
     date = event.toLocaleString('fr-FR', options);
