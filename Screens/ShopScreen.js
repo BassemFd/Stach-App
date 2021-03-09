@@ -172,7 +172,7 @@ const [favorite, setFavorite] = useState(false);
 
   const experienceTab = props.shopDetails.packages.map((choix, i) => {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View key={i} style={{ flexDirection: 'row' }}>
         <Pressable
           key={i}
           style={[styles.button, styles.buttonOpen, styles.buttonZ]}
@@ -184,17 +184,18 @@ const [favorite, setFavorite] = useState(false);
         </Pressable>
         <Pressable
           key={i}
-          style={{
-            padding: 10,
-            marginBottom: 10,
-            marginLeft: 10,
-            backgroundColor: '#58a2d6',
-            borderRadius: 20,
-            width: 70,
-            alignItems: 'center',
-          }}
+          style={
+            [styles.button, styles.buttonOpen, styles.buttonZ, styles.textStyle, {
+              marginBottom: 10,
+              marginLeft: 10,
+              backgroundColor: '#58a2d6',
+              borderRadius: 20,
+              width: 80,
+              alignItems: 'center',
+              justifyContent: 'center'
+          }]}
         >
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>
+          <Text style={styles.textStyle}>
             {choix.price}€
           </Text>
         </Pressable>
@@ -247,24 +248,26 @@ const [favorite, setFavorite] = useState(false);
       <View key={i} style={{ flexDirection: 'row' }}>
         <Pressable
           key={i}
-          style={[styles.button, styles.buttonOpen, styles.buttonZ]}
+          style={[styles.button, styles.buttonOpen, styles.buttonZ, styles.textStyle]}
           onPress={() => ChosenQuoi(choix.type, choix.price, choix.duration)}
         >
           <Text style={styles.textStyle}>{choix.type}</Text>
         </Pressable>
         <Pressable
           key={i}
-          style={{
-            padding: 10,
+          style={
+            [styles.button, styles.buttonOpen, styles.buttonZ, styles.textStyle, {
             marginBottom: 10,
             marginLeft: 10,
             backgroundColor: '#58a2d6',
             borderRadius: 20,
-            width: 70,
+            width: 80,
             alignItems: 'center',
-          }}
+            justifyContent: 'center'
+          }]
+        }
         >
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>
+          <Text style={styles.textStyle}>
             {choix.price}€
           </Text>
         </Pressable>
@@ -464,6 +467,10 @@ const [favorite, setFavorite] = useState(false);
     );
   });
 
+
+  //* TIme stuff
+
+
   const convertMinsToTime = (mins) => {
     let hours = Math.floor(mins / 60);
     let minutes = mins % 60;
@@ -499,12 +506,16 @@ const [favorite, setFavorite] = useState(false);
       '-' +
       startTime.getFullYear();
     appointDate.push(formatedDate);
-  }
+// console.log(startTime)
 
+    
+  }
+const [dateToCompare, setDateToCompare] = useState()
   const handleConfirm = (choice) => {
+    setDateToCompare(choice)
     var zeroDay = '';
     var zeroMonth = '';
-
+console.log("CHOICE", choice)
     choice.getDate() < 10 ? (zeroDay = '0') : null;
     choice.getMonth() < 10 ? (zeroMonth = '0') : null;
 
@@ -521,7 +532,7 @@ const [favorite, setFavorite] = useState(false);
     setChosenVar(dateToSetter);
     hideDatePicker();
   };
-
+console.log("DATE TO COMPARE", dateToCompare)
   if (chosenVar) {
     let dateGoodFormat =
       chosenVar.split('-')[2] +
@@ -550,8 +561,19 @@ const [favorite, setFavorite] = useState(false);
       ) {
         hoursArr.push(i);
 
+        let nowHours = new Date().getHours()
+        let nowMinutes = new Date().getMinutes()
+      
+        let nowTotalTime = nowHours * 60 + nowMinutes + 20
+
         hoursTab = hoursArr.map((hour, i) => {
+          
           var color = '#FFCD41';
+          let disabled = false;
+          if(nowTotalTime > hour && dateToCompare < new Date()){
+            color ="grey"
+            disabled = true;
+          }
 
           if (chosenHour === hour) {
             color = '#4280AB';
@@ -567,11 +589,15 @@ const [favorite, setFavorite] = useState(false);
               isFull++;
             }
           }
-
+          
+          
+          
+          
           if (isFull >= props.shopDetails.shopEmployees.length) {
+            
             interTab.push(
               <TouchableOpacity
-                disabled={true}
+                disabled={disabled}
                 onPress={() => {
                   setChosenHour(hour);
                 }}
@@ -594,7 +620,7 @@ const [favorite, setFavorite] = useState(false);
           } else {
             interTab.push(
               <TouchableOpacity
-                disabled={false}
+                disabled={disabled}
                 onPress={() => {
                   setChosenHour(hour);
                 }}
@@ -757,7 +783,7 @@ const [favorite, setFavorite] = useState(false);
                   style={[
                     styles.button,
                     styles.buttonOpen,
-                    styles.buttonW,
+                ,
                     { width: 100 },
                   ]}
                 >
@@ -768,7 +794,7 @@ const [favorite, setFavorite] = useState(false);
               <View style={styles.centeredView}>
                 <Pressable
                   onPress={() => setQuoiVisible(true)}
-                  style={[styles.button, styles.buttonOpen, styles.buttonW]}
+                  style={[styles.button, styles.buttonOpen]}
                 >
                   
                     <Text style={styles.textStyle}>{quoi}</Text>
@@ -779,7 +805,7 @@ const [favorite, setFavorite] = useState(false);
               <View style={styles.centeredView}>
                 <Pressable
                   onPress={() => setExperiencesVisible(true)}
-                  style={[styles.button, styles.buttonOpen, styles.buttonW]}
+                  style={[styles.button, styles.buttonOpen]}
                 >
                  
                     <Text style={styles.textStyle}>{experiences}</Text>
@@ -891,32 +917,40 @@ const [favorite, setFavorite] = useState(false);
 
       <Overlay isVisible={quoiVisible}>
         {prestationTab}
+        <View style={{ alignItems: 'center'}}>
         <Pressable
-          style={[styles.button, styles.buttonClose, styles.buttonW]}
+          style={[styles.buttonClose]}
           onPress={() => closeQuoi()}
         >
           <Text style={styles.textStyle}>Aucune</Text>
         </Pressable>
+        </View>
       </Overlay>
 
-      <Overlay isVisible={experiencesVisible}>
+      <Overlay  isVisible={experiencesVisible}>
+      
         {experienceTab}
+        <View style={{ alignItems: 'center'}}>
         <Pressable
-          style={[styles.button, styles.buttonClose, styles.buttonW]}
+        
+          style={[styles.buttonClose]}
           onPress={() => closeExperiences()}
         >
           <Text style={styles.textStyle}>Aucune</Text>
         </Pressable>
+        </View>
       </Overlay>
 
       <Overlay isVisible={coiffeurVisible}>
         {coiffeurTab}
+        <View style={{ alignItems: 'center'}}>
         <Pressable
-          style={[styles.button, styles.buttonClose, styles.buttonW]}
+          style={[styles.buttonClose]}
           onPress={() => closeCoiffeurs()}
         >
           <Text style={styles.textStyle}>Aucun</Text>
         </Pressable>
+        </View>
       </Overlay>
     </View>
   );
@@ -967,21 +1001,23 @@ const styles = StyleSheet.create({
   avisText: {
     fontWeight: 'bold',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
+  
   buttonOpen: {
     backgroundColor: '#4280AB',
   },
   buttonClose: {
     backgroundColor: '#AB4242',
+    borderRadius: 20,
+    padding: 10,
+    width: 100,
+    justifyContent: 'flex-end'
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'graduate-regular',
     textAlign: 'center',
+    fontSize: 14,
+    
   },
   centeredView: {
     flex: 1,
@@ -993,12 +1029,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    margin: 4,
+    marginVertical: 15,
+    textAlign: "center",
+    width: 110,
+    alignItems: 'center',
+    justifyContent: 'center'
+     
   },
   buttonZ: {
     width: 200,
     marginBottom: 10,
+    textAlign: "center"
   },
+ 
 });
 
 function mapDispatchToProps(dispatch) {
