@@ -18,7 +18,11 @@ export default function(details = {}, action){
         }
         // console.log("HOUR", finalAppointment.shopDetails)
         return finalAppointment
-    } else {
+    } else if(action.type == 'resetAppointment'){
+        let newDetails = {}
+        return newDetails;
+    } 
+    else {
         return details;
     }
 }

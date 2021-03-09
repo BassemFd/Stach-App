@@ -14,13 +14,21 @@ import CustomButton from '../shared/Button';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function SignIn({ navigation, onAddToken, appointment }) {
- 
+import { StackActions } from '@react-navigation/native';
+
+function SignIn({ navigation, onAddToken, token, appointment }) {
+
+  if (token !== "") {
+    const popAction = StackActions.pop(1);
+    navigation.dispatch(popAction);  
+  }
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [passwordError, setPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
+
+  const popAction = StackActions.pop(0);
 
   const handleSubmitSignin = async () => {
     // console.log(IP_ADDRESS);
@@ -39,12 +47,7 @@ function SignIn({ navigation, onAddToken, appointment }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      if (appointment.date) {
-        navigation.navigate('Appointment');
-      } else {
-        navigation.navigate('Home');
-      }
-      
+      navigation.dispatch(popAction);      
       // console.log('True');
     }
 
@@ -150,8 +153,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-function mapStateToProps(state) {
-  return { appointment: state.details };
-}
+const mapStateToProps = (state) => {
+  return { token: state.token, appointment: state.details };
+};
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
