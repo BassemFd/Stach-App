@@ -21,6 +21,7 @@ import ProfileScreen from '../Screens/ProfileScreen';
 import ContactScreen from '../Screens/ContactScreen';
 import Filtres from '../Screens/FiltresScreen';
 import LogOutScreen from '../Screens/LogOutScreen';
+import FavoritesScreen from '../Screens/FavoritesScreen';
 
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
@@ -31,6 +32,7 @@ import selectedService from '../reducers/ModalSelectedService.reducer';
 import details from '../reducers/ChosenAppointment.reducer';
 import shopsData from '../reducers/shopsData.reducer';
 import token from '../reducers/token.reducer';
+import favorite from '../reducers/favorite.reducer';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,6 +45,7 @@ const store = createStore(
     details,
     shopsData,
     token,
+    favorite
   })
 );
 
@@ -119,6 +122,8 @@ function NavigatorStack() {
           <Stack.Screen name='Contact' component={ContactScreen}/>
           <Stack.Screen name='Filtres' component={Filtres}/>
           <Stack.Screen name='LogOutScreen' component={LogOutScreen}/>
+          <Stack.Screen name='Favorites' component={FavoritesScreen}/>
+
         </Stack.Navigator>
 
     

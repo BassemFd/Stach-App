@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import { StackActions } from '@react-navigation/native';
 
-function SignIn({ navigation, onAddToken, token }) {
+function SignIn({ navigation, onAddToken, token, appointment }) {
 
   if (token !== "") {
     const popAction = StackActions.pop(1);
@@ -47,7 +47,7 @@ function SignIn({ navigation, onAddToken, token }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      navigation.dispatch(popAction);
+      navigation.dispatch(popAction);      
       // console.log('True');
     }
 
@@ -154,7 +154,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return { token: state.token };
+  return { token: state.token, appointment: state.details };
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

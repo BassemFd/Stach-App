@@ -10,14 +10,19 @@ import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
   useEffect(() => {
-    if (props.appointment.experience === "Choix de l'Expérience") {
+    
+    if (props.appointment.experience === 'Choisir une Expérience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
+      setServiceDuration(props.appointment.prestationDuration)
     } else {
       setServiceChoice(props.appointment.experience);
       setServicePrice(props.appointment.experiencePrice);
+      setServiceDuration(props.appointment.experienceDuration)
     }
   }, []);
+
+  //console.log(props.appointment.prestationPrice, 'Press price');
 
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
@@ -27,6 +32,7 @@ function Appointment(props) {
 
   const [serviceChoice, setServiceChoice] = useState('');
   const [servicePrice, setServicePrice] = useState('');
+  const [serviceDuration, setServiceDuration] = useState();
 
   const onRadioBtnClick = (item) => {
     let updatedState = paiement.map((paiement) =>
@@ -51,10 +57,24 @@ function Appointment(props) {
     prefixHour = hour;
   }
 
-  let startDateAppoint = new Date(+year, +month - 1, +day, +hour, +min, +sec);
-  let endDateAppoint = new Date(+year, +month, +day, +hour, +min + 30, +sec);
-  console.log(props.appointment.shopDetailsID, '1');
-
+  let startDateAppoint = new Date(
+    +year,
+    +month - 1,
+    +day,
+    +hour + 1,
+    +min,
+    +sec
+  );
+  let endDateAppoint = new Date(
+    +year,
+    +month - 1,
+    +day,
+    +hour + 1,
+    +min + serviceDuration,
+    +sec
+  );
+  // console.log(props.appointment.shopDetailsID, '1');
+  
   const handleConfirm = async () => {
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
       method: 'POST',
@@ -74,9 +94,14 @@ function Appointment(props) {
     props.navigation.navigate('Profile');
   };
 
-  console.log(serviceChoice, 'Service');
-  console.log(servicePrice, 'price');
-  console.log(props.appointment.shopDetailsID, 'ID S');
+  // console.log(serviceChoice, 'Service');
+  // console.log(servicePrice, 'price');
+  // console.log(props.appointment.shopDetailsID, 'ID S');
+
+  const handleHideModal = () => {
+    setModalVisible(!modalVisible);
+    props.navigation.navigate('Profile');
+  };
 
   // <Image
   //   style={styles.icon}

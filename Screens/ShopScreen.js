@@ -21,8 +21,93 @@ import CarouselCardItem, {
   ITEM_WIDTH,
 } from '../shared/cardCarousel';
 import { connect } from 'react-redux';
+import {IP_ADDRESS} from '@env';
+
+
+
+
+
+
 
 function Shop(props) {
+  
+
+const [favorite, setFavorite] = useState(false);
+
+  //**Favorite Saloon Press ASYNC storage Local Storage********** */
+
+  useEffect( () => {
+    async function getResponse(){
+      if(props.token){
+          let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
+            let body = await shopsFetch.json();
+            //console.log("BODY", body.favoriteShops)
+            for(let i = 0; i < body.favoriteShops.length; i++){
+              if(body.favoriteShops[i]._id === props.shopDetails._id){
+                setFavorite(true)
+              }
+            }
+      }
+    }
+    getResponse()
+      return () => {
+        console.log("This will be logged on unmount");
+      }
+    
+    }, [favorite])
+
+
+
+
+
+  var handleFavorite = async () => {
+   
+    //console.log("TOKEN",props.token)
+
+   if(props.token){
+    
+     if(favorite === false){
+   
+    props.favoriteShops(props.shopDetails._id);
+    
+   const FavoritePost =  await fetch(`${IP_ADDRESS}/favorites`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `token=${props.token}&id=${props.shopDetails._id}`
+        }); 
+ 
+
+    setFavorite(true)
+
+      } else {
+        
+      const FavoriteDelete =   await fetch(`${IP_ADDRESS}/deleteFavorites`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/x-www-form-urlencoded'},
+          body: `token=${props.token}&id=${props.shopDetails._id}`
+          }); 
+          setFavorite(false)
+       
+
+      }
+       
+
+   } else {
+
+    const NotConnectedAlert = () =>
+    Alert.alert(
+      'Connection Requise',
+      'Connectez-vous ou Créez un compte pour rajouter des favoris',
+
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      { cancelable: false }
+    );
+  NotConnectedAlert();
+   }
+  
+    
+  };
+
   //* Coiffeur
 
   const [coiffeurVisible, setCoiffeurVisible] = useState(false);
@@ -43,6 +128,8 @@ function Shop(props) {
       </View>
     );
   });
+
+
   function ChosenCoiffeur(element) {
     setCoiffeurs(element);
     setCoiffeurVisible(false);
@@ -57,24 +144,29 @@ function Shop(props) {
   const [experiencesVisible, setExperiencesVisible] = useState(false);
   const [experiences, setExperiences] = useState(null);
   const [experiencePrice, setExperiencePrice] = useState();
+  const [experienceDuration, setExperienceDuration] = useState();
 
    
-useEffect(() => {
+  useEffect(() => {
   
   if(props.search.experience && experiences == null && quoi == null){
     setExperiences(props.search.experience);
     for(let i =0; i < props.shopDetails.packages.length; i++){
       if(props.shopDetails.packages[i].type === props.search.experience){
+        setExperienceDuration(props.shopDetails.packages[i].duration)
         setExperiencePrice(props.shopDetails.packages[i].price)
-      
+        
       }
     }
   } else if(experiences == null){
   setExperiences("Choisir une Expérience")
-}
- 
-}, [experiences])
- 
+  }
+      // console.log('JUUU 0', props.shopDetails.packages[0].price)
+      // console.log('JUU 1', props.shopDetails.packages[0].duration)
+      // console.log('JUU 2', experienceDuration);
+      // console.log('JUU 3', experiencePrice);
+  }, [experiences])
+  
 
 
 
@@ -85,7 +177,7 @@ useEffect(() => {
           key={i}
           style={[styles.button, styles.buttonOpen, styles.buttonZ]}
           onPress={() => {
-            ChosenExperiences(choix.type, choix.price);
+            ChosenExperiences(choix.type, choix.price, choix.duration);
           }}
         >
           <Text style={styles.textStyle}>{choix.type}</Text>
@@ -110,9 +202,10 @@ useEffect(() => {
     );
   });
 
-  function ChosenExperiences(element, price) {
+  function ChosenExperiences(element, price, duration) {
     setExperiences(element);
     setExperiencePrice(price);
+    setExperienceDuration(duration)
     setExperiencesVisible(false);
     setQuoi(null);
     
@@ -127,16 +220,18 @@ useEffect(() => {
   const [quoiVisible, setQuoiVisible] = useState(false);
   const [quoi, setQuoi] = useState(null);
   const [prestaPrice, setPrestaPrice] = useState();
+  const [prestaDuration, setPrestaDuration] = useState(0);
 
+  
    
   useEffect(() => {
-  
+    
     if(props.search.offer && experiences == null && quoi == null){
       setQuoi(props.search.offer)
       for(let i =0; i < props.shopDetails.offers.length; i++){
         if(props.shopDetails.offers[i].type === props.search.offer){
           setPrestaPrice(props.shopDetails.offers[i].price)
-        
+          setPrestaDuration(props.shopDetails.offers[i].duration)
         }
       }
 
@@ -153,7 +248,7 @@ useEffect(() => {
         <Pressable
           key={i}
           style={[styles.button, styles.buttonOpen, styles.buttonZ]}
-          onPress={() => ChosenQuoi(choix.type, choix.price)}
+          onPress={() => ChosenQuoi(choix.type, choix.price, choix.duration)}
         >
           <Text style={styles.textStyle}>{choix.type}</Text>
         </Pressable>
@@ -177,12 +272,12 @@ useEffect(() => {
     );
   });
 
-  function ChosenQuoi(element, price) {
+  function ChosenQuoi(element, price, duration) {
     setQuoi(element);
     setPrestaPrice(price);
     setQuoiVisible(false);
     setExperiences(null);
-    
+    setPrestaDuration(duration)
  
   }
 
@@ -202,15 +297,11 @@ useEffect(() => {
   const [index, setIndex] = useState(0);
 
   const [chosenHour, setChosenHour] = useState();
-  const [favorite, setFavorite] = useState(false);
+  
 
   const scrollRef = useRef(null);
 
-  var handleFavorite = () => {
-    // props.shopDetails._id
-    
-    setFavorite(!favorite);
-  };
+  
   var color;
   if (favorite === true) {
     color = '#e74c3c';
@@ -267,8 +358,10 @@ useEffect(() => {
         coiffeurs,
         quoi,
         prestaPrice,
+        prestaDuration,
         experiences,
         experiencePrice,
+        experienceDuration,
         date == null ? chosenVar : chosenVar,
         props.shopDetails.shopName,
         props.shopDetails.shopAddress,
@@ -541,7 +634,6 @@ useEffect(() => {
   };
   var datePhrase = 'Choisir une Date';
 
-  //**************************************** */
   
 
   var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
@@ -916,13 +1008,15 @@ function mapDispatchToProps(dispatch) {
       coiffeurs,
       quoi,
       price,
+      duration,
       experience,
       experiencePrice,
+      experienceDuration,
       date,
       shopDetailsName,
       shopDetailsAddress,
       shopDetailsID,
-      shopDetailsImage
+      shopDetailsImage,
     ) {
       dispatch({
         type: 'finalAppointment',
@@ -930,8 +1024,10 @@ function mapDispatchToProps(dispatch) {
         hairdresser: coiffeurs,
         prestation: quoi,
         prestationPrice: price,
+        prestationDuration: duration,
         experience: experience,
         experiencePrice: experiencePrice,
+        experienceDuration: experienceDuration,
         date: date,
         shopDetailsName: shopDetailsName,
         shopDetailsAddress: shopDetailsAddress,
@@ -939,6 +1035,14 @@ function mapDispatchToProps(dispatch) {
         shopDetailsImage: shopDetailsImage
       });
     },
+
+    favoriteShops: function(shopID){
+      dispatch({
+        type: 'favoriteShop',
+        shopID: shopID
+      })
+      
+    }
   };
 }
 

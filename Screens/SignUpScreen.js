@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 
 import { StackActions } from '@react-navigation/native';
 
-function SignUp({ navigation, onAddToken, token }) {
+function SignUp({ navigation, onAddToken, token, appointment }) {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPhoneNumber, setSignUpPhoneNumber] = useState('');
   const [signUpFirstName, setSignUpFirstName] = useState('');
@@ -164,7 +164,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return { token: state.token };
+  return { token: state.token, appointment: state.details };
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
