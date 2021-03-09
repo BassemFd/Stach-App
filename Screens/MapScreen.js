@@ -224,7 +224,7 @@ function Map(props) {
           <View style={styles.text}>
             <View style={styles.div1}>
               <Text style={{ fontWeight: 'bold' }}>{shopDetails.shopName}</Text>
-              <FontAwesome name='heart-o' size={15} color='black' />
+              {/* <FontAwesome name='heart-o' size={15} color='black' /> */}
             </View>
             <Text style={styles.pad}>{shopDetails.shopAddress}</Text>
             <View style={styles.picto}>{euros}</View>

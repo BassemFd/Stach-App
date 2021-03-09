@@ -1,10 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import ButtonYaya from '../shared/Button';
-
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {globalStyles} from '../styles/Global';
-
 import { connect } from 'react-redux';
 import {IP_ADDRESS} from '@env';
 
@@ -19,11 +16,7 @@ import {IP_ADDRESS} from '@env';
           if(props.token){
               let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
                 let body = await shopsFetch.json();
-                
                 setFavoriteTab(body.favoriteShops)
-                // for(let i = 0; i < body.favoriteShops.length; i++){
-                 
-                // }
           }
         }
         getResponse()
@@ -37,6 +30,7 @@ import {IP_ADDRESS} from '@env';
            props.saveChosenOffer(shopDetails)
            props.navigation.navigate('Shop');
           }
+
 
 
     return (
@@ -78,7 +72,7 @@ import {IP_ADDRESS} from '@env';
                   <View style={styles.text}>
                     <View style={styles.div1}>
                       <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
-                      <FontAwesome name="heart-o" size={15} color="black" />
+                 
                     </View>
                     <Text style={styles.pad}>{element.shopAddress}</Text>
                     <View style={styles.picto}>

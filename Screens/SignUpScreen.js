@@ -70,13 +70,13 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
   };
 
   return (
+    <ScrollView style={globalStyles.container}>
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={globalStyles.container}
+        
       >
-        <ScrollView>
-        <Text style={globalStyles.brand}></Text>
+    
         <View style={globalStyles.hr}></View>
         <View style={globalStyles.socialNetwork}>
           <View style={globalStyles.socialNetworkContent}>
@@ -90,14 +90,14 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
             </Text>
           </View>
         </View>
-        <View style={globalStyles.socialNetwork}>
+        {/* <View style={globalStyles.socialNetwork}>
           <View style={globalStyles.socialNetworkContent}>
             <Text>Inscris toi avec Facebook</Text>
             <Text>
               <FontAwesome name='facebook-square' size={24} color='#4267B2' />
             </Text>
           </View>
-        </View>
+        </View> */}
         
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
@@ -143,9 +143,10 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
               onPress={() => handleSubmitSignin()}
             />
           </View>
-        </ScrollView>
+      
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
+    </ScrollView>
   );
 }
 
