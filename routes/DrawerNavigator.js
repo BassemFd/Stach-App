@@ -48,7 +48,7 @@ let conditionnalDrawer;
                       headerTitle:"'Stach",
                       headerTitleAlign:'center',
                       headerTitleStyle: {
-                        marginTop:15,
+                        marginTop:10,
                         fontFamily: 'caveat-regular',
                         fontSize: 44,
                       },
@@ -75,7 +75,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -104,7 +104,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -133,7 +133,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -161,7 +161,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -200,7 +200,7 @@ let conditionnalDrawer;
                     headerTitle:"'Stach",
                     headerTitleAlign:'center',
                     headerTitleStyle: {
-                      marginTop:15,
+                      marginTop:10,
                       fontFamily: 'caveat-regular',
                       fontSize: 44,
                     },
@@ -226,7 +226,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -256,7 +256,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -283,7 +283,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -311,7 +311,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },
@@ -338,7 +338,7 @@ let conditionnalDrawer;
                         headerTitle:"'Stach",
                         headerTitleAlign:'center',
                         headerTitleStyle: {
-                          marginTop:15,
+                          marginTop:10,
                           fontFamily: 'caveat-regular',
                           fontSize: 44,
                         },

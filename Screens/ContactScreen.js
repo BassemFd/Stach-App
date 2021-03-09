@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { StyleSheet, Text, View, Linking } from 'react-native';
+import { StyleSheet, Text, View, Linking, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { globalStyles } from '../styles/Global';
 import CustomBadge from '../shared/Badge';
@@ -26,10 +26,12 @@ export default function Contact(props) {
   }
 
   return (
+    
     <View style={styles.container}>
-      <View style={{marginTop:300}}>
+      <ScrollView>
+      <View>
       <Text style={globalStyles.brand}></Text>
-      <View style={{marginTop:50, marginBottom:50, padding:50, alignItems:'center'}}>
+      <View style={{marginTop:10, marginBottom:50, padding:50, alignItems:'center'}}>
 
         <Text style={{marginBottom:60}}>Une équipe de passionnés à votre écoute jour et nuit pour une coiffure sereine, pour toute question, si vous ne savez pas coiffeur alors envoyez nous un e-mail</Text>
         
@@ -73,8 +75,9 @@ export default function Contact(props) {
                 inactiveDotScale={0.6}
                 tappableDots={true}
             />
-                
+      </ScrollView>          
     </View>
+    
   );
 }
 
