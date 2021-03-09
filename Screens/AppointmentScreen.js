@@ -10,22 +10,18 @@ import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
   useEffect(() => {
-    
     if (props.appointment.experience === 'Choisir une Expérience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
       setServiceDuration(props.appointment.prestationDuration);
-      setLoyaltyPoints(50)
-    
+      setLoyaltyPoints(50);
     } else {
       setServiceChoice(props.appointment.experience);
       setServicePrice(props.appointment.experiencePrice);
-      setServiceDuration(props.appointment.experienceDuration)
+      setServiceDuration(props.appointment.experienceDuration);
       setLoyaltyPoints(100);
     }
   }, []);
-
-  //console.log(props.appointment.prestationPrice, 'Press price');
 
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
@@ -78,7 +74,7 @@ function Appointment(props) {
     +sec
   );
   // console.log(props.appointment.shopDetailsID, '1');
-  
+
   const handleConfirm = async () => {
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
       method: 'POST',
