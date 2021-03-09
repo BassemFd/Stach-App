@@ -10,17 +10,19 @@ import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
   useEffect(() => {
-    console.log(props.appointment);
+    
     if (props.appointment.experience === 'Choisir une Expérience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
+      setServiceDuration(props.appointment.prestationDuration)
     } else {
       setServiceChoice(props.appointment.experience);
       setServicePrice(props.appointment.experiencePrice);
+      setServiceDuration(props.appointment.experienceDuration)
     }
   }, []);
 
-  console.log(props.appointment.prestationPrice, 'Press price');
+  //console.log(props.appointment.prestationPrice, 'Press price');
 
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
@@ -30,6 +32,7 @@ function Appointment(props) {
 
   const [serviceChoice, setServiceChoice] = useState('');
   const [servicePrice, setServicePrice] = useState('');
+  const [serviceDuration, setServiceDuration] = useState();
 
   const onRadioBtnClick = (item) => {
     let updatedState = paiement.map((paiement) =>
@@ -67,13 +70,11 @@ function Appointment(props) {
     +month - 1,
     +day,
     +hour + 1,
-    +min + 30,
+    +min + serviceDuration,
     +sec
   );
   // console.log(props.appointment.shopDetailsID, '1');
-  console.log('START DATE APP', startDateAppoint);
-  console.log('END DATE APP', endDateAppoint);
-
+  
   const handleConfirm = async () => {
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
       method: 'POST',
@@ -90,11 +91,12 @@ function Appointment(props) {
       }),
     });
     setModalVisible(true);
+    props.navigation.navigate('Profile');
   };
 
-  console.log(serviceChoice, 'Service');
-  console.log(servicePrice, 'price');
-  console.log(props.appointment.shopDetailsID, 'ID S');
+  // console.log(serviceChoice, 'Service');
+  // console.log(servicePrice, 'price');
+  // console.log(props.appointment.shopDetailsID, 'ID S');
 
   const handleHideModal = () => {
     setModalVisible(!modalVisible);

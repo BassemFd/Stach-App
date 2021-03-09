@@ -15,7 +15,7 @@ import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
 function SignIn({ navigation, onAddToken, appointment }) {
-  console.log('JUUU', appointment);
+ 
 
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
