@@ -23,6 +23,10 @@ function Details(props) {
 
   const [typeVisible, setTypeVisible] = useState(false);
   const [type, setType] = useState(null);
+
+  const [hairCutVisible, setHairCutVisible] = useState(false);
+  const [hairCut, setHairCut] = useState(null);
+
   const [validationVisible, setValidationVisible] = useState(false);
 
     
@@ -31,6 +35,7 @@ function Details(props) {
     setGenderChosen(props.communication.user.gender);
     setLength(props.communication.user.hairLength);
     setType(props.communication.user.hairType);
+    setHairCut(props.communication.user.hairCut);
   }, []);
 
 
@@ -49,6 +54,7 @@ function Details(props) {
     setGenderVisible(false);
     setLength(null);
     setType(null);
+    setHairCut(null);
   }
 
   var closeGender = () => {
@@ -56,6 +62,7 @@ function Details(props) {
     setGenderChosen(null);
     setLength(null);
     setType(null)
+    setHairCut(null);
   }
 
   //LENGTH
@@ -130,8 +137,6 @@ function Details(props) {
     setTypeVisible(false);
   }
 
-
-
   var imageType;
   if (genderChosen === 'une femme') {
       if (type=== 'raide') {
@@ -167,12 +172,66 @@ function Details(props) {
     } 
   }
 
+  //HairCut
+  var openHairCut = () => {
+    if (genderChosen != null) {
+      setHairCutVisible(true)
+    } else {
+      setErrorText('Veuillez indiquer votre sexe')
+    }
+  }
+
+  var closeHairCut = () => {
+    setHairCutVisible(false);
+    setHairCut(null);
+  }
+
+  var chosenHairCut = (type) => {
+    setHairCut(type);
+    setHairCutVisible(false);
+  }
+
+  var imageHairCut;
+  if (genderChosen === 'une femme') {
+      if (hairCut=== 'rebelle') {
+        imageHairCut = 
+            <Image style={{width: 70, height: 90}}source={require('../assets/whairstyle1.jpg')} />
+      } else if (hairCut === 'classique') {
+        imageHairCut = 
+          <Image style={{width: 70, height: 90}}source={require('../assets/whairstyle2.jpg')} />     
+      } else if (hairCut === 'star') {
+        imageHairCut = 
+          <Image style={{width: 70, height: 90}}source={require('../assets/whairstyle3.jpg')} />
+      } else if (hairCut === 'meche') {
+        imageHairCut = 
+          <Image style={{width: 70, height: 90}}source={require('../assets/whairstyle4.jpg')} />     
+      } else if (hairCut === 'droite') {
+        imageHairCut = 
+          <Image style={{width: 70, height: 90}}source={require('../assets/whairstyle5.jpg')} />
+      }
+  } else {
+    if (hairCut === 'décontracté') {
+      imageHairCut = 
+          <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle1.jpg')}/>
+    } else if (hairCut === 'frange') {
+      imageHairCut = 
+        <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle2.jpg')} />
+    } else if (hairCut === 'rasé') {
+      imageHairCut = 
+        <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle3.jpg')} />
+    } else if (hairCut === 'mi-long') {
+      imageHairCut = 
+        <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle4.jpg')} />   
+    } 
+  }
+
   var validation = async () => {
     var newCommunication = props.communication;
     if (genderChosen) {
       newCommunication.user.gender = genderChosen;
       newCommunication.user.hairLength = length;
-      newCommunication.user.hairType = type; 
+      newCommunication.user.hairType = type;
+      newCommunication.user.hairCut = hairCut; 
       props.saveCommunication(newCommunication);
       if (type && length) {
           await fetch(`${IP_ADDRESS}/users/myDetails`, {
@@ -258,6 +317,18 @@ function Details(props) {
               <Text style={styles.title}>ET: </Text>
               {type != null ? 
               <View style={{display: 'flex', alignItems: 'center'}}>{imageType}<Text>{type}</Text></View>
+              : 
+              <Text>Choisir</Text>
+              }
+              <Card.Divider></Card.Divider>
+            </Pressable>
+      </View>
+
+      <View>
+            <Pressable onPress={() => openHairCut()}>
+              <Text style={styles.title}>JE VOUDRAIS UNE COUPE: </Text>
+              {hairCut != null ? 
+              <View style={{display: 'flex', alignItems: 'center'}}>{imageHairCut}<Text>{hairCut}</Text></View>
               : 
               <Text>Choisir</Text>
               }
@@ -374,6 +445,55 @@ function Details(props) {
               <Pressable style={styles.image} onPress={() => chosenType('crépu')}>
                 <Image style={{width: 50, height: 70}}source={require('../assets/Mtype4.png')}/>
                 <Text style={styles.miniText}>crépu</Text>
+              </Pressable>
+            </View>
+            }
+        </Overlay>
+
+        <Overlay isVisible={hairCutVisible}>
+            <View style={styles.cross}>
+              <EvilIcons name="close" size={24} color="black" onPress={() => closeHairCut()} style={{margin: 5}}/>
+            </View>
+            {genderChosen === 'une femme' ? 
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('rebelle')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/whairstyle1.jpg')} />
+                <Text style={styles.miniText}>rebelle</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('classique')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/whairstyle2.jpg')}/>
+                <Text style={styles.miniText}>classique</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('star')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/whairstyle3.jpg')}/>
+                <Text style={styles.miniText}>star</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('meche')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/whairstyle4.jpg')}/>
+                <Text style={styles.miniText}>meche</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('droite')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/whairstyle5.jpg')}/>
+                <Text style={styles.miniText}>droite</Text>
+              </Pressable>
+            </View>
+            : 
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('décontracté')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle1.jpg')} />
+                <Text style={styles.miniText}>décontracté</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('frange')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle2.jpg')}/>
+                <Text style={styles.miniText}>frange</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('rasé')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle3.jpg')}/>
+                <Text style={styles.miniText}>rasé</Text>
+              </Pressable>
+              <Pressable style={styles.image} onPress={() => chosenHairCut('mi-long')}>
+                <Image style={{width: 50, height: 70}}source={require('../assets/hairstyle4.jpg')}/>
+                <Text style={styles.miniText}>mi-long</Text>
               </Pressable>
             </View>
             }

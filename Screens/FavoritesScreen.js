@@ -27,22 +27,17 @@ import {IP_ADDRESS} from '@env';
           }
         }
         getResponse()
-          return () => {
-            console.log("This will be logged on unmount");
-            
-          }
+          return () => {}
         
-        }, [])
+        }, [favoriteTab])
 
 
         function navigation(shopDetails) {
           
            props.saveChosenOffer(shopDetails)
            props.navigation.navigate('Shop');
-        console.log("SHOPDETAILS", shopDetails)
           }
 
-console.log("FAVORITE TAB", favoriteTab)
 
     return (
         <View style={globalStyles.container}>
