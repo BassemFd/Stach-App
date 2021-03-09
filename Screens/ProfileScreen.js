@@ -45,23 +45,58 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
 
   // Format appointment date
   const formatAppointDate = (date) => {
+    // console.log(date, 'Date');
     const event = new Date(date);
-    // event.getHours() - 1;
 
-    // Get the day of the week with a long date
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      // timeZone: 'Africa/Dakar', // Pck UTC de Dakar == UTC+0 idem que ce qu'on enregistre en BDD
-    };
+    let displayDate;
+    let displayTime;
 
-    date = event.toLocaleString('fr-FR', options);
-    const dateFirstUpper = `${date[0].toUpperCase() + date.slice(1)}`;
-    return dateFirstUpper;
+    let weekday = [
+      'Dimanche',
+      'Lundi',
+      'Mardi',
+      'Mercredi',
+      'Jeudi',
+      'Vendredi',
+      'Samedi',
+    ][event.getDay()];
+
+    let month = [
+      'Janvier',
+      'Fevrier',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Aout',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Decembre',
+    ][event.getMonth()];
+
+    let zeroDay = '';
+    let zeroMonth = '';
+    event.getDate() < 10 ? (zeroDay = '0') : null;
+    event.getMonth() < 10 ? (zeroMonth = '0') : null;
+    displayDate = `${weekday} ${zeroDay}${event.getDate()} ${month} ${event.getFullYear()}`;
+
+    let zeroHour = '';
+    let zeroMinute = '';
+    event.getHours() < 10 ? (zeroHour = '0') : null;
+    event.getMinutes() < 10 ? (zeroMinute = '0') : null;
+    displayTime =
+      '' +
+      zeroHour +
+      event.getHours() -
+      1 +
+      ':' +
+      zeroMinute +
+      event.getMinutes();
+
+    let finalDate = `${displayDate} ${displayTime}`;
+    return finalDate;
   };
 
   // Add Comment
