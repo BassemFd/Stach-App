@@ -14,7 +14,9 @@ import CustomButton from '../shared/Button';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function SignIn({ navigation, onAddToken }) {
+function SignIn({ navigation, onAddToken, appointment }) {
+  console.log('JUUU', appointment);
+
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [passwordError, setPasswordError] = useState(null);
@@ -37,7 +39,12 @@ function SignIn({ navigation, onAddToken }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      navigation.navigate('Appointment');
+      if (appointment.date) {
+        navigation.navigate('Appointment');
+      } else {
+        navigation.navigate('Home');
+      }
+      
       // console.log('True');
     }
 
@@ -143,4 +150,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignIn);
+function mapStateToProps(state) {
+  return { appointment: state.details };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

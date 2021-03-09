@@ -10,6 +10,7 @@ import { IP_ADDRESS } from '@env';
 
 function Appointment(props) {
   useEffect(() => {
+    console.log(props.appointment);
     if (props.appointment.experience === 'Choisir une Expérience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
@@ -70,6 +71,8 @@ function Appointment(props) {
     +sec
   );
   // console.log(props.appointment.shopDetailsID, '1');
+  console.log('START DATE APP', startDateAppoint);
+  console.log('END DATE APP', endDateAppoint);
 
   const handleConfirm = async () => {
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
