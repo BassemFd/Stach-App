@@ -108,7 +108,8 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
     navigation.navigate('Details');
   };
 
-  let points = 562;
+  // console.log('MY USER', user);
+  let points = user.loyaltyPoints;
   let msgInfo = false;
   const newDate = new Date();
   const dateNow = newDate;
