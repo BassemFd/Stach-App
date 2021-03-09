@@ -16,20 +16,16 @@ import {IP_ADDRESS} from '@env';
           if(props.token){
               let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
                 let body = await shopsFetch.json();
-                
                 setFavoriteTab(body.favoriteShops)
-                // for(let i = 0; i < body.favoriteShops.length; i++){
-                 
-                // }
           }
         }
         getResponse()
           return () => {
-            console.log("This will be logged on unmount");
+            // console.log("This will be logged on unmount");
             
           }
         
-        }, [])
+        }, [favoriteTab])
 
 
         function navigation(shopDetails) {
@@ -39,7 +35,7 @@ import {IP_ADDRESS} from '@env';
         console.log("SHOPDETAILS", shopDetails)
           }
 
-console.log("FAVORITE TAB", favoriteTab)
+
 
     return (
         <View style={globalStyles.container}>
@@ -80,7 +76,7 @@ console.log("FAVORITE TAB", favoriteTab)
                   <View style={styles.text}>
                     <View style={styles.div1}>
                       <Text style={{fontWeight: 'bold'}}>{element.shopName}</Text>
-                      <FontAwesome name="heart-o" size={15} color="black" />
+                 
                     </View>
                     <Text style={styles.pad}>{element.shopAddress}</Text>
                     <View style={styles.picto}>
