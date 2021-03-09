@@ -12,6 +12,7 @@ import ContactScreen from '../Screens/ContactScreen';
 import Home from '../Screens/HomeScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import LogOutScreen from '../Screens/LogOutScreen';
+import FavoritesScreen from '../Screens/FavoritesScreen';
 
 import { connect } from 'react-redux';
 import HomeScreen from '../Screens/HomeScreen';
@@ -263,6 +264,33 @@ let conditionnalDrawer;
                   drawerIcon: ({focused, size}) => (
                     <Icon
                       name="user"
+                      size={24}
+                      color={focused ? '#7cc' : '#4280AB'}
+                    />
+                  ),}}}
+            />
+            <Drawer.Screen
+              name='FavoritesScreen'
+              component={FavoritesScreen}
+              options={({ navigation }) => {
+                return {
+                    drawerLabel:"Mes favoris",
+                    headerStyle: {
+                        backgroundColor: '#FFE082',
+                        height: 100,
+                        elevation:0,
+                        },
+                        headerTitle:"'Stach",
+                        headerTitleAlign:'center',
+                        headerTitleStyle: {
+                          marginTop:15,
+                          fontFamily: 'caveat-regular',
+                          fontSize: 44,
+                        },
+                  headerLeft: () => <Header navigation={navigation} />,
+                  drawerIcon: ({focused, size}) => (
+                    <Icon
+                      name="star"
                       size={24}
                       color={focused ? '#7cc' : '#4280AB'}
                     />
