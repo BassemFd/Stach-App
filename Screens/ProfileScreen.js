@@ -155,6 +155,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
                   <Text style={styles.appointmentAddresses}>
                     {shops[i].shopAddress}
                   </Text>
+                  <Text>{appointment.chosenOffer}</Text>
                   <Text style={styles.appointmentDate}>
                     {formatAppointDate(appointment.startDate)}
                   </Text>
@@ -205,6 +206,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
                   <Text style={styles.appointmentAddresses}>
                     {shops[i].shopAddress}
                   </Text>
+                  <Text>{appointment.chosenOffer}</Text>
                   <Text style={styles.appointmentDate}>
                     {formatAppointDate(appointment.startDate)}
                   </Text>

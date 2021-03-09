@@ -229,7 +229,7 @@ function List(props) {
                         <Text style={{ fontWeight: 'bold' }}>
                           {element.shopName}
                         </Text>
-                        <FontAwesome name='heart-o' size={15} color='black' />
+                        {/* <FontAwesome name='heart-o' size={15} color='black' /> */}
                       </View>
                       <Text style={styles.pad}>{element.shopAddress}</Text>
                       <View style={styles.picto}>{priceTab}</View>
