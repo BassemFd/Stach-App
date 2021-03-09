@@ -1,10 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import ButtonYaya from '../shared/Button';
-
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {globalStyles} from '../styles/Global';
-
 import { connect } from 'react-redux';
 import {IP_ADDRESS} from '@env';
 
