@@ -351,9 +351,8 @@ const [favorite, setFavorite] = useState(false);
       );
     createTwoButtonAlert();
        } else if((quoi == 'Choix de la Prestation') && (experiences == "Choisir une Experience") ){
-        console.log("QUOI", quoi)
-        console.log("Experiences", experiences)
-        // console.log('Choisir une prestation BIS');
+      
+      
         const createTwoButtonAlert = () =>
           Alert.alert(
             'Choix Obligatoire',
@@ -1026,7 +1025,6 @@ const styles = StyleSheet.create({
     fontFamily: 'graduate-regular',
     textAlign: 'center',
     fontSize: 14,
-    
   },
   centeredView: {
     flex: 1,
@@ -1043,7 +1041,6 @@ const styles = StyleSheet.create({
     width: 110,
     alignItems: 'center',
     justifyContent: 'center'
-     
   },
   buttonZ: {
     width: 200,
