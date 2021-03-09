@@ -159,7 +159,7 @@ const [favorite, setFavorite] = useState(false);
       }
     }
   } else if(experiences == null){
-  setExperiences("Choisir une Expérience")
+  setExperiences("Choisir une Experience")
   }
       // console.log('JUUU 0', props.shopDetails.packages[0].price)
       // console.log('JUU 1', props.shopDetails.packages[0].duration)
@@ -339,22 +339,30 @@ const [favorite, setFavorite] = useState(false);
 
   function handleChoixDuSalon() {
     let convertedHour = convertMinsToTime(chosenHour);
-  
-    if ((quoi === 'Choix de la Prestation' && experiences === "Choix de l'Expérience") 
-          ||
-      chosenHour === undefined 
-          ) {
-            // console.log('Choisir une prestation BIS');
-            const createTwoButtonAlert = () =>
-              Alert.alert(
-                'Choix Obligatoire',
-                'Choix Prestation ou Experience Obligatoire. Choix Date et Heure Obligatoire.',
+ 
+    if ( chosenHour === undefined){
+      const createTwoButtonAlert = () =>
+      Alert.alert(
+        'Choix Obligatoire',
+        'Choix Date et Heure Obligatoire.',
 
-                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-                { cancelable: false }
-              );
-            createTwoButtonAlert();
-    } else {
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        { cancelable: false }
+      );
+    createTwoButtonAlert();
+       } else if((quoi == 'Choix de la Prestation') && (experiences == "Choisir une Experience") ){
+      
+      
+        const createTwoButtonAlert = () =>
+          Alert.alert(
+            'Choix Obligatoire',
+            'Choix Prestation ou Experience Obligatoire.',
+    
+            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            { cancelable: false }
+          );
+        createTwoButtonAlert();
+      } else {
     
       props.chosenAppointment(
         convertedHour,
@@ -1017,7 +1025,6 @@ const styles = StyleSheet.create({
     fontFamily: 'graduate-regular',
     textAlign: 'center',
     fontSize: 14,
-    
   },
   centeredView: {
     flex: 1,
@@ -1034,7 +1041,6 @@ const styles = StyleSheet.create({
     width: 110,
     alignItems: 'center',
     justifyContent: 'center'
-     
   },
   buttonZ: {
     width: 200,

@@ -157,12 +157,17 @@ function List(props) {
       >
         <Button
           title='Trier par prix'
-          color='#4280AB'
+          buttonStyle={{
+            backgroundColor: "#4280AB"
+         }}
+          
           onPress={() => sortByPrice()}
         ></Button>
         <Button
           title='Trier par note'
-          color='#4280AB'
+          buttonStyle={{
+            backgroundColor: "#4280AB"
+         }}
           onPress={() => sortByNote()}
         ></Button>
       </View>
