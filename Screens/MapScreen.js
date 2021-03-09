@@ -78,7 +78,7 @@ function Map(props) {
     if (props.search.latitude != undefined && props.search.longitude != undefined) {
         setLatitude(props.search.latitude);
         setLongitude(props.search.longitude);
-        setLatitudeDelta(0.17);
+        setLatitudeDelta(0.12);
         setLongitudeDelta(0.09);
     }
 
@@ -114,7 +114,7 @@ function Map(props) {
         color = 'black';
       }
       priceTab.push(
-        <FontAwesome name='euro' size={15} color={color} style={styles.pad} />
+        <FontAwesome key={y} name='euro' size={15} color={color} style={styles.pad} />
       );
     }
     setEuros(priceTab);
@@ -123,6 +123,7 @@ function Map(props) {
     for (let z = 0; z < element.shopFeatures.length; z++) {
       pictoTab.push(
         <FontAwesome
+          key={z}
           name={element.shopFeatures[z]}
           size={15}
           color='black'
@@ -140,6 +141,7 @@ function Map(props) {
       }
       starsTab.push(
         <FontAwesome
+        key={j}
           style={{ marginRight: 5 }}
           name='star'
           size={24}

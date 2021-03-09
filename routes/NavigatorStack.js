@@ -20,6 +20,7 @@ import DetailsScreen from '../Screens/DetailsScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import ContactScreen from '../Screens/ContactScreen';
 import Filtres from '../Screens/FiltresScreen';
+import LogOutScreen from '../Screens/LogOutScreen';
 import FavoritesScreen from '../Screens/FavoritesScreen';
 
 import { Provider } from 'react-redux';
@@ -120,6 +121,7 @@ function NavigatorStack() {
           <Stack.Screen name='Profile' component={ProfileScreen}/>
           <Stack.Screen name='Contact' component={ContactScreen}/>
           <Stack.Screen name='Filtres' component={Filtres}/>
+          <Stack.Screen name='LogOutScreen' component={LogOutScreen}/>
           <Stack.Screen name='Favorites' component={FavoritesScreen}/>
 
         </Stack.Navigator>

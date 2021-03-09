@@ -13,9 +13,13 @@ function Appointment(props) {
     if (props.appointment.experience === 'Choisir une Expérience') {
       setServiceChoice(props.appointment.prestation);
       setServicePrice(props.appointment.prestationPrice);
+      setServiceDuration(props.appointment.prestationDuration);
+      setLoyaltyPoints(50);
     } else {
       setServiceChoice(props.appointment.experience);
       setServicePrice(props.appointment.experiencePrice);
+      setServiceDuration(props.appointment.experienceDuration);
+      setLoyaltyPoints(100);
     }
   }, []);
 
@@ -27,6 +31,8 @@ function Appointment(props) {
 
   const [serviceChoice, setServiceChoice] = useState('');
   const [servicePrice, setServicePrice] = useState('');
+  const [serviceDuration, setServiceDuration] = useState();
+  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
 
   const onRadioBtnClick = (item) => {
     let updatedState = paiement.map((paiement) =>
@@ -64,7 +70,7 @@ function Appointment(props) {
     +month - 1,
     +day,
     +hour + 1,
-    +min + 30,
+    +min + serviceDuration,
     +sec
   );
   // console.log(props.appointment.shopDetailsID, '1');
@@ -82,9 +88,19 @@ function Appointment(props) {
         chosenPayment: 'onshop',
         appointmentStatus: 'validated',
         shop_id: props.appointment.shopDetailsID,
+        loyaltyPoints: loyaltyPoints,
       }),
     });
     setModalVisible(true);
+    props.navigation.navigate('Profile');
+  };
+
+  // console.log(serviceChoice, 'Service');
+  // console.log(servicePrice, 'price');
+  // console.log(props.appointment.shopDetailsID, 'ID S');
+
+  const handleHideModal = () => {
+    setModalVisible(!modalVisible);
     props.navigation.navigate('Profile');
   };
 
