@@ -7,6 +7,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { globalStyles } from '../styles/Global';
@@ -45,7 +46,6 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
 
   // Format appointment date
   const formatAppointDate = (date) => {
-    // console.log(date, 'Date');
     const event = new Date(date);
 
     let displayDate;
@@ -86,14 +86,9 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
     let zeroMinute = '';
     event.getHours() < 10 ? (zeroHour = '0') : null;
     event.getMinutes() < 10 ? (zeroMinute = '0') : null;
-    displayTime =
-      '' +
-      zeroHour +
-      event.getHours() -
-      1 +
-      ':' +
-      zeroMinute +
-      event.getMinutes();
+    displayTime = `à ${zeroHour}${
+      event.getHours() - 1
+    }:${zeroMinute}${event.getMinutes()}`;
 
     let finalDate = `${displayDate} ${displayTime}`;
     return finalDate;
@@ -148,146 +143,154 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   let msgInfo = false;
   const newDate = new Date();
   const dateNow = newDate;
+
+  // ActivityIndicator
+  // if (loading) {
+  //   return <ActivityIndicator size='large' color='#121212' />;
+  // }
+
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.brand}></Text>
-      <View style={styles.userContent}>
-        <Text style={styles.userName}>
-          {user.firstName} {user.lastName}
-        </Text>
-        <CustomBadge
-          title={`${points} Points`}
-          color='#fff'
-          backgroundColor='#FFCD41'
-          width={110}
-        />
-      </View>
+      {loading ? (
+        <ActivityIndicator size='large' color='#121212' />
+      ) : (
+        <View style={styles.userContent}>
+          <Text style={styles.userName}>
+            {user.firstName} {user.lastName}
+          </Text>
+          <CustomBadge
+            title={`${points} Points`}
+            color='#fff'
+            backgroundColor='#FFCD41'
+            width={110}
+          />
+        </View>
+      )}
       <View style={globalStyles.hr}></View>
       <ScrollView>
-        <View style={styles.appointmentBox}>
-          <Text style={styles.appointmentTitle}>Rdv à venir :</Text>
-          <View style={styles.bottomTitle}></View>
+        {loading ? (
+          <ActivityIndicator size='large' color='#121212' />
+        ) : (
+          <View style={styles.appointmentBox}>
+            <Text style={styles.appointmentTitle}>Rdv à venir :</Text>
+            <View style={styles.bottomTitle}></View>
 
-          {appointments.map((appointment, i) => {
-            if (new Date(appointment.startDate) > dateNow) {
-              return (
-                <Card key={appointment._id}>
-                  <View style={styles.cardHeader}>
-                    <Text style={styles.appointmentShop}>
-                      {shops[i].shopName}
+            {appointments.map((appointment, i) => {
+              if (new Date(appointment.startDate) > dateNow) {
+                return (
+                  <Card key={appointment._id}>
+                    <View style={styles.cardHeader}>
+                      <Text style={styles.appointmentShop}>
+                        {shops[i].shopName}
+                      </Text>
+                      <CustomBadge
+                        title={`${appointment.chosenPrice}€`}
+                        color='#fff'
+                        backgroundColor={
+                          appointment.chosenPayment === 'online'
+                            ? '#16a085'
+                            : '#E65100'
+                        }
+                        width={50}
+                      />
+                    </View>
+                    <Text style={styles.appointmentAddresses}>
+                      {shops[i].shopAddress}
                     </Text>
-                    <CustomBadge
-                      title={`${appointment.chosenPrice}€`}
-                      color='#fff'
-                      backgroundColor={
-                        appointment.chosenPayment === 'online'
-                          ? '#16a085'
-                          : '#E65100'
-                      }
-                      width={50}
-                    />
-                  </View>
-                  <Text style={styles.appointmentAddresses}>
-                    {shops[i].shopAddress}
-                  </Text>
-                  <Text>{appointment.chosenOffer}</Text>
-                  <Text style={styles.appointmentDate}>
-                    {formatAppointDate(appointment.startDate)}
-                  </Text>
-                  <CustomButton
-                    title='Communique avec ton coiffeur'
-                    color='#fff'
-                    backgroundColor='#4280AB'
-                    onPress={() => openCommunication(shops[i])}
-                  />
-                </Card>
-              );
-            } else {
-              <Text style={styles.noAppoints}>Pas de Rdv à venir</Text>;
-            }
-          })}
-        </View>
-        {/* Appointement Passed */}
-        <View style={styles.appointmentBox}>
-          <Text style={styles.appointmentTitle}>Rdv passés :</Text>
-          <View style={styles.bottomTitle}></View>
-          {appointments.map((appointment, i) => {
-            {
-              /* if (i > 0 && i < 2) {
-              msgInfo = true;
-              return (
-                <Text key={i} style={styles.noAppoints}>
-                  Pas de Rdv passés
-                </Text>
-              );
-            } */
-            }
-
-            if (new Date(appointment.startDate) < dateNow) {
-              console.log(shops[i].shopName, 'Shops i 2');
-              return (
-                <Card key={appointment._id}>
-                  <View style={styles.cardHeader}>
-                    <Text style={styles.appointmentShop}>
-                      {shops[i].shopName}
+                    <Text>{appointment.chosenOffer}</Text>
+                    <Text style={styles.appointmentDate}>
+                      {formatAppointDate(appointment.startDate)}
                     </Text>
-                    <CustomBadge
-                      title={`${appointment.chosenPrice}€`}
-                      color='#fff'
-                      backgroundColor='#16a085'
-                      width={40}
-                    />
-                  </View>
-                  <Text style={styles.appointmentAddresses}>
-                    {shops[i].shopAddress}
-                  </Text>
-                  <Text>{appointment.chosenOffer}</Text>
-                  <Text style={styles.appointmentDate}>
-                    {formatAppointDate(appointment.startDate)}
-                  </Text>
-                  <Modal visible={modalOpen} animationType='slide'>
-                    <TouchableWithoutFeedback
-                      onPress={() => Keyboard.dismiss()}
-                    >
-                      <View style={styles.modalContent}>
-                        <FontAwesome
-                          style={{
-                            ...styles.modalToggle,
-                            ...styles.modalClose,
-                          }}
-                          name='close'
-                          color='#E65100'
-                          size={24}
-                          onPress={() => setModalOpen(false)}
-                        />
-                        <CommentFormScreen addComment={addComment} />
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </Modal>
-                  {appointment.commentExists ? (
                     <CustomButton
-                      title='Reprendre Rendez-vous'
-                      color='#fff'
-                      backgroundColor='#AB4242'
-                      onPress={() => openShop(shops[i]._id)}
-                    />
-                  ) : (
-                    <CustomButton
-                      title='Écrire un avis'
+                      title='Communique avec ton coiffeur'
                       color='#fff'
                       backgroundColor='#4280AB'
-                      onPress={() => openComment(shops[i]._id, appointment._id)}
+                      onPress={() => openCommunication(shops[i])}
                     />
-                  )}
-                </Card>
-              );
-            } else {
-              <Text key={i} style={styles.noAppoints}>
-                Pas de Rdv passés
-              </Text>;
-            }
-          })}
-        </View>
+                  </Card>
+                );
+              } else {
+                <Text style={styles.noAppoints}>Pas de Rdv à venir</Text>;
+              }
+            })}
+          </View>
+        )}
+        {/* Appointement Passed */}
+        {loading ? (
+          <ActivityIndicator size='large' color='#121212' />
+        ) : (
+          <View style={styles.appointmentBox}>
+            <Text style={styles.appointmentTitle}>Rdv passés :</Text>
+            <View style={styles.bottomTitle}></View>
+            {appointments.map((appointment, i) => {
+              if (new Date(appointment.startDate) < dateNow) {
+                return (
+                  <Card key={appointment._id}>
+                    <View style={styles.cardHeader}>
+                      <Text style={styles.appointmentShop}>
+                        {shops[i].shopName}
+                      </Text>
+                      <CustomBadge
+                        title={`${appointment.chosenPrice}€`}
+                        color='#fff'
+                        backgroundColor='#16a085'
+                        width={40}
+                      />
+                    </View>
+                    <Text style={styles.appointmentAddresses}>
+                      {shops[i].shopAddress}
+                    </Text>
+                    <Text>{appointment.chosenOffer}</Text>
+                    <Text style={styles.appointmentDate}>
+                      {formatAppointDate(appointment.startDate)}
+                    </Text>
+                    <Modal visible={modalOpen} animationType='slide'>
+                      <TouchableWithoutFeedback
+                        onPress={() => Keyboard.dismiss()}
+                      >
+                        <View style={styles.modalContent}>
+                          <FontAwesome
+                            style={{
+                              ...styles.modalToggle,
+                              ...styles.modalClose,
+                            }}
+                            name='close'
+                            color='#E65100'
+                            size={24}
+                            onPress={() => setModalOpen(false)}
+                          />
+                          <CommentFormScreen addComment={addComment} />
+                        </View>
+                      </TouchableWithoutFeedback>
+                    </Modal>
+                    {appointment.commentExists ? (
+                      <CustomButton
+                        title='Reprendre Rendez-vous'
+                        color='#fff'
+                        backgroundColor='#AB4242'
+                        onPress={() => openShop(shops[i]._id)}
+                      />
+                    ) : (
+                      <CustomButton
+                        title='Écrire un avis'
+                        color='#fff'
+                        backgroundColor='#4280AB'
+                        onPress={() =>
+                          openComment(shops[i]._id, appointment._id)
+                        }
+                      />
+                    )}
+                  </Card>
+                );
+              } else {
+                <Text key={i} style={styles.noAppoints}>
+                  Pas de Rdv passés
+                </Text>;
+              }
+            })}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
