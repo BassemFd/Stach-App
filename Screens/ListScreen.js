@@ -10,7 +10,8 @@ import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/Global';
 import Card from '../shared/Card';
 import ButtonYaya from '../shared/Button';
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {Button} from 'react-native-elements'
 import * as Location from 'expo-location';
 
 import { FontAwesome } from '@expo/vector-icons';
