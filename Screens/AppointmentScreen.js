@@ -19,8 +19,6 @@ function Appointment(props) {
     }
   }, []);
 
-  console.log(props.appointment.prestationPrice, 'Press price');
-
   const [paiement, setPaiement] = useState([
     { id: 1, value: true, name: 'Paiement en ligne', selected: true },
     { id: 2, value: false, name: 'Paiement sur place', selected: false },
@@ -87,14 +85,6 @@ function Appointment(props) {
       }),
     });
     setModalVisible(true);
-  };
-
-  console.log(serviceChoice, 'Service');
-  console.log(servicePrice, 'price');
-  console.log(props.appointment.shopDetailsID, 'ID S');
-
-  const handleHideModal = () => {
-    setModalVisible(!modalVisible);
     props.navigation.navigate('Profile');
   };
 
