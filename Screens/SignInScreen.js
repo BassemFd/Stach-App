@@ -14,11 +14,21 @@ import CustomButton from '../shared/Button';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function SignIn({ navigation, onAddToken }) {
+import { StackActions } from '@react-navigation/native';
+
+function SignIn({ navigation, onAddToken, token }) {
+
+  if (token !== "") {
+    const popAction = StackActions.pop(1);
+    navigation.dispatch(popAction);  
+  }
+
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
   const [passwordError, setPasswordError] = useState(null);
   const [emailError, setEmailError] = useState(null);
+
+  const popAction = StackActions.pop(0);
 
   const handleSubmitSignin = async () => {
     // console.log(IP_ADDRESS);
@@ -37,7 +47,7 @@ function SignIn({ navigation, onAddToken }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      navigation.navigate('Profile');
+      navigation.dispatch(popAction);
       // console.log('True');
     }
 
@@ -143,4 +153,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignIn);
+const mapStateToProps = (state) => {
+  return { token: state.token };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

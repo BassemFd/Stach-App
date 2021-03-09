@@ -23,7 +23,8 @@ const Drawer = createDrawerNavigator();
 function DrawerNavigator(props) {
 let conditionnalDrawer;
     if (props.token == "") {
-        conditionnalDrawer = (<Drawer.Navigator
+        conditionnalDrawer = (
+        <Drawer.Navigator
             initialRouteName='TemporaryPage'
             drawerStyle={{
               backgroundColor: '#FFFAEB',
@@ -37,8 +38,7 @@ let conditionnalDrawer;
               options={({ navigation }) => {
                 return {
                   headerLeft: () => <Header navigation={navigation} />,
-                  drawerLabel:() => null,
-                  title:null,
+                  drawerLabel:"Reprendre la recherche",
                   headerStyle: {
                       backgroundColor: '#FFE082',
                       height: 100,
@@ -52,7 +52,13 @@ let conditionnalDrawer;
                         fontSize: 44,
                       },
                   
-                  drawerIcon: () => null }}}
+                  drawerIcon: ({focused, size}) => (
+                    <Icon
+                      name="undo"
+                      size={24}
+                      color={focused ? '#7cc' : '#4280AB'}
+                    />
+                  ), }}}
             />
             <Drawer.Screen
               name='Home'
@@ -184,7 +190,7 @@ let conditionnalDrawer;
               options={({ navigation }) => {
                 return {
                   headerLeft: () => <Header navigation={navigation} />,
-                  drawerLabel:'',
+                  drawerLabel:"Reprendre la recherche",
                   headerStyle: {
                     backgroundColor: '#FFE082',
                     height: 100,
@@ -199,7 +205,7 @@ let conditionnalDrawer;
                     },
                   drawerIcon: ({focused, size}) => (
                     <Icon
-                      name="close"
+                      name="undo"
                       size={24}
                       color={focused ? '#7cc' : '#4280AB'}
                     />

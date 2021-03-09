@@ -16,7 +16,9 @@ import CustomButton from '../shared/Button';
 import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
 import { connect } from 'react-redux';
 
-function SignUp({ navigation, onAddToken }) {
+import { StackActions } from '@react-navigation/native';
+
+function SignUp({ navigation, onAddToken, token }) {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPhoneNumber, setSignUpPhoneNumber] = useState('');
   const [signUpFirstName, setSignUpFirstName] = useState('');
@@ -29,6 +31,13 @@ function SignUp({ navigation, onAddToken }) {
   const [lastNameError, setLastNameError] = useState(null);
   const [phoneNumberError, setPhoneNumberError] = useState(null);
   const [inputError, setInputError] = useState(null);
+
+  if (token !== "") {
+    const popAction = StackActions.pop(0);
+    navigation.dispatch(popAction);  
+  }
+
+  const popAction = StackActions.pop(0);
 
   const handleSubmitSignin = async () => {
     const data = await fetch(`${IP_ADDRESS}/users/signUp`, {
@@ -50,7 +59,7 @@ function SignUp({ navigation, onAddToken }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      navigation.navigate('Profile');
+      navigation.dispatch(popAction);
     }
 
     if (body.error) {
@@ -154,4 +163,8 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignUp);
+const mapStateToProps = (state) => {
+  return { token: state.token };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

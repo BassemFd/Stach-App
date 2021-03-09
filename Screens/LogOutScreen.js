@@ -3,6 +3,8 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
+import { StackActions } from '@react-navigation/native';
+
 
 
 function LogOutScreen(props) {
@@ -11,6 +13,7 @@ function LogOutScreen(props) {
         <Text style={{fontSize: 24, margin: 20, textAlign:'center', marginBottom:40}}>Voulez-vous vraiment vous déconnecter ?</Text>
         <Button  title="Se deconnecter" onPress={() =>{
             props.onRemoveToken();
+            props.navigation.dispatch(StackActions.popToTop());
             props.navigation.navigate('Home')}}/>
         <Button color="#f194ff" title="Retour" onPress={() => props.navigation.goBack()}/>
     </View>

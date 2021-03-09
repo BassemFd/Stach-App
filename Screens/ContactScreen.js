@@ -13,7 +13,7 @@ import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarous
 
 
 
-export default function Contact() {
+export default function Contact(props) {
 
   const isCarousel = useRef(null)
   const [index, setIndex] = useState(0)
