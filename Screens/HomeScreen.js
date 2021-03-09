@@ -77,30 +77,6 @@ function HomeScreen(props) {
       {image_url: require('../assets/picture4.jpg'), title : "BIEN ETRE", description : "Si vous êtes un peu stressé à l'idée d'avoir une nouvelle coupe, alors détendez vous et profitez d'un massage"}
     ]
 
-    //Handling colors of top buttons
-    var colorButtonSalon;
-    var colorButtonDomicile;
-  
-    if (selectType == 'salon') {
-      colorButtonSalon = {
-        backgroundColor : "#FFCD41"
-      }
-    }  else {
-      colorButtonSalon = {
-        backgroundColor : "#FFECB2"
-      }
-    }
-  
-    if (selectType == 'chez toi') {
-      colorButtonDomicile = {
-        backgroundColor : "#FFCD41"
-      }
-    }  else {
-      colorButtonDomicile = {
-        backgroundColor : "#FFECB2"
-      }
-    }
-
     // Date and Time functions
     const showDatePicker = () => {
       setDatePickerVisibility(true);
@@ -227,26 +203,13 @@ function HomeScreen(props) {
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
   <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
     
-    <Text style={{marginTop:20}}></Text>
+    <Text style={{marginTop:0}}></Text>
     
-    <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'70%', marginTop:10}}>
-    <Button
-            containerStyle={{width : "45%"}}
-            title="SALON"
-            type="solid"
-            onPress={() => setSelectType('salon')}
-            buttonStyle = {colorButtonSalon}
-    />
-    <Button
-            containerStyle={{width : "45%"}}
-            title="CHEZ TOI"
-            type="solid"
-            onPress={() => setSelectType('chez toi')}
-            buttonStyle = {colorButtonDomicile}
-    />
+    <View style={{flex:1, flexDirection:"row", backgroundColor: "#FFE082", justifyContent:'space-around', width:'70%'}}>
+    
     </View>
 
-    <View style={{flex:6, backgroundColor: "#FFE082", width:'90%', marginTop:10}}>
+    <View style={{flex:6, backgroundColor: "white", width:'90%', padding:15, borderRadius:20}}>
     <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>OU ?</Text>
     <View style={{flex:1, flexDirection:"row", alignItems:'center', alignContent:'center'}}>
     <GooglePlacesAutocomplete
@@ -308,7 +271,7 @@ function HomeScreen(props) {
 
     </View>
     <Text style={{color:"red"}}>{errorMessage}</Text>
-    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUAND ?</Text>
+    <Text style={{fontWeight : "bold", fontSize: 20}}>{props.pseudo}QUAND ?</Text>
     <TouchableOpacity onPress={async()=>{await setMode('date'); showDatePicker()}}>
     <Input
             inputStyle={{marginLeft: 10}}
@@ -327,7 +290,7 @@ function HomeScreen(props) {
     </TouchableOpacity>
     
     <CheckBox
-      containerStyle={{backgroundColor: "#FFE082", borderWidth: 0}}
+      containerStyle={{backgroundColor: "white", borderWidth: 0}}
       title='Toutes les dates'
       checkedIcon='dot-circle-o'
       uncheckedIcon='circle-o'
@@ -352,7 +315,7 @@ function HomeScreen(props) {
     />
     </TouchableOpacity>
     <CheckBox
-      containerStyle={{backgroundColor: "#FFE082", borderWidth: 0}}
+      containerStyle={{backgroundColor: "white", borderWidth: 0}}
       title='Toutes les heures'
       checkedIcon='dot-circle-o'
       uncheckedIcon='circle-o'
@@ -380,11 +343,12 @@ function HomeScreen(props) {
     onPress={() => validationButton()}
     buttonStyle = {{backgroundColor : "#4280AB"}}
     />
-
-    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10, marginBottom:10}}>EXPERIENCES</Text>
+    
+    
     </View>
-
-    <View style={{flex:1, alignItems:'center', backgroundColor: "#FFE082"}}>
+    
+    <View style={{flex:1, backgroundColor: "#FFE082"}}>
+    <Text style={{fontWeight : "bold", fontSize: 20, marginLeft:35, marginTop:25, marginBottom:10}}>EXPERIENCES</Text>
     <ScrollView
     horizontal={true}
     contentContainerStyle={{ width: `${100*4}%`}}
