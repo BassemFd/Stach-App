@@ -110,8 +110,7 @@ function NavigatorStack() {
   return (
     
    
-        <Stack.Navigator initialRouteName='TemporaryPage' screenOptions={{ headerShown: false}}>
-          <Stack.Screen name='TemporaryPage' component={TemporaryPage}/>
+        <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false}}>
           <Stack.Screen name='Home' component={HomeScreen}/>
           <Stack.Screen name='ButtonTabShop' component={ButtonTabShop}/>
           <Stack.Screen name='Shop' component={ShopScreen}/>

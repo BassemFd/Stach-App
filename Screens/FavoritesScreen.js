@@ -4,25 +4,28 @@ import { FontAwesome } from '@expo/vector-icons';
 import {globalStyles} from '../styles/Global';
 import { connect } from 'react-redux';
 import {IP_ADDRESS} from '@env';
+import { useIsFocused } from '@react-navigation/native';
 
 
 
  const FavoritesScreen = (props) => {
 
     const [favoriteTab, setFavoriteTab] = useState({})
+    const isFocused = useIsFocused();
 
     useEffect( () => {
+        
         async function getResponse(){
-          if(props.token){
+         
               let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
                 let body = await shopsFetch.json();
                 setFavoriteTab(body.favoriteShops)
-          }
+    
         }
         getResponse()
           return () => {}
         
-        }, [favoriteTab])
+        }, [isFocused])
 
 
         function navigation(shopDetails) {

@@ -22,6 +22,7 @@ import CarouselCardItem, {
 } from '../shared/cardCarousel';
 import { connect } from 'react-redux';
 import {IP_ADDRESS} from '@env';
+import { useIsFocused } from '@react-navigation/native';
 
 
 
@@ -31,13 +32,15 @@ import {IP_ADDRESS} from '@env';
 
 function Shop(props) {
   
-
+const isFocused = useIsFocused();
 const [favorite, setFavorite] = useState(false);
 
   //**Favorite Saloon Press ASYNC storage Local Storage********** */
 
   useEffect( () => {
+    
     async function getResponse(){
+      console.log("mise a jour coeur")
       if(props.token){
           let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
             let body = await shopsFetch.json();
@@ -54,7 +57,8 @@ const [favorite, setFavorite] = useState(false);
         console.log("This will be logged on unmount");
       }
     
-    }, [favorite])
+    }, [isFocused])
+
 
 
 

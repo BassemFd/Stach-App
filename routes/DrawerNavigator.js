@@ -24,14 +24,14 @@ function DrawerNavigator(props) {
   if (props.token == '') {
     conditionnalDrawer = (
       <Drawer.Navigator
-        initialRouteName='TemporaryPage'
+        initialRouteName='HomeScreen'
         drawerStyle={{
           backgroundColor: '#FFFAEB',
         }}
         screenOptions={{ headerShown: true }}
       >
         <Drawer.Screen
-          name='TemporaryPage'
+          name='HomeScreen'
           component={NavigatorStack}
           options={({ navigation }) => {
             return {
@@ -182,14 +182,14 @@ function DrawerNavigator(props) {
   } else {
     conditionnalDrawer = (
       <Drawer.Navigator
-        initialRouteName='TemporaryPage'
+        initialRouteName='HomeScreen'
         drawerStyle={{
           backgroundColor: '#FFFAEB',
         }}
         screenOptions={{ headerShown: true }}
       >
         <Drawer.Screen
-          name='TemporaryPage'
+          name='HomeScreen'
           component={NavigatorStack}
           options={({ navigation }) => {
             return {
