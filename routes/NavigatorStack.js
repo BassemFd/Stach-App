@@ -45,7 +45,7 @@ const store = createStore(
     details,
     shopsData,
     token,
-    favorite
+    favorite,
   })
 );
 
@@ -73,8 +73,20 @@ function ButtonTabSign() {
         },
       }}
     >
-      <Tab.Screen name='SignIn' component={SignInScreen} />
-      <Tab.Screen name='SignUp' component={SignUpScreen} />
+      <Tab.Screen
+        options={{
+          tabBarLabel: 'Se connecter',
+        }}
+        name='SignIn'
+        component={SignInScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarLabel: "S'inscrire",
+        }}
+        name='SignUp'
+        component={SignUpScreen}
+      />
     </Tab.Navigator>
   );
 }
@@ -108,24 +120,22 @@ function ButtonTabShop() {
 
 function NavigatorStack() {
   return (
-    
-   
-        <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false}}>
-          <Stack.Screen name='Home' component={HomeScreen}/>
-          <Stack.Screen name='ButtonTabShop' component={ButtonTabShop}/>
-          <Stack.Screen name='Shop' component={ShopScreen}/>
-          <Stack.Screen name='ButtonTabSign' component={ButtonTabSign}/>
-          <Stack.Screen name='Appointment' component={AppointmentScreen}/>
-          <Stack.Screen name='Details' component={DetailsScreen}/>
-          <Stack.Screen name='Profile' component={ProfileScreen}/>
-          <Stack.Screen name='Contact' component={ContactScreen}/>
-          <Stack.Screen name='Filtres' component={Filtres}/>
-          <Stack.Screen name='LogOutScreen' component={LogOutScreen}/>
-          <Stack.Screen name='Favorites' component={FavoritesScreen}/>
-
-        </Stack.Navigator>
-
-    
+    <Stack.Navigator
+      initialRouteName='Home'
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='ButtonTabShop' component={ButtonTabShop} />
+      <Stack.Screen name='Shop' component={ShopScreen} />
+      <Stack.Screen name='ButtonTabSign' component={ButtonTabSign} />
+      <Stack.Screen name='Appointment' component={AppointmentScreen} />
+      <Stack.Screen name='Details' component={DetailsScreen} />
+      <Stack.Screen name='Profile' component={ProfileScreen} />
+      <Stack.Screen name='Contact' component={ContactScreen} />
+      <Stack.Screen name='Filtres' component={Filtres} />
+      <Stack.Screen name='LogOutScreen' component={LogOutScreen} />
+      <Stack.Screen name='Favorites' component={FavoritesScreen} />
+    </Stack.Navigator>
   );
 }
 

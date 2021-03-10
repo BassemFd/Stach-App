@@ -11,16 +11,15 @@ import {
 import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
-import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { IP_ADDRESS } from '@env';
 import { connect } from 'react-redux';
 
 import { StackActions } from '@react-navigation/native';
 
 function SignIn({ navigation, onAddToken, token, appointment }) {
-
-  if (token !== "") {
+  if (token !== '') {
     const popAction = StackActions.pop(1);
-    navigation.dispatch(popAction);  
+    navigation.dispatch(popAction);
   }
 
   const [signInEmail, setSignInEmail] = useState('');
@@ -47,20 +46,20 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
       setPasswordError(body.invalidPassword);
     } else {
       onAddToken(body.token);
-      navigation.dispatch(popAction);      
+      navigation.dispatch(popAction);
       // console.log('True');
     }
 
     switch (body.error) {
       case '"email" is not allowed to be empty':
-        setEmailError("L'email ne doit pas être vide");
+        setEmailError("L'e-mail ne doit pas être vide");
         break;
       case '"email" must be a valid email':
-        setEmailError("L'email doit être une adresse e-mail valide");
+        setEmailError("L'e-mail doit être une adresse e-mail valide");
         break;
       case '"email" length must be at least 6 characters long':
         setEmailError(
-          "La longueur de l'email doit comporter au moins 6 caractères"
+          "La longueur de l'e-mail doit comporter au moins 6 caractères"
         );
         break;
       case '"password" length must be at least 6 characters long':
@@ -79,24 +78,22 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
 
   return (
     <ScrollView style={globalStyles.container}>
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-       
-      <View >
-      
-        <View style={globalStyles.hr}></View>
-        <View style={globalStyles.socialNetwork}>
-          <View style={globalStyles.socialNetworkContent}>
-            <Text>Inscris toi avec Gmail</Text>
-            <Text>
-              <FontAwesome
-                name='google-plus-square'
-                size={24}
-                color='#DD4B39'
-              />
-            </Text>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View>
+          <View style={globalStyles.hr}></View>
+          <View style={globalStyles.socialNetwork}>
+            <View style={globalStyles.socialNetworkContent}>
+              <Text>Inscris toi avec Gmail</Text>
+              <Text>
+                <FontAwesome
+                  name='google-plus-square'
+                  size={24}
+                  color='#DD4B39'
+                />
+              </Text>
+            </View>
           </View>
-        </View>
-        {/* <View style={globalStyles.socialNetwork}>
+          {/* <View style={globalStyles.socialNetwork}>
           <View style={globalStyles.socialNetworkContent}>
             <Text>Inscris toi avec Facebook</Text>
             <Text>
@@ -104,13 +101,13 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
             </Text>
           </View>
         </View> */}
-      
+
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
           </View>
           <TextInput
             style={globalStyles.input}
-            placeholder='Email'
+            placeholder='E-mail'
             onChangeText={(value) => setSignInEmail(value)}
           />
           {emailError !== null && (
@@ -119,7 +116,7 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
           <TextInput
             style={globalStyles.input}
             secureTextEntry={true}
-            placeholder='Password'
+            placeholder='Mot de passe'
             onChangeText={(value) => setSignInPassword(value)}
           />
           {passwordError !== null && (
@@ -133,9 +130,8 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
               onPress={() => handleSubmitSignin()}
             />
           </View>
-        
-      </View>
-    </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     </ScrollView>
   );
 }
@@ -157,6 +153,5 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return { token: state.token, appointment: state.details };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -13,12 +13,12 @@ import {
 import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
-import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { IP_ADDRESS } from '@env';
 import { connect } from 'react-redux';
 
 import { StackActions } from '@react-navigation/native';
 
-function SignUp({ navigation, onAddToken, token, appointment }) {
+function SignUp({ navigation, onAddToken, token }) {
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPhoneNumber, setSignUpPhoneNumber] = useState('');
   const [signUpFirstName, setSignUpFirstName] = useState('');
@@ -32,9 +32,9 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
   const [phoneNumberError, setPhoneNumberError] = useState(null);
   const [inputError, setInputError] = useState(null);
 
-  if (token !== "") {
+  if (token !== '') {
     const popAction = StackActions.pop(0);
-    navigation.dispatch(popAction);  
+    navigation.dispatch(popAction);
   }
 
   const popAction = StackActions.pop(0);
@@ -71,26 +71,24 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
 
   return (
     <ScrollView style={globalStyles.container}>
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        
-      >
-    
-        <View style={globalStyles.hr}></View>
-        <View style={globalStyles.socialNetwork}>
-          <View style={globalStyles.socialNetworkContent}>
-            <Text>Inscris toi avec Gmail</Text>
-            <Text>
-              <FontAwesome
-                name='google-plus-square'
-                size={24}
-                color='#DD4B39'
-              />
-            </Text>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={globalStyles.hr}></View>
+          <View style={globalStyles.socialNetwork}>
+            <View style={globalStyles.socialNetworkContent}>
+              <Text>Inscris toi avec Gmail</Text>
+              <Text>
+                <FontAwesome
+                  name='google-plus-square'
+                  size={24}
+                  color='#DD4B39'
+                />
+              </Text>
+            </View>
           </View>
-        </View>
-        {/* <View style={globalStyles.socialNetwork}>
+          {/* <View style={globalStyles.socialNetwork}>
           <View style={globalStyles.socialNetworkContent}>
             <Text>Inscris toi avec Facebook</Text>
             <Text>
@@ -98,7 +96,7 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
             </Text>
           </View>
         </View> */}
-        
+
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
           </View>
@@ -115,7 +113,7 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
           <TextInput
             style={globalStyles.input}
             secureTextEntry={true}
-            placeholder='Password'
+            placeholder='Mot de passe'
             onChangeText={(value) => setSignUpPassword(value)}
           />
           <TextInput
@@ -126,7 +124,7 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
           />
           <TextInput
             style={globalStyles.input}
-            placeholder='Email'
+            placeholder='E-mail'
             onChangeText={(value) => setSignUpEmail(value)}
           />
           {emailError !== null && (
@@ -143,9 +141,8 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
               onPress={() => handleSubmitSignin()}
             />
           </View>
-      
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </ScrollView>
   );
 }
@@ -167,6 +164,5 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return { token: state.token, appointment: state.details };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

@@ -15,7 +15,7 @@ import CustomBadge from '../shared/Badge';
 import CustomButton from '../shared/Button';
 import Card from '../shared/Card';
 import CommentFormScreen from './CommentFormScreen';
-import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { IP_ADDRESS } from '@env';
 import { connect } from 'react-redux';
 
 function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
