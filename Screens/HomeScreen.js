@@ -45,19 +45,14 @@ function HomeScreen(props) {
   let snapToIntervalValue = 50;
   windowWidth < 380 ? snapToIntervalValue = 50 : null;
 
-  // console.log(windowHeight, windowWidth)
+
 
   useEffect(() => {
     ref.current?.setAddressText('');
   }, []);
 
     //Checking console.log to see what are user's inputs
-    // console.log("service", props.selectedService);
-    // console.log("type", selectType);
-    // console.log("date", date);
-    // console.log("address", address);
-    // console.log("position",position)
-    // console.log("reducers: ", props.search)
+
 
     //Overlay states to display
     const [dataOverlay, setDataOverlay] = useState({})
@@ -100,13 +95,10 @@ function HomeScreen(props) {
         setDate(newDateTer)
         setIsDateSelected(true)
       } else if (mode == 'time') {
-        // console.log("choice time", choice.getHours(), choice.getMinutes(), date)
         let chosenHour = choice.getHours();
         let chosenMinutes = choice.getMinutes();
         let newDate = new Date (date.setHours(chosenHour+1))
         let newDateBis = new Date (newDate.setMinutes(chosenMinutes))
-        // console.log("NEW DATEEEEEEEEEE", newDateBis)
-        // SetDate juste en changeant l'heure
         setDate(newDateBis)
         setIsTimeSelected(true)
       }
@@ -198,7 +190,7 @@ function HomeScreen(props) {
       }
     }
 
-    // console.log("inputAddress", ref.current.getAddressText())
+
   return (
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
   <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
@@ -224,8 +216,6 @@ function HomeScreen(props) {
         let newPosition = await Location.geocodeAsync(details.formatted_address)
         
         setPosition({latitude : newPosition[0].latitude, longitude : newPosition[0].longitude})
-        // console.log("Google Details", (details.address_components[0].long_name + " " + details.address_components[1].long_name + ", " + details.address_components[2].long_name + ", " + details.address_components[5].long_name))
-        // setAddress(details.formatted_address) 
         setAddress((details.address_components[0].long_name + " " + details.address_components[1].long_name + ", " + details.address_components[2].long_name + ", " + details.address_components[5].long_name))   
       }}
       
@@ -331,7 +321,7 @@ function HomeScreen(props) {
         minimumDate={new Date()}
       />
 
-    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>{props.pseudo}QUOI ?
+    <Text style={{fontWeight : "bold", fontSize: 20, marginTop:10,}}>QUOI ?
     </Text>
     
     <ModalService/>

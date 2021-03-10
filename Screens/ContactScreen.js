@@ -1,13 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import { StyleSheet, Text, View, Linking, ScrollView } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { globalStyles } from '../styles/Global';
-import CustomBadge from '../shared/Badge';
 import CustomButton from '../shared/Button';
-import CommentFormScreen from './CommentFormScreen';
-import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
-import { connect } from 'react-redux';
-import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../shared/cardCarousel';
 

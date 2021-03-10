@@ -1,24 +1,19 @@
-// Uncheck if you want hide the warning logs
+
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
 import { IP_ADDRESS } from '@env';
-
 import React, { useState, useEffect } from 'react';
 import { globalStyles } from '../styles/Global';
-import Card from '../shared/Card';
 import ButtonYaya from '../shared/Button';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
-import * as Location from 'expo-location';
-
 import { FontAwesome } from '@expo/vector-icons';
-
 import { connect } from 'react-redux';
 
 function List(props) {
-  //const [shopsList, setShopsList] = useState([])
+
   const [shopsData, setShopsData] = useState([]);
   const [orderPriceSort, setOrderPriceSort] = useState(false);
   const [orderServicesSort, setOrderServicesSort] = useState(false);
@@ -62,7 +57,7 @@ function List(props) {
   //     },
   // ]
 
-  // console.log("IPADDRESSS", `${IP_ADDRESS}/search`)
+  
   useEffect(() => {
     // Fetch request from search to BDD
     async function getShops() {
@@ -72,7 +67,7 @@ function List(props) {
         body: JSON.stringify({ data: props.search }),
       });
       let body = await shopsFetch.json();
-      // console.log("shoplist FFFFFFFFFFFFFFFFff", body)
+
       setShopsData(body.filteredDistanceShopsList);
       var shopsDataCopy = body.filteredDistanceShopsList;
       props.saveShopsdata(shopsDataCopy);
@@ -80,28 +75,9 @@ function List(props) {
 
     getShops();
 
-    // async function getLocation() {
-    //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    //     // if (status === 'granted') {
-    //     //   Location.watchPositionAsync({ distanceInterval: 2 },
-    //     //     (location) => {
-    //     //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
-    //     //     }
-    //     //   );
-    //     // }
-
-    //     var shopsTab = [];
-    //     for (let i=0; i<coiffeurs.length; i++) {
-    //       let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
-    //       let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
-    //       shopsTab.push(shop);
-    //     }
-    //     setShopsList(shopsTab);
-    //   }
-    //   getLocation();
   }, [props.search]);
 
-  // console.log("shopList :", shopsData)
+
 
   function navigation(shopDetails) {
     props.navigation.navigate('Shop');
@@ -234,7 +210,6 @@ function List(props) {
                         <Text style={{ fontWeight: 'bold' }}>
                           {element.shopName}
                         </Text>
-                        {/* <FontAwesome name='heart-o' size={15} color='black' /> */}
                       </View>
                       <Text style={styles.pad}>{element.shopAddress}</Text>
                       <View style={styles.picto}>{priceTab}</View>

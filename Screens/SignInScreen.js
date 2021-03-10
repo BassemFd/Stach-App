@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 
 import { StackActions } from '@react-navigation/native';
 
-function SignIn({ navigation, onAddToken, token, appointment }) {
+function SignIn({ navigation, onAddToken, token }) {
   if (token !== '') {
     const popAction = StackActions.pop(1);
     navigation.dispatch(popAction);
@@ -30,7 +30,6 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
   const popAction = StackActions.pop(0);
 
   const handleSubmitSignin = async () => {
-    // console.log(IP_ADDRESS);
     const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -47,7 +46,6 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
     } else {
       onAddToken(body.token);
       navigation.dispatch(popAction);
-      // console.log('True');
     }
 
     switch (body.error) {
@@ -93,14 +91,6 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
               </Text>
             </View>
           </View>
-          {/* <View style={globalStyles.socialNetwork}>
-          <View style={globalStyles.socialNetworkContent}>
-            <Text>Inscris toi avec Facebook</Text>
-            <Text>
-              <FontAwesome name='facebook-square' size={24} color='#4267B2' />
-            </Text>
-          </View>
-        </View> */}
 
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
@@ -151,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return { token: state.token, appointment: state.details };
+  return { token: state.token };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
