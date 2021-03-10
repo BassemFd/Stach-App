@@ -23,23 +23,15 @@ import { connect } from 'react-redux';
 import {IP_ADDRESS} from '@env';
 import { useIsFocused } from '@react-navigation/native';
 
-
-
-
-
-
-
 function Shop(props) {
   
 const isFocused = useIsFocused();
 const [favorite, setFavorite] = useState(false);
 
-  //**Favorite Saloon Press ASYNC storage Local Storage********** */
-
   useEffect( () => {
     
     async function getResponse(){
-      console.log("mise a jour coeur")
+      
       if(props.token){
           let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
             let body = await shopsFetch.json();
@@ -61,52 +53,58 @@ const [favorite, setFavorite] = useState(false);
   var handleFavorite = async () => {
 
    if(props.token){
-    
+     
      if(favorite === false){
-   
-    props.favoriteShops(props.shopDetails._id);
-    
-   const FavoritePost =  await fetch(`${IP_ADDRESS}/favorites`, {
-        method: 'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body: `token=${props.token}&id=${props.shopDetails._id}`
+       
+       props.favoriteShops(props.shopDetails._id);
+       
+    const FavoritePost =  await fetch(`${IP_ADDRESS}/favorites`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: `token=${props.token}&id=${props.shopDetails._id}`
         }); 
- 
-
-    setFavorite(true)
+        
+        
+        setFavorite(true)
 
       } else {
         
-      const FavoriteDelete =   await fetch(`${IP_ADDRESS}/deleteFavorites`, {
+        const FavoriteDelete =   await fetch(`${IP_ADDRESS}/deleteFavorites`, {
           method: 'POST',
           headers: {'Content-Type':'application/x-www-form-urlencoded'},
           body: `token=${props.token}&id=${props.shopDetails._id}`
-          }); 
-          setFavorite(false)
-       
+        }); 
+        setFavorite(false)
+        
       }
-       
-   } else {
-
-    const NotConnectedAlert = () =>
-    Alert.alert(
-      'Connection Requise',
-      'Connectez-vous ou Créez un compte pour rajouter des favoris',
-
-      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-      { cancelable: false }
-    );
-  NotConnectedAlert();
-   }
-  
+      
+    } else {
+      
+      const NotConnectedAlert = () =>
+      Alert.alert(
+        'Connection Requise',
+        'Connectez-vous ou Créez un compte pour rajouter des favoris',
+        
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        { cancelable: false }
+        );
+        NotConnectedAlert();
+      }
+      
+      
+    };
     
-  };
-
-  //* Coiffeur
-
-  const [coiffeurVisible, setCoiffeurVisible] = useState(false);
-  const [coiffeurs, setCoiffeurs] = useState('Choix du Coiffeur');
-
+    var color;
+    if (favorite === true) {
+      color = '#e74c3c';
+    } else {
+      color = 'black';
+    }
+    //* Coiffeur
+    
+    const [coiffeurVisible, setCoiffeurVisible] = useState(false);
+    const [coiffeurs, setCoiffeurs] = useState('Choix du Coiffeur');
+    
   const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i) => {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -286,21 +284,13 @@ const [favorite, setFavorite] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(chosenVar);
   const [isDateSelected, setIsDateSelected] = useState(false);
+  const [chosenHour, setChosenHour] = useState();
 
   const isCarousel = useRef(null);
   const [index, setIndex] = useState(0);
-
-  const [chosenHour, setChosenHour] = useState();
-  
-
   const scrollRef = useRef(null);
 
-  var color;
-  if (favorite === true) {
-    color = '#e74c3c';
-  } else {
-    color = 'black';
-  }
+  
 
   //* Handling data for Carousel, using reducer
   var data = [];
@@ -328,6 +318,7 @@ const [favorite, setFavorite] = useState(false);
   
 
   function handleChoixDuSalon() {
+    
     let convertedHour = convertMinsToTime(chosenHour);
  
     if ( chosenHour === undefined){
@@ -363,7 +354,7 @@ const [favorite, setFavorite] = useState(false);
         experiences,
         experiencePrice,
         experienceDuration,
-        date == null ? chosenVar : chosenVar,
+        date == null ? chosenVar : chosenVar, //? bug résolu
         props.shopDetails.shopName,
         props.shopDetails.shopAddress,
         props.shopDetails._id,
@@ -434,6 +425,8 @@ const [favorite, setFavorite] = useState(false);
     });
   };
 
+  //*Comment section
+
   var listCommentItem = props.shopDetails.comments.map((l, i) => {
     //* mapping on stars for comments:
     var starCommentTab = [];
@@ -453,6 +446,7 @@ const [favorite, setFavorite] = useState(false);
       );
     }
     return (
+      
       <ListItem key={i} bottomDivider>
         <ListItem.Content>
           <ListItem.Title>
@@ -506,11 +500,12 @@ const [favorite, setFavorite] = useState(false);
     
   }
 const [dateToCompare, setDateToCompare] = useState()
+
   const handleConfirm = (choice) => {
     setDateToCompare(choice)
     var zeroDay = '';
     var zeroMonth = '';
-console.log("CHOICE", choice)
+
     choice.getDate() < 10 ? (zeroDay = '0') : null;
     choice.getMonth() < 10 ? (zeroMonth = '0') : null;
 
@@ -527,8 +522,9 @@ console.log("CHOICE", choice)
     setChosenVar(dateToSetter);
     hideDatePicker();
   };
-console.log("DATE TO COMPARE", dateToCompare)
+
   if (chosenVar) {
+
     let dateGoodFormat =
       chosenVar.split('-')[2] +
       '-' +
@@ -544,6 +540,7 @@ console.log("DATE TO COMPARE", dateToCompare)
       'Friday',
       'Saturday',
     ][new Date(dateGoodFormat).getDay()];
+
     let filteredSchedule = props.shopDetails.schedule.filter(
       (e) => e.dayOfTheWeek == chosenDay
     );
@@ -653,6 +650,7 @@ console.log("DATE TO COMPARE", dateToCompare)
   var datePhrase = 'Choisir une Date';
 
   
+//* Carousel
 
   var roundedRating = Math.round(hairdresser.starRating * 10) / 10;
   return (
@@ -772,12 +770,7 @@ console.log("DATE TO COMPARE", dateToCompare)
               <View style={styles.centeredView}>
                 <Pressable
                   onPress={() => setCoiffeurVisible(true)}
-                  style={[
-                    styles.button,
-                    styles.buttonOpen,
-                ,
-                    { width: 100 },
-                  ]}
+                  style={[ styles.button, styles.buttonOpen, { width: 100 }]}
                 >
                   <Text style={styles.textStyle}>{coiffeurs}</Text>
                 </Pressable>
@@ -1069,6 +1062,8 @@ function mapDispatchToProps(dispatch) {
       });
     },
 
+    //? isFocused remplace reducer dans la page favori
+    
     favoriteShops: function(shopID){
       dispatch({
         type: 'favoriteShop',

@@ -36,12 +36,13 @@ function Appointment(props) {
   const onRadioBtnClick = (item) => {
     let updatedState = paiement.map((paiement) =>
       paiement.id === item.id
-        ? { ...paiement, selected: true }
+        ? { ...paiement, selected: true }  //mettre à jour la clé valeur d'un objet avec le spread operator
         : { ...paiement, selected: false }
     );
     setPaiement(updatedState);
   };
 
+  //? ON a tous réutilisé les même fonction ce qui nous a permis de comprendre l'interêt d'utiliser MOMENT.JS
   let day = props.appointment.date.slice(0, 2);
   let month = props.appointment.date.slice(3, 5);
   let year = props.appointment.date.slice(6);
@@ -49,13 +50,14 @@ function Appointment(props) {
   let min = props.appointment.hour.slice(3);
   let sec = '00';
 
-  let prefixHour = '';
-  if (hour[0] === '8' || hour[0] === '9') {
-    prefixHour = '0' + hour;
-  } else {
-    prefixHour = hour;
-  }
+  // let prefixHour = '';
+  // if (hour[0] === '8' || hour[0] === '9') {
+  //   prefixHour = '0' + hour;
+  // } else {
+  //   prefixHour = hour;
+  // }
 
+  //? on rajoute les + pour transformer en nombre comme un parseInt() / Syntaxe ES6
   let startDateAppoint = new Date(
     +year,
     +month - 1,
@@ -75,7 +77,7 @@ function Appointment(props) {
   );
 
   const handleConfirm = async () => {
-    console.log(props.appointment, 'Appoint 2');
+   
     const data = await fetch(`${IP_ADDRESS}/addappointment/${props.token}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -208,7 +210,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 50,
     width: 50,
-    borderRadius: 50 / 2,
+    borderRadius: 50 / 2, 
     opacity: 0.5,
   },
   appointmentShop: {

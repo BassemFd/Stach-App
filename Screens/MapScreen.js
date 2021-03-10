@@ -1,60 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
-import { globalStyles } from '../styles/Global';
 import MapView, { Marker } from 'react-native-maps';
 import Button from '../shared/Button';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
 import { Overlay } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 
-// var coiffeurs = [
-//   {
-//     shopName: 'Coup Tif',
-//     shopImages: [
-//       'https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-//       'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-//     ],
-//     shopAddress: '72 rue dulong, 75017, Paris',
-//     shopPhone: '0100000000',
-//     shopMail: 'couptif@gmail.com',
-//     shopDescription:
-//       'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-//     shopFeatures: ['wheelchair-alt', 'glass', 'gamepad'],
-//     comments: [],
-//     shopEmployees: ['Fred', 'Dany'],
-//     offers: ['coupe homme', 'coupe femme'],
-//     packages: ['playstation'],
-//     schedule: [],
-//     atHome: false,
-//     appointments: [],
-//     priceFork: 1,
-//     rating: 4,
-//   },
-//   {
-//     shopName: 'Coiff',
-//     shopImages: [
-//       'https://images.pexels.com/photos/6171/hairstyle-hair-wedding-bride.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-//       'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-//     ],
-//     shopAddress: '23 rue Legendre, 75017, Paris',
-//     shopPhone: '0200000000',
-//     shopMail: 'coiff@gmail.com',
-//     shopDescription:
-//       'lorem lorem lorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem loremlorem lorem',
-//     shopFeatures: ['coffee', 'leaf', 'paw'],
-//     comments: [],
-//     shopEmployees: ['Philippe', 'Emma'],
-//     offers: ['coupe homme', 'coupe femme', 'coupe enfant'],
-//     packages: ['à deux'],
-//     schedule: [],
-//     atHome: true,
-//     appointments: [],
-//     priceFork: 2,
-//     rating: 2,
-//   },
-// ];
+
 
 function Map(props) {
   const [shopsList, setShopsList] = useState([]);
@@ -71,8 +23,7 @@ function Map(props) {
 
   useEffect(() => {
     setShopsList(props.shopsData);
-    console.log('search', props.search);
-
+ 
     if (props.search.latitude != undefined && props.search.longitude != undefined) {
         setLatitude(props.search.latitude);
         setLongitude(props.search.longitude);

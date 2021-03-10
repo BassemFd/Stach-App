@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import { StackActions } from '@react-navigation/native';
 
 function SignIn({ navigation, onAddToken, token }) {
+  
   if (token !== '') {
     const popAction = StackActions.pop(1);
     navigation.dispatch(popAction);

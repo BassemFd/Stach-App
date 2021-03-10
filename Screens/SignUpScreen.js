@@ -25,19 +25,22 @@ function SignUp({ navigation, onAddToken, token }) {
   const [signUpLastName, setSignUpLastName] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
 
-  const [passwordError, setPasswordError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);       //pas eu le temps de traiter, erreur plus spécifique sur chaque input
   const [emailError, setEmailError] = useState(null);
-  const [firstNameError, setFirstNameError] = useState(null);
-  const [lastNameError, setLastNameError] = useState(null);
-  const [phoneNumberError, setPhoneNumberError] = useState(null);
+  const [firstNameError, setFirstNameError] = useState(null);     //pas eu le temps de traiter, erreur plus spécifique sur chaque input
+  const [lastNameError, setLastNameError] = useState(null);       //pas eu le temps de traiter, erreur plus spécifique sur chaque input
+  const [phoneNumberError, setPhoneNumberError] = useState(null); //pas eu le temps de traiter, erreur plus spécifique sur chaque input
   const [inputError, setInputError] = useState(null);
 
+
+  //double sécurité au cas ou l'user connecté arrive sur cette page
   if (token !== '') {
     const popAction = StackActions.pop(0);
     navigation.dispatch(popAction);
   }
 
   const popAction = StackActions.pop(0);
+  
 
   const handleSubmitSignin = async () => {
     const data = await fetch(`${IP_ADDRESS}/users/signUp`, {
@@ -154,7 +157,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return { token: state.token, appointment: state.details };
+  return { token: state.token };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
