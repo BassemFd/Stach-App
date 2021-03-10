@@ -90,14 +90,6 @@ function SignUp({ navigation, onAddToken, token, appointment }) {
             </Text>
           </View>
         </View>
-        {/* <View style={globalStyles.socialNetwork}>
-          <View style={globalStyles.socialNetworkContent}>
-            <Text>Inscris toi avec Facebook</Text>
-            <Text>
-              <FontAwesome name='facebook-square' size={24} color='#4267B2' />
-            </Text>
-          </View>
-        </View> */}
         
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>

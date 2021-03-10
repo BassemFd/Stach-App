@@ -5,7 +5,6 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Button,
   Pressable,
   Alert,
 } from 'react-native';
@@ -44,7 +43,6 @@ const [favorite, setFavorite] = useState(false);
       if(props.token){
           let shopsFetch = await fetch(`${IP_ADDRESS}/favorites?token=${props.token}`);
             let body = await shopsFetch.json();
-            //console.log("BODY", body.favoriteShops)
             for(let i = 0; i < body.favoriteShops.length; i++){
               if(body.favoriteShops[i]._id === props.shopDetails._id){
                 setFavorite(true)
@@ -60,13 +58,7 @@ const [favorite, setFavorite] = useState(false);
     }, [isFocused])
 
 
-
-
-
-
   var handleFavorite = async () => {
-   
-    //console.log("TOKEN",props.token)
 
    if(props.token){
     
@@ -92,10 +84,8 @@ const [favorite, setFavorite] = useState(false);
           }); 
           setFavorite(false)
        
-
       }
        
-
    } else {
 
     const NotConnectedAlert = () =>
@@ -165,10 +155,7 @@ const [favorite, setFavorite] = useState(false);
   } else if(experiences == null){
   setExperiences("Choisir une Experience")
   }
-      // console.log('JUUU 0', props.shopDetails.packages[0].price)
-      // console.log('JUU 1', props.shopDetails.packages[0].duration)
-      // console.log('JUU 2', experienceDuration);
-      // console.log('JUU 3', experiencePrice);
+
   }, [experiences])
   
 
@@ -308,7 +295,6 @@ const [favorite, setFavorite] = useState(false);
 
   const scrollRef = useRef(null);
 
-  
   var color;
   if (favorite === true) {
     color = '#e74c3c';
@@ -472,7 +458,6 @@ const [favorite, setFavorite] = useState(false);
           <ListItem.Title>
             {starCommentTab} Moyenne: {l.rating}/5{' '}
           </ListItem.Title>
-
           <ListItem.Subtitle>{l.comment}</ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
@@ -518,8 +503,6 @@ const [favorite, setFavorite] = useState(false);
       '-' +
       startTime.getFullYear();
     appointDate.push(formatedDate);
-// console.log(startTime)
-
     
   }
 const [dateToCompare, setDateToCompare] = useState()
@@ -601,10 +584,7 @@ console.log("DATE TO COMPARE", dateToCompare)
               isFull++;
             }
           }
-          
-          
-          
-          
+
           if (isFull >= props.shopDetails.shopEmployees.length) {
             
             interTab.push(

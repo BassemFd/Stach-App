@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-nativ
 import { globalStyles } from '../styles/Global';
 import { Overlay, Card } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import Button from '../shared/Button'
@@ -26,12 +25,6 @@ function Filtres(props) {
   const [completeDate, setCompleteDate] = useState(null);
   const [date, setDate] = useState(null);
   const [hour, setHour] = useState(null);
-
-  // const [quandVisible, setQuandVisible] = useState(false);
-  // const [quand, setQuand] = useState(null);
-
-  // const [heureVisible, setHeureVisible] = useState(false);
-  // const [heure, setHeure] = useState(null)
   
   const [quoiVisible, setQuoiVisible] = useState(false);
   const [quoi, setQuoi] = useState(null);
@@ -49,19 +42,6 @@ function Filtres(props) {
   const [noteVisible, setNoteVisible] = useState(false);
   const [note, setNote] = useState(null);
 
-  // ajouter use effect avec valeur par defaut du reducer reçu
-
-  // QUAND 
-  // function closeQuand() {
-  //   setQuandVisible(false);
-  //   setQuand(null);
-  // }
-
-  //HEURE
-  // function closeHeure() {
-  //   setHeureVisible(false);
-  //   setHeure(null);
-  // }
 
   // QUOI
   var coupesTab = coupes.map((element, i) => {
@@ -168,7 +148,6 @@ function Filtres(props) {
 
   //USE EFFECT ENTREE
   useEffect( () => {
-    // console.log('RECHERCHE', props.search);
     setDate(props.search.date);
     setHour(props.search.hour);
     setCompleteDate(props.search.completeDate);
@@ -200,23 +179,6 @@ function Filtres(props) {
     <View style={globalStyles.container}>
         <Text style={globalStyles.brand}>Filtres</Text>
         <View >
-
-          {/* <TouchableOpacity  onPress={() => setQuandVisible(true)}>
-            <Text style={styles.title}>QUAND ?</Text>
-            <View style={styles.row}>
-              <Icon name='calendar' size={24} color="#4E342E" style={{margin: 5}}/>
-              <Text style={globalStyles.paragraph}>{quand}</Text>
-            </View>
-            <Card.Divider></Card.Divider>
-          </TouchableOpacity>
-
-          <TouchableOpacity  onPress={() => setHeureVisible(true)}>
-            <View style={styles.row}>
-              <Icon name='clock-o' size={24} color="#4E342E" style={{margin: 5}}/>
-              <Text style={globalStyles.paragraph}>{heure}</Text>
-            </View>
-            <Card.Divider></Card.Divider>
-          </TouchableOpacity> */}
 
           <TouchableOpacity onPress={() => setQuoiVisible(true)}>
             <Text style={styles.title}>QUOI ?</Text>
@@ -251,18 +213,6 @@ function Filtres(props) {
 
           <Button title='Valider' onPress={() => validation()} color='white' backgroundColor='#4280AB'></Button>
         </View>
-
-        {/* <Overlay isVisible={quandVisible}>
-          <View style={styles.cross}>
-              <EvilIcons name="close" size={24} color="black" onPress={() => closeQuand()} style={{margin: 5}}/>
-            </View>
-        </Overlay> */}
-
-        {/* <Overlay isVisible={heureVisible}>
-          <View style={styles.cross}>
-              <EvilIcons name="close" size={24} color="black" onPress={() => closeHeure()} style={{margin: 5}}/>
-            </View>
-        </Overlay> */}
 
         <Overlay isVisible={quoiVisible}>
             <View style={styles.cross}>
@@ -386,7 +336,7 @@ const styles = StyleSheet.create({
   row: {display: 'flex', flexDirection: 'row'}
 });
 
-// export default Filtres
+
 
 function mapStateToProps(state){
   return {search: state.search}

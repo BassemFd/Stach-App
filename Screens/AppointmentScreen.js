@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Modal, Pressable } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
 import { globalStyles } from '../styles/Global';
 import Card from '../shared/Card';
 import RadioButton from '../shared/RadioButton';
@@ -96,10 +95,6 @@ function Appointment(props) {
     props.navigation.navigate('Profile');
   };
 
-  // <Image
-  //   style={styles.icon}
-  //   source={require('../assets/salon.png')}
-  // />
   return (
     <View style={globalStyles.container}>
       <View style={styles.centeredView}>
@@ -138,7 +133,7 @@ function Appointment(props) {
             source={{ uri: props.appointment.shopDetailsImage }}
           ></Image>
 
-          {/* source={{uri: element.shopImages[0]}} */}
+     
 
           <View>
             <Text style={styles.appointmentShop}>
@@ -147,7 +142,7 @@ function Appointment(props) {
             <Text style={{ marginLeft: 10, width: 200 }}>
               {props.appointment.shopDetailsAddress}
             </Text>
-            {/* <Text>92110 Clichy</Text> */}
+        
           </View>
         </View>
         {props.appointment.hairdresser !== 'Choix du Coiffeur' ? (

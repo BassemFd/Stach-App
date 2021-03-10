@@ -15,7 +15,7 @@ import CustomBadge from '../shared/Badge';
 import CustomButton from '../shared/Button';
 import Card from '../shared/Card';
 import CommentFormScreen from './CommentFormScreen';
-import { IP_ADDRESS, IP_ADDRESS_HOME } from '@env';
+import { IP_ADDRESS } from '@env';
 import { connect } from 'react-redux';
 
 function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
@@ -138,16 +138,12 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
     navigation.navigate('Details');
   };
 
-  // console.log('MY USER', user);
+
   let points = user.loyaltyPoints;
   let msgInfo = false;
   const newDate = new Date();
   const dateNow = newDate;
 
-  // ActivityIndicator
-  // if (loading) {
-  //   return <ActivityIndicator size='large' color='#121212' />;
-  // }
 
   return (
     <View style={globalStyles.container}>
@@ -216,7 +212,7 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
             })}
           </View>
         )}
-        {/* Appointement Passed */}
+
         {loading ? (
           <ActivityIndicator size='large' color='#121212' />
         ) : (
@@ -305,15 +301,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 26,
     fontFamily: 'graduate-regular',
-  },
-  appointmentBox: {
-    // borderRadius: 2,
-    // elevation: 1,
-    // shadowColor: '#333',
-    // textShadowRadius: 2,
-    // marginVertical: 6,
-    // paddingVertical: 3,
-    // paddingHorizontal: 3,
   },
   appointmentTitle: {
     fontSize: 18,

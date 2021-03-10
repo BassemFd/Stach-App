@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import {IP_ADDRESS} from '@env';
 import { useIsFocused } from '@react-navigation/native';
 
-
-
  const FavoritesScreen = (props) => {
 
     const [favoriteTab, setFavoriteTab] = useState({})

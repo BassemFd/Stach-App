@@ -45,14 +45,10 @@ for (let i=0; i<5; i++) {
           onChangeText={(value) => setAvis(value)}
           value={avis}
         />
-        {/* <TextInput
-          style={globalStyles.input}
-          placeholder='Avis (1 - 5)'
-          keyboardType='numeric'
-        /> */}
+  
         
         
-        {/* <Text style={globalStyles.errorText}>Error</Text> */}
+       
         <Text>{text}</Text>
         <View style={styles.mtButton}>
           <FlatButton

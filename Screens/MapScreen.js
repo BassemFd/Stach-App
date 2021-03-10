@@ -73,8 +73,6 @@ function Map(props) {
     setShopsList(props.shopsData);
     console.log('search', props.search);
 
-    // console.log('lat', props.search.latitude, 'long', props.search.longitude);
-
     if (props.search.latitude != undefined && props.search.longitude != undefined) {
         setLatitude(props.search.latitude);
         setLongitude(props.search.longitude);
@@ -82,25 +80,6 @@ function Map(props) {
         setLongitudeDelta(0.09);
     }
 
-
-    // async function getLocation() {
-    //     // let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    //     // if (status === 'granted') {
-    //     //   Location.watchPositionAsync({ distanceInterval: 2 },
-    //     //     (location) => {
-    //     //       setUserLocation({latitude: location.coords.latitude, longitude: location.coords.longitude});
-    //     //     }
-    //     //   );
-    //     // }
-    //     var shopsTab = [];
-    //     for (let i=0; i<coiffeurs.length; i++) {
-    //       let locationGeo = await Location.geocodeAsync(coiffeurs[i].shopAddress);
-    //       let shop = {shopName: coiffeurs[i].shopName, shopAddress: coiffeurs[i].shopAddress, latitude: locationGeo[0].latitude, longitude: locationGeo[0].longitude, priceFork: coiffeurs[i].priceFork, shopFeatures: coiffeurs[i].shopFeatures, rating: coiffeurs[i].rating, shopImages: coiffeurs[i].shopImages, shopPhone: coiffeurs[i].shopPhone, shopMail: coiffeurs[i].shopMail, shopDescription:coiffeurs[i].shopDescription, comments: coiffeurs[i].comments, shopEmployees: coiffeurs[i].shopEmployees, offers: coiffeurs[i].offers, packages: coiffeurs[i].packages, schedule: coiffeurs[i].schedule, atHome: coiffeurs[i].atHome, appointments: coiffeurs[i].appointments  };
-    //       shopsTab.push(shop);
-    //     }
-
-    // }
-    // getLocation();
   }, []);
 
   var overlay = (element) => {
@@ -151,9 +130,7 @@ function Map(props) {
     }
     setRating(starsTab);
 
-    // console.log('element', element)
     var image = element.shopImages[0];
-    // console.log('image', image);
     setUrl(image);
   };
 
@@ -200,8 +177,6 @@ function Map(props) {
             pinColor='#AB4242'
           />
         ) : null}
-        {/* {userLocation ?
-           <Marker coordinate={{ latitude : userLocation.latitude, longitude : userLocation.longitude}} pinColor="#fd79a8" /> : null } */}
 
         {shopsList.length > 0
           ? shopsList.map((element, i) => {
@@ -224,7 +199,6 @@ function Map(props) {
           <View style={styles.text}>
             <View style={styles.div1}>
               <Text style={{ fontWeight: 'bold' }}>{shopDetails.shopName}</Text>
-              {/* <FontAwesome name='heart-o' size={15} color='black' /> */}
             </View>
             <Text style={styles.pad}>{shopDetails.shopAddress}</Text>
             <View style={styles.picto}>{euros}</View>

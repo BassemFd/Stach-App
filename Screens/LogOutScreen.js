@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { StackActions } from '@react-navigation/native';
-import {Card} from 'react-native-elements';
 
 
 function LogOutScreen(props) {

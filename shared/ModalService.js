@@ -1,7 +1,7 @@
-import { useLinkProps } from "@react-navigation/native";
+
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import { color } from "react-native-reanimated";
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {connect} from 'react-redux';

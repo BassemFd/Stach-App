@@ -31,7 +31,7 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
   const popAction = StackActions.pop(0);
 
   const handleSubmitSignin = async () => {
-    // console.log(IP_ADDRESS);
+ 
     const data = await fetch(`${IP_ADDRESS}/users/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +48,7 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
     } else {
       onAddToken(body.token);
       navigation.dispatch(popAction);      
-      // console.log('True');
+
     }
 
     switch (body.error) {
@@ -96,14 +96,7 @@ function SignIn({ navigation, onAddToken, token, appointment }) {
             </Text>
           </View>
         </View>
-        {/* <View style={globalStyles.socialNetwork}>
-          <View style={globalStyles.socialNetworkContent}>
-            <Text>Inscris toi avec Facebook</Text>
-            <Text>
-              <FontAwesome name='facebook-square' size={24} color='#4267B2' />
-            </Text>
-          </View>
-        </View> */}
+     
       
           <View style={globalStyles.textCredentialsInput}>
             <Text>...ou avec tes identifiants</Text>
