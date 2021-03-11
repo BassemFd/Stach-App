@@ -1,0 +1,1 @@
+export const IP_ADDRESS = "https://infinite-earth-98168.herokuapp.com";

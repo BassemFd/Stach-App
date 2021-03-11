@@ -1,4 +1,4 @@
-import { IP_ADDRESS } from '@env';
+import { IP_ADDRESS } from '../urlBackend';
 import React, { useState, useEffect } from 'react';
 import { globalStyles } from '../styles/Global';
 import ButtonYaya from '../shared/Button';

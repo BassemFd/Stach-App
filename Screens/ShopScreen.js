@@ -20,7 +20,7 @@ import CarouselCardItem, {
   ITEM_WIDTH,
 } from '../shared/cardCarousel';
 import { connect } from 'react-redux';
-import {IP_ADDRESS} from '@env';
+import {IP_ADDRESS} from '../urlBackend';
 import { useIsFocused } from '@react-navigation/native';
 
 function Shop(props) {

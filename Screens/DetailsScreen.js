@@ -5,7 +5,7 @@ import { globalStyles } from '../styles/Global';
 import Button from '../shared/Button';
 import { EvilIcons } from '@expo/vector-icons';
 import { Overlay, Card } from 'react-native-elements';
-import {IP_ADDRESS} from '@env';
+import {IP_ADDRESS} from '../urlBackend';
 
 
 function Details(props) {  

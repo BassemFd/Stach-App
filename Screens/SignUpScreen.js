@@ -13,7 +13,7 @@ import {
 import { globalStyles } from '../styles/Global';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomButton from '../shared/Button';
-import { IP_ADDRESS } from '@env';
+import { IP_ADDRESS } from '../urlBackend';
 import { connect } from 'react-redux';
 
 import { StackActions } from '@react-navigation/native';

@@ -15,7 +15,7 @@ import CustomBadge from '../shared/Badge';
 import CustomButton from '../shared/Button';
 import Card from '../shared/Card';
 import CommentFormScreen from './CommentFormScreen';
-import { IP_ADDRESS } from '@env';
+import { IP_ADDRESS } from '../urlBackend';
 import { connect } from 'react-redux';
 
 

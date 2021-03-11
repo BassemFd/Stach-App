@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'rea
 import { FontAwesome } from '@expo/vector-icons';
 import {globalStyles} from '../styles/Global';
 import { connect } from 'react-redux';
-import {IP_ADDRESS} from '@env';
+import {IP_ADDRESS} from '../urlBackend';
 import { useIsFocused } from '@react-navigation/native';
 
  const FavoritesScreen = (props) => {

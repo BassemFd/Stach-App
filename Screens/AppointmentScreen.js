@@ -5,7 +5,7 @@ import Card from '../shared/Card';
 import RadioButton from '../shared/RadioButton';
 import CustomButton from '../shared/Button';
 import { connect } from 'react-redux';
-import { IP_ADDRESS } from '@env';
+import { IP_ADDRESS } from '../urlBackend';
 
 function Appointment(props) {
   const [paiement, setPaiement] = useState([
