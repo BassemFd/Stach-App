@@ -107,9 +107,9 @@ const [favorite, setFavorite] = useState(false);
     
   const coiffeurTab = props.shopDetails.shopEmployees.map((choix, i) => {
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View key={i} style={{ flexDirection: 'row' }}>
         <Pressable
-          key={i}
+          
           style={[styles.button, styles.buttonOpen, styles.buttonZ]}
           onPress={() => {
             ChosenCoiffeur(choix);
@@ -163,7 +163,7 @@ const [favorite, setFavorite] = useState(false);
     return (
       <View key={i} style={{ flexDirection: 'row' }}>
         <Pressable
-          key={i}
+          
           style={[styles.button, styles.buttonOpen, styles.buttonZ]}
           onPress={() => {
             ChosenExperiences(choix.type, choix.price, choix.duration);
@@ -172,7 +172,7 @@ const [favorite, setFavorite] = useState(false);
           <Text style={styles.textStyle}>{choix.type}</Text>
         </Pressable>
         <Pressable
-          key={i}
+         
           style={
             [styles.button, styles.buttonOpen, styles.buttonZ, styles.textStyle, {
               marginBottom: 10,
@@ -236,14 +236,14 @@ const [favorite, setFavorite] = useState(false);
     return (
       <View key={i} style={{ flexDirection: 'row' }}>
         <Pressable
-          key={i}
+         
           style={[styles.button, styles.buttonOpen, styles.buttonZ, styles.textStyle]}
           onPress={() => ChosenQuoi(choix.type, choix.price, choix.duration)}
         >
           <Text style={styles.textStyle}>{choix.type}</Text>
         </Pressable>
         <Pressable
-          key={i}
+          
           style={
             [styles.button, styles.buttonOpen, styles.buttonZ, styles.textStyle, {
             marginBottom: 10,
@@ -901,8 +901,8 @@ const [dateToCompare, setDateToCompare] = useState()
       </ScrollView>
 
       <Overlay isVisible={quoiVisible}>
-        {prestationTab}
         <View style={{ alignItems: 'center'}}>
+        {prestationTab}
         <Pressable
           style={[styles.buttonClose]}
           onPress={() => closeQuoi()}
@@ -914,8 +914,8 @@ const [dateToCompare, setDateToCompare] = useState()
 
       <Overlay  isVisible={experiencesVisible}>
       
-        {experienceTab}
         <View style={{ alignItems: 'center'}}>
+        {experienceTab}
         <Pressable
         
           style={[styles.buttonClose]}
@@ -927,8 +927,8 @@ const [dateToCompare, setDateToCompare] = useState()
       </Overlay>
 
       <Overlay isVisible={coiffeurVisible}>
-        {coiffeurTab}
         <View style={{ alignItems: 'center'}}>
+        {coiffeurTab}
         <Pressable
           style={[styles.buttonClose]}
           onPress={() => closeCoiffeurs()}

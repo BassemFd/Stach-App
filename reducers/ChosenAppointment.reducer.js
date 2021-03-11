@@ -1,6 +1,6 @@
 export default function(details = {}, action){ 
     if(action.type == 'finalAppointment'){
-        console.log('reducer', action.prestationDuration, action.experienceDuration);
+        
         let finalAppointment = {
             hour: action.hour,
             hairdresser: action.hairdresser, 

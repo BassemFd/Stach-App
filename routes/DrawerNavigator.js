@@ -1,6 +1,6 @@
 import React from 'react';
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
-import { NavigationContainer, useLinkProps } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigatorStack from './NavigatorStack';
 
@@ -15,7 +15,7 @@ import LogOutScreen from '../Screens/LogOutScreen';
 import FavoritesScreen from '../Screens/FavoritesScreen';
 
 import { connect } from 'react-redux';
-import HomeScreen from '../Screens/HomeScreen';
+
 
 const Drawer = createDrawerNavigator();
 

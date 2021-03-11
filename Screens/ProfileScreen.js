@@ -18,6 +18,7 @@ import CommentFormScreen from './CommentFormScreen';
 import { IP_ADDRESS } from '@env';
 import { connect } from 'react-redux';
 
+
 function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -207,7 +208,9 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
                   </Card>
                 );
               } else {
-                <Text style={styles.noAppoints}>Pas de Rdv à venir</Text>;
+               
+                <Text style={styles.noAppoints}>Pas de Rdv à venir</Text>
+                
               }
             })}
           </View>
@@ -241,21 +244,22 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
                     <Text style={styles.appointmentDate}>
                       {formatAppointDate(appointment.startDate)}
                     </Text>
-                    <Modal visible={modalOpen} animationType='slide'>
+                    <Modal  visible={modalOpen} animationType='slide'>
                       <TouchableWithoutFeedback
                         onPress={() => Keyboard.dismiss()}
                       >
-                        <View style={styles.modalContent}>
-                          <FontAwesome
-                            style={{
-                              ...styles.modalToggle,
-                              ...styles.modalClose,
-                            }}
-                            name='close'
-                            color='#E65100'
-                            size={24}
-                            onPress={() => setModalOpen(false)}
-                          />
+                        <View style={[styles.modalContent, {backgroundColor: '#FFE082'}]} >
+                          
+                          <View style={{alignItems: 'center', padding: 20, backgroundColor: '#FFE082'}}>
+                            <CustomButton
+                              title='Retour'
+                              color='#fff'
+                              backgroundColor='#AB4242'
+                              onPress={() => setModalOpen(false)}
+                              width={100}
+                              
+                            />
+                            </View>
                           <CommentFormScreen addComment={addComment} />
                         </View>
                       </TouchableWithoutFeedback>
@@ -280,9 +284,11 @@ function Profile({ token, saveChoosenOffer, navigation, saveCommunication }) {
                   </Card>
                 );
               } else {
+                
                 <Text key={i} style={styles.noAppoints}>
                   Pas de Rdv passés
-                </Text>;
+                </Text>
+                
               }
             })}
           </View>

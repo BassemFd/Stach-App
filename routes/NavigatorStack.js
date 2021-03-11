@@ -1,13 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FontAwesome } from '@expo/vector-icons';
-
-import Header from '../shared/Header';
-import TemporaryPage from '../Screens/TemporaryPage';
 
 import HomeScreen from '../Screens/HomeScreen';
 import ListScreen from '../Screens/ListScreen';
@@ -23,31 +17,9 @@ import Filtres from '../Screens/FiltresScreen';
 import LogOutScreen from '../Screens/LogOutScreen';
 import FavoritesScreen from '../Screens/FavoritesScreen';
 
-import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-
-import shopDetails from '../reducers/OfferDetails.reducer';
-import search from '../reducers/Search.reducer';
-import selectedService from '../reducers/ModalSelectedService.reducer';
-import details from '../reducers/ChosenAppointment.reducer';
-import shopsData from '../reducers/shopsData.reducer';
-import token from '../reducers/token.reducer';
-import favorite from '../reducers/favorite.reducer';
-
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
-const store = createStore(
-  combineReducers({
-    shopDetails,
-    search,
-    selectedService,
-    details,
-    shopsData,
-    token,
-    favorite,
-  })
-);
+
 
 function ButtonTabSign() {
   return (

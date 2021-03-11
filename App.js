@@ -1,9 +1,12 @@
-//Uncheck if you want hide the warning logs
-// import { LogBox } from 'react-native';
-// LogBox.ignoreLogs(['Warning: ...']);
-// LogBox.ignoreAllLogs();
 
-import { StatusBar } from 'expo-status-bar';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+LogBox.ignoreLogs(['Cannot update a component from inside the function body of a different component']);
+LogBox.ignoreLogs(['Failed prop type: Invalid prop `children` of type `array` supplied to `Overlay`, expected a single ReactElement']);
+
+
 import React from 'react';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';

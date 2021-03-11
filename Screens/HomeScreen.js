@@ -2,7 +2,6 @@ import React, {useEffect, useState, useRef} from 'react';
 import {Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {Button, Input, Card, CheckBox, Overlay} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { globalStyles } from '../styles/Global';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SafeAreaView } from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -193,7 +192,7 @@ function HomeScreen(props) {
 
   return (
   <SafeAreaView style={{flex:1, backgroundColor: "#FFE082", alignItems:"center"}}>
-  <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
+  <ScrollView style={{flex:1, height:"100%"}} contentContainerStyle={{alignItems:"center"}} keyboardShouldPersistTaps='always' >
     
     <Text style={{marginTop:0}}></Text>
     
@@ -242,7 +241,7 @@ function HomeScreen(props) {
         useOnPlatform: 'web',
       }}
       keyboardShouldPersistTaps ='handled'
-      listViewDisplayed="false"
+      listViewDisplayed="auto"
       styles={{textInput:{backgroundColor: 'transparent', fontSize: 19,}}}
       autoFillOnNotFound={true}
       // GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}

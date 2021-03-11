@@ -146,6 +146,7 @@ function Map(props) {
           : null}
       </MapView>
       <Overlay isVisible={visible}>
+        <View>
         <View style={styles.card}>
           <View style={styles.text}>
             <View style={styles.div1}>
@@ -179,6 +180,7 @@ function Map(props) {
             backgroundColor='#AB4242'
             onPress={() => setVisible(false)}
           />
+        </View>
         </View>
       </Overlay>
     </View>
