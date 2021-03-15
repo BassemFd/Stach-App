@@ -1,1 +1,1 @@
-export const IP_ADDRESS = "https://infinite-earth-98168.herokuapp.com";
+export const IP_ADDRESS = "https://stach-backend.herokuapp.com/";
