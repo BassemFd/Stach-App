@@ -381,7 +381,19 @@ function HomeScreen(props) {
 function mapDispatchToProps(dispatch) {
   return {
     onSubmitSearch: function(salonOrHome, completeDate, date, hour, address, latitude, longitude, offer, experience, service, priceFork, rating) { 
-      dispatch({type: 'createSearch', salonOrHome : salonOrHome, completeDate : completeDate, date : date, hour : hour, address : address, latitude : latitude, longitude : longitude, offer : offer, experience : experience, service : service, priceFork : priceFork, rating: rating}) 
+      dispatch({type: 'createSearch', 
+      salonOrHome : salonOrHome, 
+      completeDate : completeDate, 
+      date : date, 
+      hour : hour, 
+      address : address, 
+      latitude : latitude, 
+      longitude : longitude, 
+      offer : offer, 
+      experience : experience, 
+      service : service, 
+      priceFork : priceFork, 
+      rating: rating}) 
     },
 
   }
