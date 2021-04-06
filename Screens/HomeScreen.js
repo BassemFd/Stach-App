@@ -33,7 +33,7 @@ function HomeScreen(props) {
   const [priceFork, setPriceFork] = useState(null);
   const [rating, setRating] = useState(null) 
 
-  // const GOOGLE_PLACES_API_KEY = 'Insert API key';
+  const GOOGLE_PLACES_API_KEY = 'AIzaSyDRk_SX38NvNPb0M5_guNZvnja3hwkVLug';
   const ref = useRef();
   
   // Adjusting slider to window screen
